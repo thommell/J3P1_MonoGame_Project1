@@ -1,101 +1,95 @@
-﻿using System;
-using Monogame_Project1.Engine;
-namespace J3P1_CSharp_Advanced.Opdracht4.GameObjects;
+﻿using Microsoft.Xna.Framework.Input;
 
-public enum ButtonStatus {
+namespace Monogame_Project1.Engine;
+
+public enum ButtonStatus
+{
     Normal,
     Hovered,
     Pressed,
     Clicked
 }
 
-public class Button : GameObject {
-    private ButtonStatus _currentButtonState = ButtonStatus.Normal;
-    private MouseState _mouse;
-    private Vector2 _mousePosition;
-    private MouseState _prevMouseClick;
-    private readonly string _buttonText;
-    private Vector2 _buttonTextSize;
-    private Vector2 _buttonTextPosition;
-    protected Scene targetScene;
-    protected SceneManager sceneManager;
-    public ButtonStatus CurrentButtonState {
-        get => _currentButtonState;
-        set => _currentButtonState = value;
-    }
-    public Button(Texture2D pTexture, string pButtonText) : base(pTexture) {
-        _buttonText = pButtonText;
-    }
-    public Button(Texture2D pTexture, string pButtonText, Scene pTargetScene, SceneManager pSceneManager) : base(pTexture) {
-        _buttonText = pButtonText;
-        targetScene = pTargetScene;
-        sceneManager = pSceneManager;
-    }
-    public override void LoadContent(ContentManager pContent) {
-        NormalState();
-        SetButtonTextBounds();
-    }
-    public override void Update(GameTime pGameTime) {
-        CreateMouseState();
-        ExecuteButtonState();
-    }
-    public override void Draw(SpriteBatch pSpriteBatch) {
-        base.Draw(pSpriteBatch);
-        pSpriteBatch.DrawString(Utility.Font, _buttonText, _buttonTextPosition, Color.White);
-    }
-   
-    protected virtual void OnClick() {}
+public class Button : GameObject
+{
+    #region Variables
+    protected Game1 game;
+    private ButtonStatus status;
+    private readonly SpriteFont font;
+    private MouseState currentMouseState;
+    private MouseState previousMouseState;
+    #endregion
+    #region Properties
+    public string Text { get; set; }
+    #endregion
 
-    private void CreateMouseState() {
-        _mouse = Mouse.GetState();
-        _mousePosition = new Vector2(_mouse.X, _mouse.Y);
+    #region Constructor
+    public Button(Game1 pGame1, Texture2D pTexture, string text) : base(pTexture)
+    {
+        font = pGame1.Content.Load<SpriteFont>("Font");
+        game = pGame1;
+        status = ButtonStatus.Normal;
+        Text = text;
     }
-    public virtual void NormalState() {
-        CurrentButtonState = ButtonStatus.Normal;
-        Color = Color.White;
-        if (HitBox.Contains(_mousePosition)) {
-            CurrentButtonState = ButtonStatus.Hovered;
-        }
+    #endregion
+
+    public override void Update(GameTime pGameTime)
+    {
+        previousMouseState = currentMouseState;
+        currentMouseState = Mouse.GetState();
+
+        Rectangle _mouseRectangle = new(currentMouseState.X, currentMouseState.Y, 1, 1);
+
+        if (_mouseRectangle.Intersects(Rectangle))
+            OnHover();
+
+        if (!_mouseRectangle.Intersects(Rectangle))
+            OnNormal();
+
+        if (_mouseRectangle.Intersects(Rectangle) && currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
+            OnClick();
+
+        base.Update(pGameTime);
     }
-    public virtual void HoveredState() {
-        CurrentButtonState = ButtonStatus.Hovered;
-        Color = Color.LightGray;
-        if (_mouse.LeftButton == ButtonState.Pressed) {
-            CurrentButtonState = ButtonStatus.Pressed;
-        }
-        if (!HitBox.Contains(_mousePosition)) 
-            CurrentButtonState = ButtonStatus.Normal;
+
+    protected virtual void OnClick()
+    {
+        status = ButtonStatus.Pressed;
     }
-    public virtual void PressedState() {
-        Color = Color.Red;
-        if (!HitBox.Contains(_mousePosition))
-            CurrentButtonState = ButtonStatus.Normal;
-        if (_prevMouseClick.LeftButton == ButtonState.Pressed && _mouse.LeftButton == ButtonState.Released) {
-            CurrentButtonState = ButtonStatus.Clicked;
-        }
+
+    protected void OnHover()
+    {
+        status = ButtonStatus.Hovered;
     }
-    private void ExecuteButtonState(){
-        switch (CurrentButtonState) {
+
+    protected void OnNormal()
+    {
+        status = ButtonStatus.Normal;
+    }
+
+    public override void Draw(SpriteBatch pSpriteBatch)
+    {
+        switch (status)
+        {
             case ButtonStatus.Normal:
-                NormalState();
+                color = Color.White;
                 break;
             case ButtonStatus.Hovered:
-                HoveredState();
+                color = Color.Gray;
                 break;
             case ButtonStatus.Pressed:
-                PressedState();
+                color = Color.Red;
                 break;
-            case ButtonStatus.Clicked:
-                OnClick();
-                NormalState();
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
         }
-        _prevMouseClick = _mouse;
-    }
-    private void SetButtonTextBounds() {
-        _buttonTextSize = Utility.Font.MeasureString(_buttonText);
-        _buttonTextPosition = new Vector2(Position.X - _buttonTextSize.X * 0.5f, Position.Y - _buttonTextSize.Y * 0.5f);
+
+        base.Draw(pSpriteBatch);
+
+        if (!string.IsNullOrEmpty(Text))
+        {
+            float x = (Rectangle.X + (Rectangle.Width / 2)) - (font.MeasureString(Text).X / 2);
+            float y = (Rectangle.Y + (Rectangle.Height / 2)) - (font.MeasureString(Text).Y / 2);
+
+            pSpriteBatch.DrawString(font, Text, new Vector2(x, y), color, Rotation, new Vector2(0, 0), 1f, SpriteEffects.None, Layer + 0.01f);
+        }
     }
 }
