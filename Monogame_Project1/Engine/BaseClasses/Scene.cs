@@ -1,4 +1,6 @@
-﻿namespace Monogame_Project1.Engine.BaseClasses;
+﻿using Monogame_Project1.Engine.GameObjects;
+
+namespace Monogame_Project1.Engine.BaseClasses;
 
 public abstract class Scene
 {
@@ -30,20 +32,29 @@ public abstract class Scene
     #region Public Methods
 
     public abstract void LoadContent(ContentManager pContent);
-        public virtual void Update(GameTime pGameTime)
+    public virtual void Update(GameTime pGameTime)
+    {
+        for (int i = 0; i < objects.Count; i++)
         {
-            for (int i = 0; i < objects.Count; i++)
-            {
-                objects[i].Update(pGameTime);
-            }
+            objects[i].Update(pGameTime);
         }
-        public virtual void Draw(SpriteBatch pSpriteBatch)
+    }
+    public virtual void Draw(SpriteBatch pSpriteBatch)
+    {
+        for (int i = 0; i < objects.Count; i++)
         {
-            for (int i = 0; i < objects.Count; i++)
-            {
-                objects[i].Draw(pSpriteBatch);
-            }
+            objects[i].Draw(pSpriteBatch);
         }
+    }
+    public T GetObject<T>() where T : GameObject
+    {
+        for (int i = 0; i < objects.Count; i++)
+        {
+            if (objects[i] is T obj)
+                return obj;
+        }
+        return null;
+    }
 
     #endregion
 }

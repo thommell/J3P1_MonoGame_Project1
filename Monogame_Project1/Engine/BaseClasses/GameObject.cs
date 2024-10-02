@@ -1,18 +1,16 @@
-﻿using System;
+using System;
 
 namespace Monogame_Project1.Engine.BaseClasses;
 
 public class GameObject : Component
 {
     #region Fields
-    
     protected float layer;
     protected Vector2 position;
     protected Vector2 origin;
     protected float rotation;
     protected Texture2D texture;
     protected Color color;
-    
     #endregion
 
     #region Properties
@@ -61,14 +59,14 @@ public class GameObject : Component
 
     #region Constructor
 
-     public GameObject(Texture2D pTexture)
-     {
-         texture = pTexture;
-         origin = new(texture.Width / 2, texture.Height / 2);
-         color = Color.White;
-     }
+    public GameObject(Texture2D pTexture)
+    {
+        texture = pTexture;
+        origin = new(texture.Width / 2, texture.Height / 2);
+        color = Color.White;
+    }
 
-     public GameObject() {}
+    public GameObject() {}
 
     #endregion
 
