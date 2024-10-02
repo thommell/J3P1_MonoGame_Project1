@@ -15,8 +15,9 @@ public enum ButtonStatus
 public class Button : GameObject
 {
     #region Variables
-    
+
     protected Game1 game;
+    protected SceneManager manager;
     private ButtonStatus status;
     private readonly SpriteFont font;
     private MouseState currentMouseState;
@@ -29,8 +30,9 @@ public class Button : GameObject
     #endregion
 
     #region Constructor
-    public Button(Game1 pGame1, Texture2D pTexture, string text) : base(pTexture)
+    public Button(Game1 pGame1, SceneManager pManager, Texture2D pTexture, string text) : base(pTexture)
     {
+        manager = pManager;
         font = pGame1.Content.Load<SpriteFont>("Font");
         game = pGame1;
         status = ButtonStatus.Normal;

@@ -6,12 +6,14 @@ global using Microsoft.Xna.Framework.Content;
 global using Microsoft.Xna.Framework.Design;
 global using Microsoft.Xna.Framework.Media;
 global using System.Collections.Generic;
+using Monogame_Project1.Engine;
 
 namespace Monogame_Project1;
 public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+    private SceneManager _sceneManager;
 
     public Game1()
     {
@@ -20,26 +22,18 @@ public class Game1 : Game
         IsMouseVisible = true;
     }
 
-    protected override void Initialize()
-    {
-        // TODO: Add your initialization logic here
-        base.Initialize();
-    }
-
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-        // TODO: use this.Content to load your game content here
+        _sceneManager = new SceneManager(_graphics, Content, _spriteBatch, this);
+        _sceneManager.Initialize();
     }
 
     protected override void Update(GameTime gameTime)
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
-
-        // TODO: Add your update logic here
-
+        _sceneManager.Update(gameTime);
         base.Update(gameTime);
     }
 
@@ -47,8 +41,8 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        // TODO: Add your drawing code here
-
+        _sceneManager.Draw(_spriteBatch);
+        
         base.Draw(gameTime);
     }
 }

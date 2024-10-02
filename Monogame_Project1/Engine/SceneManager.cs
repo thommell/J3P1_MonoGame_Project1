@@ -1,4 +1,6 @@
-﻿using Monogame_Project1.Engine.BaseClasses;
+﻿using System.Linq;
+using Monogame_Project1.Engine.BaseClasses;
+using Monogame_Project1.Engine.Scenes;
 
 namespace Monogame_Project1.Engine;
 
@@ -37,7 +39,7 @@ public class SceneManager
     public void Initialize() 
     {
         _scenesList = CreateSceneList();
-        // CURRENTSCENE WILL BE NULL!
+        _currentScene = CreateSceneList().First();
         LoadScene();
     }
     public void Update(GameTime pGameTime) 
@@ -83,9 +85,12 @@ public class SceneManager
         _currentScene.LoadContent(_contentManager);
         CurrentScene.IsLoaded = true;
     }
-    private List<Scene> CreateSceneList() 
+    private List<Scene> CreateSceneList()
     {
-        List<Scene> scenes = new(); 
+        List<Scene> scenes = new List<Scene>
+        {
+            new MainMenu(_game, this)
+        };
         return scenes;
     }
 
