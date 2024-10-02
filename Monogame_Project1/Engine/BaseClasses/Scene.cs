@@ -12,6 +12,8 @@ public abstract class Scene
     #region Properties
     
     public bool IsLoaded { get; set; }
+
+    public List<GameObject> Objects => objects;
     
     #endregion
 
@@ -37,12 +39,10 @@ public abstract class Scene
         }
         public virtual void Draw(SpriteBatch pSpriteBatch)
         {
-            pSpriteBatch.Begin();
             for (int i = 0; i < objects.Count; i++)
             {
                 objects[i].Draw(pSpriteBatch);
             }
-            pSpriteBatch.End();
         }
 
     #endregion
