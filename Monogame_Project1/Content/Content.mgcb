@@ -32,6 +32,18 @@
 /processorParam:TextureFormat=Compressed
 /build:Font.spritefont
 
+#begin Target.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Target.png
+
 #begin UI_Panel.png
 /importer:TextureImporter
 /processor:TextureProcessor
