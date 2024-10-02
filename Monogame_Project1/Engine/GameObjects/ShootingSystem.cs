@@ -12,6 +12,9 @@ public class ShootingSystem : GameObject
     {
         _scene = pScene;
         _ammo = pAmmo;
+    }
+    public override void LateLoad()
+    {
         _scoringSystem = _scene.GetObject<ScoringSystem>();
     }
     public override void Update(GameTime gameTime) 

@@ -12,7 +12,9 @@ public class SpawningScene : Scene
         objects.Add(new SpawningSystem(this, game, 5));
         objects.Add(new ShootingSystem(this, 999));
         objects.Add(new ScoringSystem(this));
-
+    }
+    public override void LateLoad()
+    {
         _scoreSystem = GetObject<ScoringSystem>();
     }
     public override void Draw(SpriteBatch pSpriteBatch)

@@ -72,6 +72,8 @@ public class GameObject : Component
 
     #region Public Methods
 
+    public override void LoadContent(ContentManager pContent) {}
+    public override void LateLoad() {}
     public override void Update(GameTime pGameTime) {}
     public override void Draw(SpriteBatch pSpriteBatch)
     {
