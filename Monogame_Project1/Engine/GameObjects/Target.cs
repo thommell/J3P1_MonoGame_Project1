@@ -1,23 +1,30 @@
 ﻿using Monogame_Project1.Engine.BaseClasses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Monogame_Project1.Engine.GameObjects;
 
 public class Target : GameObject
 {
+    #region Fields
     private ShootingSystem _shootingSystem;
-    public Target(Texture2D pTexture, Vector2 pPosition, ShootingSystem pShootingSystem) : base(pTexture)
+    private SpawningSystem _spawningSystem;
+    #endregion
+    #region Constructors
+    public Target(Texture2D pTexture, Scene pScene) : base(pTexture)
     {
-        position = pPosition;
-        _shootingSystem = pShootingSystem;
+        _shootingSystem = pScene.GetObject<ShootingSystem>();
+        _spawningSystem = pScene.GetObject<SpawningSystem>();
     }
-    public void CheckCollision()
-    {
+    #endregion
+    #region Public Methods
 
+    public override void Update(GameTime pGameTime)
+    {
+        _shootingSystem.CheckCollision(this);
     }
+    public void Destroy()
+    {
+        _spawningSystem.RemoveTarget(this);
+    }
+    #endregion
 }
 

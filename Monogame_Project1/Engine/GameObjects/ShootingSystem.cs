@@ -1,20 +1,38 @@
-﻿using Monogame_Project1.Engine.BaseClasses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Monogame_Project1.Engine.BaseClasses;
 
 namespace Monogame_Project1.Engine.GameObjects;
-public class ShootingSystem
+public class ShootingSystem : GameObject
 {
-    public void Update(GameTime pGameTime)
+    private int _ammo;
+    private bool _hasShot;
+    private Scene _scene;
+    public ShootingSystem(Scene pScene, int pAmmo) 
     {
-
+        _scene = pScene;
+        _ammo = pAmmo;
     }
-    public void CheckCollision(Target target)
+    public override void Update(GameTime gameTime) 
     {
-        MouseState mouseState = Mouse.GetState(); //pakt alle gegevens van de muis
-        Point mousePoint = new Point(mouseState.X, mouseState.Y); //zet de positie van de muis in een soort Vector2
+        MouseState mouseState = Mouse.GetState();
+        if (mouseState.LeftButton == ButtonState.Pressed && !_hasShot && _ammo > 0) 
+        {
+            _ammo--;
+            _hasShot = true;
+            Console.WriteLine("Shot");
+        } 
+        else if (mouseState.LeftButton == ButtonState.Released && _hasShot) 
+        {
+            _hasShot = false;
+        }        
+    }
+    public void CheckCollision(Target pTarget) 
+    {
+        MouseState mouseState = Mouse.GetState(); 
+        Point mousePoint = new Point(mouseState.X, mouseState.Y); 
+        if (pTarget.Rectangle.Contains(mousePoint) && _hasShot)
+        {
+            pTarget.Destroy();            
+        } 
     }
 }
