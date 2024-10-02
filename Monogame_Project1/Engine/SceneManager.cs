@@ -39,7 +39,7 @@ public class SceneManager
     public void Initialize() 
     {
         _scenesList = CreateSceneList();
-        _currentScene = GetScene<MainMenu>();
+        _currentScene = GetScene<LevelSelectionScene>();
         LoadScene();
     }
     public void Update(GameTime pGameTime) 
@@ -91,7 +91,8 @@ public class SceneManager
         {
             new MainMenu(_game, this),
             new TestScene(_game, this),
-            new SpawningScene(_game, this)
+            new SpawningScene(_game, this),
+            new LevelSelectionScene(_game, this)
         };
         return scenes;
     }

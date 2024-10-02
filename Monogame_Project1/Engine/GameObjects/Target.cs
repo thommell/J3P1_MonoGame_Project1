@@ -30,7 +30,7 @@ public class Target : GameObject
         base.Update(pGameTime);
     }
     public override void Draw(SpriteBatch pSpriteBatch)
-    {s
+    {
         if (!isActive) return;
 
         base.Draw(pSpriteBatch);
