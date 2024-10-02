@@ -75,11 +75,11 @@ public class GameObject : Component
     public override void Update(GameTime pGameTime) {}
     public override void Draw(SpriteBatch pSpriteBatch)
     {
-        //Console.WriteLine("GameObject");
         if (texture != null)
             pSpriteBatch.Draw(texture, position, null, color, rotation, origin, 1f, SpriteEffects.None, layer);
     }
 
     #endregion
 }
+
 
