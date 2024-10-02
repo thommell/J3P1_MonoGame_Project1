@@ -1,6 +1,6 @@
-using Microsoft.Xna.Framework.Input;
-
 namespace Monogame_Project1.Engine;
+
+#region Enums
 
 public enum ButtonStatus
 {
@@ -10,15 +10,20 @@ public enum ButtonStatus
     Clicked
 }
 
+#endregion
+
 public class Button : GameObject
 {
     #region Variables
+    
     protected Game1 game;
     private ButtonStatus status;
     private readonly SpriteFont font;
     private MouseState currentMouseState;
     private MouseState previousMouseState;
+   
     #endregion
+    
     #region Properties
     public string Text { get; set; }
     #endregion
@@ -33,35 +38,25 @@ public class Button : GameObject
     }
     #endregion
 
+    #region Public Methods
+
     public override void Update(GameTime pGameTime)
     {
         previousMouseState = currentMouseState;
         currentMouseState = Mouse.GetState();
-
+    
         Rectangle _mouseRectangle = new(currentMouseState.X, currentMouseState.Y, 1, 1);
-
+    
         if (_mouseRectangle.Intersects(Rectangle))
             OnHover();
-
+    
         if (!_mouseRectangle.Intersects(Rectangle))
             OnNormal();
-
+    
         if (_mouseRectangle.Intersects(Rectangle) && currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
             OnClick();
-
+    
         base.Update(pGameTime);
-    }
-    protected virtual void OnClick()
-    {
-        status = ButtonStatus.Pressed;
-    }
-    protected void OnHover()
-    {
-        status = ButtonStatus.Hovered;
-    }
-    protected void OnNormal()
-    {
-        status = ButtonStatus.Normal;
     }
 
     public override void Draw(SpriteBatch pSpriteBatch)
@@ -78,15 +73,33 @@ public class Button : GameObject
                 color = Color.Red;
                 break;
         }
-
+    
         base.Draw(pSpriteBatch);
-
+    
         if (!string.IsNullOrEmpty(Text))
         {
             float x = (Rectangle.X + (Rectangle.Width / 2)) - (font.MeasureString(Text).X / 2);
             float y = (Rectangle.Y + (Rectangle.Height / 2)) - (font.MeasureString(Text).Y / 2);
-
+    
             pSpriteBatch.DrawString(font, Text, new Vector2(x, y), color, Rotation, new Vector2(0, 0), 1f, SpriteEffects.None, Layer + 0.01f);
         }
     }
+    #endregion
+
+    #region Protected Methods
+
+    protected virtual void OnClick()
+    {
+        status = ButtonStatus.Pressed;
+    }
+    protected void OnHover()
+    {
+        status = ButtonStatus.Hovered;
+    }
+    protected void OnNormal()
+    {
+        status = ButtonStatus.Normal;
+    }
+
+    #endregion
 }

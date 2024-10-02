@@ -2,6 +2,10 @@
 
 public abstract class Component
 {
-    public abstract void Update(GameTime pGameTime);
+    #region Public Methods
+
+    public abstract void Update(GameTime pGameTime); 
     public abstract void Draw(SpriteBatch pSpriteBatch);
+
+    #endregion
 }
