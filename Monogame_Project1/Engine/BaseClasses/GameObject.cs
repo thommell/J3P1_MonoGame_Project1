@@ -66,7 +66,9 @@ public class GameObject : Component
          texture = pTexture;
          origin = new(texture.Width / 2, texture.Height / 2);
          color = Color.White;
-     }   
+     }
+
+     public GameObject() {}
 
     #endregion
 
