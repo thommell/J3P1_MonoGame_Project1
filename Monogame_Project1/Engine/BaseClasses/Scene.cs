@@ -5,19 +5,22 @@ public abstract class Scene
     #region Variables
     
     protected Game1 game;
-    protected List<GameObject> objects;
+    protected SceneManager manager;
+    protected List<GameObject> objects = new();
     #endregion
     
     #region Properties
+    
     public bool IsLoaded { get; set; }
     
     #endregion
 
     #region Constructor
 
-    public Scene(Game1 pGame)
+    public Scene(Game1 pGame, SceneManager pManager)
     {
         game = pGame;
+        manager = pManager;
     }
 
     #endregion
