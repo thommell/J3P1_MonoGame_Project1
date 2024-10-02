@@ -7,10 +7,12 @@ public class ShootingSystem : GameObject
     private int _ammo;
     private bool _hasShot;
     private Scene _scene;
+    private ScoringSystem _scoringSystem;
     public ShootingSystem(Scene pScene, int pAmmo) 
     {
         _scene = pScene;
         _ammo = pAmmo;
+        _scoringSystem = _scene.GetObject<ScoringSystem>();
     }
     public override void Update(GameTime gameTime) 
     {
@@ -32,7 +34,12 @@ public class ShootingSystem : GameObject
         Point mousePoint = new Point(mouseState.X, mouseState.Y); 
         if (pTarget.Rectangle.Contains(mousePoint) && _hasShot)
         {
-            pTarget.Destroy();            
+            pTarget.Destroy();     
+            _scoringSystem.AddScore(pTarget.ScoreAmount);
         } 
+        else if (!pTarget.Rectangle.Contains(mousePoint))
+        {
+            _scoringSystem.RemoveScore(pTarget.ScoreAmount);
+        }
     }
 }
