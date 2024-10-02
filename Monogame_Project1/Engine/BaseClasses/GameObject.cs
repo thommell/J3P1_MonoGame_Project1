@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Monogame_Project1.Engine;
+namespace Monogame_Project1.Engine.BaseClasses;
 
 public class GameObject : Component
 {
@@ -82,3 +82,4 @@ public class GameObject : Component
 
     #endregion
 }
+

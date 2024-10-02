@@ -1,4 +1,4 @@
-﻿namespace Monogame_Project1.Engine;
+﻿namespace Monogame_Project1.Engine.BaseClasses;
 
 public abstract class Component
 {
