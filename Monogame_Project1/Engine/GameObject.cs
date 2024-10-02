@@ -4,7 +4,7 @@ namespace Monogame_Project1.Engine;
 
 public class GameObject : Component
 {
-    #region SpriteBatch Variables
+    #region Fields
     
     protected float layer;
     protected Vector2 position;
@@ -46,25 +46,32 @@ public class GameObject : Component
         get => color;
         set => color = value;
     }
-    #endregion
-    #region Rectangle
+    
     public Rectangle Rectangle
     {
         get
         {
             if (texture != null)
                 return new((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, texture.Width, texture.Height);
-
+    
             throw new Exception("Texture not found/invalid.");
         }
     }
     #endregion
-    public GameObject(Texture2D pTexture)
-    {
-        texture = pTexture;
-        origin = new(texture.Width / 2, texture.Height / 2);
-        color = Color.White;
-    }
+
+    #region Constructor
+
+     public GameObject(Texture2D pTexture)
+     {
+         texture = pTexture;
+         origin = new(texture.Width / 2, texture.Height / 2);
+         color = Color.White;
+     }   
+
+    #endregion
+
+    #region Public Methods
+
     public override void Update(GameTime pGameTime) {}
     public override void Draw(SpriteBatch pSpriteBatch)
     {
@@ -72,4 +79,6 @@ public class GameObject : Component
         if (texture != null)
             pSpriteBatch.Draw(texture, position, null, color, rotation, origin, 1f, SpriteEffects.None, layer);
     }
+
+    #endregion
 }
