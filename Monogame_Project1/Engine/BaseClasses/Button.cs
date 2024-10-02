@@ -30,11 +30,11 @@ public class Button : GameObject
     #endregion
 
     #region Constructor
-    public Button(Game1 pGame1, SceneManager pManager, Texture2D pTexture, string text) : base(pTexture)
+    public Button(Game1 pGame, SceneManager pManager, Texture2D pTexture, string text) : base(pTexture)
     {
         manager = pManager;
-        font = pGame1.Content.Load<SpriteFont>("Font");
-        game = pGame1;
+        font = pGame.Content.Load<SpriteFont>("Font");
+        game = pGame;
         status = ButtonStatus.Normal;
         Text = text;
     }
