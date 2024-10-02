@@ -8,8 +8,8 @@ public class SpawningScene : Scene
     public SpawningScene(Game1 pGame, SceneManager pManager) : base(pGame, pManager) {}
     public override void LoadContent(ContentManager pContent)
     {
-        objects.Add(new SpawningSystem(this, game));
-        objects.Add(new ShootingSystem(this, game, 999));
+        objects.Add(new SpawningSystem(this, game, 5));
+        objects.Add(new ShootingSystem(this, 999));
     }
     public override void Draw(SpriteBatch pSpriteBatch)
     {

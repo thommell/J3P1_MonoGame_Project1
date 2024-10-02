@@ -7,14 +7,10 @@ public class ShootingSystem : GameObject
     private int _ammo;
     private bool _hasShot;
     private Scene _scene;
-    private Game1 _game;
-    private SpawningSystem _spawningSystem;
-    public ShootingSystem(Scene pScene, Game1 pGame, int pAmmo) 
+    public ShootingSystem(Scene pScene, int pAmmo) 
     {
         _scene = pScene;
         _ammo = pAmmo;
-        _game = pGame;     
-        _spawningSystem = _scene.GetObject<SpawningSystem>();
     }
     public override void Update(GameTime gameTime) 
     {

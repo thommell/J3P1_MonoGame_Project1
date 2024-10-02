@@ -9,20 +9,20 @@ public class SpawningSystem : GameObject
     private Game1 _game;
     private KeyboardState kb;
     public List<Target> _currentTargets = new();
-    public SpawningSystem(Scene pScene, Game1 pGame)
+    private int _amountToSpawn;
+    public SpawningSystem(Scene pScene, Game1 pGame, int pAmountToSpawn)
     {
         _scene = pScene;
         _game = pGame;
+        _amountToSpawn = pAmountToSpawn;
     }
     private Keys _spawnKey = Keys.Space;
     private bool _canSpawn = true;
-    private int _amountToSpawn = 3;
     public override void Update(GameTime pGameTime)
     {
         kb = Keyboard.GetState();
         CheckInput();
     }
-
     private void CheckInput()
     {
         if (kb.IsKeyDown(_spawnKey) && _canSpawn)
@@ -46,10 +46,10 @@ public class SpawningSystem : GameObject
     }
     public void CheckTargets()
     {
-        if (_currentTargets.Count >= 1) return;
-        foreach (var target in _currentTargets)
+        // if (_currentTargets.Count >= 1) return;
+        for (int i = _currentTargets.Count - 1; i >= 0; i--)
         {
-            RemoveTarget(target);
+            RemoveTarget(_currentTargets[i]);
         }
         SpawnTargets();
     }
