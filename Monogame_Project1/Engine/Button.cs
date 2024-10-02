@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input;
 
 namespace Monogame_Project1.Engine;
 
@@ -51,17 +51,14 @@ public class Button : GameObject
 
         base.Update(pGameTime);
     }
-
     protected virtual void OnClick()
     {
         status = ButtonStatus.Pressed;
     }
-
     protected void OnHover()
     {
         status = ButtonStatus.Hovered;
     }
-
     protected void OnNormal()
     {
         status = ButtonStatus.Normal;
