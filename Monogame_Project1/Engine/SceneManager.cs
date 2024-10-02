@@ -39,7 +39,8 @@ public class SceneManager
     public void Initialize() 
     {
         _scenesList = CreateSceneList();
-        _currentScene = CreateSceneList().First();
+        //_currentScene = CreateSceneList().First();
+        _currentScene = GetScene<TestScene>();
         LoadScene();
     }
     public void Update(GameTime pGameTime) 
@@ -89,7 +90,8 @@ public class SceneManager
     {
         List<Scene> scenes = new List<Scene>
         {
-            new MainMenu(_game, this)
+            new MainMenu(_game, this),
+            new TestScene(_game, this)
         };
         return scenes;
     }
