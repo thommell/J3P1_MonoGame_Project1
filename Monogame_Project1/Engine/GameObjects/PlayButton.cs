@@ -1,4 +1,5 @@
 using Monogame_Project1.Engine.BaseClasses;
+using Monogame_Project1.Engine.Scenes;
 
 namespace Monogame_Project1.Engine.GameObjects;
 
@@ -8,6 +9,6 @@ public class PlayButton : Button
 
     protected override void OnClick()
     {
-        // manager.ChangeScene(manager.GetScene<>());
+        manager.ChangeScene(manager.GetScene<TestScene>());
     }
 }

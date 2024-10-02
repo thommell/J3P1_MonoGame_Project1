@@ -40,7 +40,7 @@ public class SceneManager
     {
         _scenesList = CreateSceneList();
         //_currentScene = CreateSceneList().First();
-        _currentScene = GetScene<TestScene>();
+        _currentScene = GetScene<MainMenu>();
         LoadScene();
     }
     public void Update(GameTime pGameTime) 
