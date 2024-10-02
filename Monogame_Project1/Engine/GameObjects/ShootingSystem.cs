@@ -1,44 +1,42 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using System;
 using Monogame_Project1.Engine.BaseClasses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Monogame_Project1.Engine.GameObjects;
-public class ShootingSystem
+public class ShootingSystem : GameObject
 {
     private int _ammo;
-
-    private bool _shot = false;
-    public ShootingSystem(int pAmmo) {
-        
-         _ammo = pAmmo;
+    private bool _hasShot;
+    private Scene _scene;
+    private Game1 _game;
+    private SpawningSystem _spawningSystem;
+    public ShootingSystem(Scene pScene, Game1 pGame, int pAmmo) 
+    {
+        _scene = pScene;
+        _ammo = pAmmo;
+        _game = pGame;     
+        _spawningSystem = _scene.GetObject<SpawningSystem>();
     }
-    public void Update(GameTime gameTime) {
-
+    public override void Update(GameTime gameTime) 
+    {
         MouseState mouseState = Mouse.GetState();
-
-        if (mouseState.LeftButton == ButtonState.Pressed && !_shot && _ammo > 0) 
+        if (mouseState.LeftButton == ButtonState.Pressed && !_hasShot && _ammo > 0) 
         {
             _ammo--;
-            _shot = true;
+            _hasShot = true;
             Console.WriteLine("Shot");
         } 
-        else if (mouseState.LeftButton == ButtonState.Released && _shot) 
+        else if (mouseState.LeftButton == ButtonState.Released && _hasShot) 
         {
-            _shot = false;
+            _hasShot = false;
         }        
     }
-    public void CheckCollision(Target target) {
-        
+    public void CheckCollision(Target pTarget) 
+    {
         MouseState mouseState = Mouse.GetState(); 
         Point mousePoint = new Point(mouseState.X, mouseState.Y); 
-
-        if (target.Rectangle.Contains(mousePoint) && _shot)
+        if (pTarget.Rectangle.Contains(mousePoint) && _hasShot)
         {
-            target.Destroy();            
+            pTarget.Destroy();            
         } 
     }
 }

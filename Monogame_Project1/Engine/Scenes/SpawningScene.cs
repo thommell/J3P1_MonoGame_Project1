@@ -1,5 +1,5 @@
 using Monogame_Project1.Engine.BaseClasses;
-using Monogame_Project1.Engine.Systems;
+using Monogame_Project1.Engine.GameObjects;
 
 namespace Monogame_Project1.Engine.Scenes;
 
@@ -9,6 +9,7 @@ public class SpawningScene : Scene
     public override void LoadContent(ContentManager pContent)
     {
         objects.Add(new SpawningSystem(this, game));
+        objects.Add(new ShootingSystem(this, game, 999));
     }
     public override void Draw(SpriteBatch pSpriteBatch)
     {

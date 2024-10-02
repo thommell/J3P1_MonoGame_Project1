@@ -1,4 +1,6 @@
-﻿namespace Monogame_Project1.Engine.BaseClasses;
+﻿using Monogame_Project1.Engine.GameObjects;
+
+namespace Monogame_Project1.Engine.BaseClasses;
 
 public abstract class Scene
 {
@@ -43,6 +45,15 @@ public abstract class Scene
             {
                 objects[i].Draw(pSpriteBatch);
             }
+        }
+        public T GetObject<T>() where T : GameObject
+        {
+            for (int i = 0; i < objects.Count; i++)
+            {
+                if (objects[i] is T obj)
+                    return obj;
+            }
+            return null;
         }
 
     #endregion
