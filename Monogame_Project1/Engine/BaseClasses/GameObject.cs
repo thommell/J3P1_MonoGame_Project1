@@ -2,7 +2,7 @@ using System;
 
 namespace Monogame_Project1.Engine.BaseClasses;
 
-public class GameObject : Component
+public abstract class GameObject
 {
     #region Fields
     protected float layer;
@@ -72,10 +72,10 @@ public class GameObject : Component
 
     #region Public Methods
 
-    public override void LoadContent(ContentManager pContent) {}
-    public override void LateLoad() {}
-    public override void Update(GameTime pGameTime) {}
-    public override void Draw(SpriteBatch pSpriteBatch)
+    public virtual void LoadContent(ContentManager pContent) {}
+    public virtual void LateLoad() {}
+    public virtual void Update(GameTime pGameTime) {}
+    public virtual void Draw(SpriteBatch pSpriteBatch)
     {
         if (texture != null)
             pSpriteBatch.Draw(texture, position, null, color, rotation, origin, 1f, SpriteEffects.None, layer);
