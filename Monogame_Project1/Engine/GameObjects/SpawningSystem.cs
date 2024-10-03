@@ -8,7 +8,8 @@ public class SpawningSystem : GameObject
     private Scene _scene;
     private Game1 _game;
     private KeyboardState kb;
-    public List<Target> _currentTargets = new();
+    public List<Target> CurrentTargets = new();
+    private ShootingSystem _shootingSystem;
     private int _amountToSpawn;
     public SpawningSystem(Scene pScene, Game1 pGame, int pAmountToSpawn)
     {
@@ -18,9 +19,16 @@ public class SpawningSystem : GameObject
     }
     private Keys _spawnKey = Keys.Space;
     private bool _canSpawn = true;
+
+    public override void LateLoad()
+    {
+        _shootingSystem = _scene.GetObject<ShootingSystem>();
+        base.LateLoad();
+    }
     public override void Update(GameTime pGameTime)
     {
         kb = Keyboard.GetState();
+        _shootingSystem.CheckCollision();
         CheckInput();
     }
     private void CheckInput()
@@ -41,25 +49,23 @@ public class SpawningSystem : GameObject
         {
             var newTarget = CreateTarget();
             _scene.Objects.Add(newTarget); 
-            _currentTargets.Add(newTarget);
+            CurrentTargets.Add(newTarget);
         }
     }
     public void CheckTargets()
     {
-        // if (_currentTargets.Count >= 1) return;
-        for (int i = _currentTargets.Count - 1; i >= 0; i--)
+        for (int i = CurrentTargets.Count - 1; i >= 0; i--)
         {
-            RemoveTarget(_currentTargets[i]);
+            RemoveTarget(CurrentTargets[i]);
         }
         SpawnTargets();
     }
-
     public void RemoveTarget(Target pTarget)
     {
         _scene.Objects.Remove(pTarget);
-        _currentTargets.Remove(pTarget);
+        CurrentTargets.Remove(pTarget);
     }
-    private Target CreateTarget()
+    public Target CreateTarget()
     {
         Random random = new();
         Vector2 newValue = new(

@@ -31,7 +31,20 @@ public abstract class Scene
 
     #region Public Methods
 
-    public abstract void LoadContent(ContentManager pContent);
+    public virtual void LoadContent(ContentManager pContent)
+    {
+        for (int i = 0; i < objects.Count; i++)
+        {
+            objects[i].LoadContent(pContent);
+        }
+    }
+    public virtual void LateLoad()
+    {
+        for (int i = 0; i < objects.Count; i++)
+        {
+            objects[i].LateLoad();
+        }
+    }
     public virtual void Update(GameTime pGameTime)
     {
         for (int i = 0; i < objects.Count; i++)
