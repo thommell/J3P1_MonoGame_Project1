@@ -27,6 +27,18 @@ public class Target : GameObject
     
     #region Public Methods
 
+    public override void Update(GameTime pGameTime)
+    {
+        _shootingSystem.CheckCollision(this);
+
+        base.Update(pGameTime);
+    }
+    public override void Draw(SpriteBatch pSpriteBatch)
+    {
+        if (!isActive) return;
+
+        base.Draw(pSpriteBatch);
+    }
     public void Destroy()
     {
         _spawningSystem.RemoveTarget(this);
