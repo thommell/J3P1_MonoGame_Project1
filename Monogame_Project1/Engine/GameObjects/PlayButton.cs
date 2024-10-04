@@ -9,6 +9,6 @@ public class PlayButton : Button
 
     protected override void OnClick()
     {
-        manager.ChangeScene(manager.GetScene<SpawningScene>());
+        manager.ChangeScene(manager.GetScene<LevelSelectionScene>());
     }
 }

@@ -9,6 +9,7 @@ public class Target : GameObject
     private ShootingSystem _shootingSystem;
     private SpawningSystem _spawningSystem;
     private Scene _currentScene;
+    private bool isActive = true; // remove later
     public int ScoreAmount { get; private set; }
     
     #endregion
@@ -29,7 +30,7 @@ public class Target : GameObject
 
     public override void Update(GameTime pGameTime)
     {
-        _shootingSystem.CheckCollision(this);
+        _shootingSystem.CheckCollision();
 
         base.Update(pGameTime);
     }
