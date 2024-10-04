@@ -8,6 +8,7 @@ public class Target : GameObject
     
     private ShootingSystem _shootingSystem;
     private SpawningSystem _spawningSystem;
+    private Scene _currentScene;
     public int ScoreAmount { get; private set; }
     
     #endregion
@@ -16,19 +17,16 @@ public class Target : GameObject
     
     public Target(Texture2D pTexture, Scene pScene) : base(pTexture)
     {
-        _shootingSystem = pScene.GetObject<ShootingSystem>();
-        _spawningSystem = pScene.GetObject<SpawningSystem>();
+        _currentScene = pScene;
         ScoreAmount = 2;
+        _spawningSystem = _currentScene.GetObject<SpawningSystem>();
+        _shootingSystem = _currentScene.GetObject<ShootingSystem>();
     }
     
     #endregion
     
     #region Public Methods
 
-    public override void Update(GameTime pGameTime)
-    {
-        _shootingSystem.CheckCollision(this);
-    }
     public void Destroy()
     {
         _spawningSystem.RemoveTarget(this);
