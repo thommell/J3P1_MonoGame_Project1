@@ -35,6 +35,7 @@ public abstract class Scene
     {
         for (int i = 0; i < objects.Count; i++)
         {
+            if (!objects[i].IsActive) continue;
             objects[i].LoadContent(pContent);
         }
     }
@@ -42,6 +43,7 @@ public abstract class Scene
     {
         for (int i = 0; i < objects.Count; i++)
         {
+            if (!objects[i].IsActive) continue;
             objects[i].LateLoad();
         }
     }
@@ -49,6 +51,7 @@ public abstract class Scene
     {
         for (int i = 0; i < objects.Count; i++)
         {
+            if (!objects[i].IsActive) continue;
             objects[i].Update(pGameTime);
         }
     }
@@ -56,6 +59,7 @@ public abstract class Scene
     {
         for (int i = 0; i < objects.Count; i++)
         {
+            if (!objects[i].IsActive) continue;
             objects[i].Draw(pSpriteBatch);
         }
     }
@@ -68,6 +72,8 @@ public abstract class Scene
         }
         return null;
     }
-
+    public void DeactivateObjects(List<GameObject> pObjects) =>  
+        pObjects.ForEach(pObject => pObject.IsActive = false);
+   
     #endregion
 }
