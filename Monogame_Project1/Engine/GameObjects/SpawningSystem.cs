@@ -1,23 +1,24 @@
 using System;
+using System.Linq;
 using Monogame_Project1.Engine.BaseClasses;
 
 namespace Monogame_Project1.Engine.GameObjects;
 
 public class SpawningSystem : GameObject
 {
-    private Scene _scene;
-    private Game1 _game;
-    private KeyboardState kb;
-    public List<Target> CurrentTargets = new();
+    private readonly Scene _scene;
+    private readonly Game1 _game;
+    private KeyboardState _kb;
+    public List<GameObject> CurrentTargets = new();
     private ShootingSystem _shootingSystem;
-    private int _amountToSpawn;
+    private readonly int _amountToSpawn;
     public SpawningSystem(Scene pScene, Game1 pGame, int pAmountToSpawn)
     {
         _scene = pScene;
         _game = pGame;
         _amountToSpawn = pAmountToSpawn;
     }
-    private Keys _spawnKey = Keys.Space;
+    private readonly Keys _spawnKey = Keys.Space;
     private bool _canSpawn = true;
 
     public override void LateLoad()
@@ -27,44 +28,45 @@ public class SpawningSystem : GameObject
     }
     public override void Update(GameTime pGameTime)
     {
-        kb = Keyboard.GetState();
+        _kb = Keyboard.GetState();
         _shootingSystem.CheckCollision();
         CheckInput();
     }
     private void CheckInput()
     {
-        if (kb.IsKeyDown(_spawnKey) && _canSpawn)
+        if (_kb.IsKeyDown(_spawnKey) && _canSpawn)
         {
             _canSpawn = false;
-            CheckTargets();
+            CreateNewTargets();
         }
-        if (kb.IsKeyUp(_spawnKey))
-        {
+        if (_kb.IsKeyUp(_spawnKey))
             _canSpawn = true;
-        } 
     }
+    /// <summary>
+    /// Spawns new Targets and adds them to the current scene's objects and CurrentTargets' list.
+    /// </summary>
     private void SpawnTargets()
     { 
         for (int i = 0; i < _amountToSpawn; i++)
         {
-            var newTarget = CreateTarget();
+            Target newTarget = CreateTarget();
             _scene.Objects.Add(newTarget); 
             CurrentTargets.Add(newTarget);
         }
     }
-    public void CheckTargets()
+    /// <summary>
+    /// Destroys the current scene's Target's and creates new ones.
+    /// </summary>
+    public void CreateNewTargets()
     {
-        for (int i = CurrentTargets.Count - 1; i >= 0; i--)
-        {
-            RemoveTarget(CurrentTargets[i]);
-        }
+        _scene.DeactivateObjects(CurrentTargets);
+        CurrentTargets.Clear();
         SpawnTargets();
     }
-    public void RemoveTarget(Target pTarget)
-    {
-        _scene.Objects.Remove(pTarget);
-        CurrentTargets.Remove(pTarget);
-    }
+    /// <summary>
+    /// Creates one new Target with a randomized position.
+    /// </summary>
+    /// <returns>A new Target</returns>
     public Target CreateTarget()
     {
         Random random = new();
@@ -72,7 +74,7 @@ public class SpawningSystem : GameObject
             random.Next(64, _game.GraphicsDevice.Viewport.Width - 64),
             random.Next(64, _game.GraphicsDevice.Viewport.Height - 64)
         );
-        Target newTarget = new(_game.Content.Load<Texture2D>("UI_Slot"), _scene)
+        Target newTarget = new(_game.Content.Load<Texture2D>("UI_Slot"), 2) // 
         {
             Position = newValue
         };
