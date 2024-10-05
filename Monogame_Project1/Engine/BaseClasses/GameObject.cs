@@ -1,18 +1,16 @@
-﻿using System;
+using System;
 
 namespace Monogame_Project1.Engine.BaseClasses;
 
-public class GameObject : Component
+public abstract class GameObject
 {
     #region Fields
-    
     protected float layer;
     protected Vector2 position;
     protected Vector2 origin;
     protected float rotation;
     protected Texture2D texture;
     protected Color color;
-    
     #endregion
 
     #region Properties
@@ -61,19 +59,23 @@ public class GameObject : Component
 
     #region Constructor
 
-     public GameObject(Texture2D pTexture)
-     {
-         texture = pTexture;
-         origin = new(texture.Width / 2, texture.Height / 2);
-         color = Color.White;
-     }   
+    public GameObject(Texture2D pTexture)
+    {
+        texture = pTexture;
+        origin = new(texture.Width / 2, texture.Height / 2);
+        color = Color.White;
+    }
+
+    public GameObject() {}
 
     #endregion
 
     #region Public Methods
 
-    public override void Update(GameTime pGameTime) {}
-    public override void Draw(SpriteBatch pSpriteBatch)
+    public virtual void LoadContent(ContentManager pContent) {}
+    public virtual void LateLoad() {}
+    public virtual void Update(GameTime pGameTime) {}
+    public virtual void Draw(SpriteBatch pSpriteBatch)
     {
         if (texture != null)
             pSpriteBatch.Draw(texture, position, null, color, rotation, origin, 1f, SpriteEffects.None, layer);

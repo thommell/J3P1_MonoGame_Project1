@@ -20,9 +20,9 @@ public class Game1 : Game
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        _graphics.PreferredBackBufferWidth = 1920;
-        _graphics.PreferredBackBufferHeight = 1080;
-        _graphics.IsFullScreen = true;
+        _graphics.PreferredBackBufferWidth = 1500;
+        _graphics.PreferredBackBufferHeight = 720;
+        // _graphics.IsFullScreen = true;
     }
 
     protected override void LoadContent()
@@ -43,9 +43,9 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
-
+        _spriteBatch.Begin();
         _sceneManager.Draw(_spriteBatch);
-        
+        _spriteBatch.End();
         base.Draw(gameTime);
     }
 }
