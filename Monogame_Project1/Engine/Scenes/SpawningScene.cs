@@ -6,12 +6,16 @@ namespace Monogame_Project1.Engine.Scenes;
 public class SpawningScene : Scene
 {
     private ScoringSystem _scoreSystem;
+    private PauseMenu _pauseMenu;
     public SpawningScene(Game1 pGame, SceneManager pManager) : base(pGame, pManager) {}
     public override void LoadContent(ContentManager pContent)
     {
         objects.Add(new SpawningSystem(this, game, 5));
         objects.Add(new ShootingSystem(this, 999));
         objects.Add(new ScoringSystem(this));
+
+        _pauseMenu = new(pContent.Load<SpriteFont>("Font"), pContent.Load<Texture2D>("Pixel"));
+        objects.Add(_pauseMenu);    
         
         base.LoadContent(pContent);
     }
@@ -20,6 +24,7 @@ public class SpawningScene : Scene
         _scoreSystem = GetObject<ScoringSystem>();
         base.LateLoad();
     }
+
     public override void Draw(SpriteBatch pSpriteBatch)
     {
         base.Draw(pSpriteBatch);
