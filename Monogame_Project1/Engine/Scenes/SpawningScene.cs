@@ -13,6 +13,7 @@ public class SpawningScene : Scene
         objects.Add(new SpawningSystem(this, game, manager, 5, 5));
         objects.Add(new ShootingSystem(this, 999));
         objects.Add(new ScoringSystem(this));
+        objects.Add(new Timer(game, manager, 10f));
 
         _pauseMenu = new(pContent.Load<SpriteFont>("Font"), pContent.Load<Texture2D>("Pixel"));
         objects.Add(_pauseMenu);    
