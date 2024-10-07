@@ -2,7 +2,7 @@ using System;
 
 namespace Monogame_Project1.Engine.BaseClasses;
 
-public abstract class GameObject
+public abstract class GameObject : IBoxCollider
 {
     #region Fields
     protected float layer;
@@ -46,7 +46,7 @@ public abstract class GameObject
         set => color = value;
     }
     
-    public Rectangle Rectangle
+    public Rectangle BoundingBox
     {
         get
         {
@@ -93,6 +93,7 @@ public abstract class GameObject
     }
 
     #endregion
+
 }
 
 
