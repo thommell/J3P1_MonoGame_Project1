@@ -2,7 +2,7 @@ using System;
 
 namespace Monogame_Project1.Engine.BaseClasses;
 
-public abstract class GameObject
+public abstract class GameObject : IBoxCollider
 {
     #region Fields
     protected float layer;
@@ -11,6 +11,7 @@ public abstract class GameObject
     protected float rotation;
     protected Texture2D texture;
     protected Color color;
+    protected bool isActive;
     #endregion
 
     #region Properties
@@ -45,7 +46,7 @@ public abstract class GameObject
         set => color = value;
     }
     
-    public Rectangle Rectangle
+    public Rectangle BoundingBox
     {
         get
         {
@@ -55,18 +56,24 @@ public abstract class GameObject
             throw new Exception("Texture not found/invalid.");
         }
     }
+
+    public bool IsActive { get => isActive; set => isActive = value; }
     #endregion
 
     #region Constructor
 
-    public GameObject(Texture2D pTexture)
+    protected GameObject(Texture2D pTexture, bool pActive = true)
     {
         texture = pTexture;
         origin = new(texture.Width / 2, texture.Height / 2);
         color = Color.White;
+        isActive = pActive;
     }
 
-    public GameObject() {}
+    protected GameObject(bool pActive = true)
+    {
+        isActive = pActive;
+    }
 
     #endregion
 
@@ -80,8 +87,13 @@ public abstract class GameObject
         if (texture != null)
             pSpriteBatch.Draw(texture, position, null, color, rotation, origin, 1f, SpriteEffects.None, layer);
     }
+    public void DeactivateObject(GameObject pObject)
+    {
+        pObject.IsActive = false;
+    }
 
     #endregion
+
 }
 
 

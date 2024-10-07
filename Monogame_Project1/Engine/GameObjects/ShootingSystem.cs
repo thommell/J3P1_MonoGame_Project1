@@ -11,6 +11,7 @@ public class ShootingSystem : GameObject
     private readonly Scene _scene;
     private ScoringSystem _scoringSystem;
     private SpawningSystem _spawningSystem;
+    private Point _mousePoint;
     public ShootingSystem(Scene pScene, int pAmmo) 
     {
         _scene = pScene;
@@ -24,6 +25,7 @@ public class ShootingSystem : GameObject
     public override void Update(GameTime gameTime)
     {
         var mouseState = Mouse.GetState();
+        _mousePoint = new Point(mouseState.X, mouseState.Y);
         switch (mouseState.LeftButton)
         {
             case ButtonState.Pressed when !_hasShot && _ammo > 0:
@@ -41,18 +43,24 @@ public class ShootingSystem : GameObject
     public void CheckCollision()
     {
         if (!_allowedToKill) return;
-        var mouseState = Mouse.GetState(); 
-        var mousePoint = new Point(mouseState.X, mouseState.Y);
-        var targets = _spawningSystem.CurrentTargets;
-        var targetHit = targets.FirstOrDefault(a => a.Rectangle.Contains(mousePoint) && _hasShot);
+        List<GameObject> targets = _spawningSystem.CurrentTargets;
+        GameObject gameObjectHit = targets.FirstOrDefault(a => a.BoundingBox.Contains(_mousePoint) && _hasShot && IsActive);
+        // Reverse casting to prevent C# type safety issue.
+        Target targetHit = (Target)gameObjectHit;
         if (targetHit != null)
-        {
-            Console.WriteLine("You hit the target!");
-            _allowedToKill = false;
-            targetHit.Destroy();
-            _scoringSystem.AddScore(targetHit.ScoreAmount);
-            return;
-        }
+            OnHit(targetHit);
+        else
+            OnMiss();
+    }
+    public void OnHit(Target pTarget)
+    {
+        Console.WriteLine("You hit the target!");
+        _allowedToKill = false;
+        pTarget.IsActive = false;
+        _scoringSystem.AddScore(pTarget.ScoreAmount);
+    }
+    public void OnMiss()
+    {
         if (!_hasShot) return;
         _allowedToKill = false;
         Console.WriteLine("You missed!");
