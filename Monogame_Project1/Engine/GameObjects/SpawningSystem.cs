@@ -11,12 +11,16 @@ public class SpawningSystem : GameObject
     private KeyboardState _kb;
     public List<GameObject> CurrentTargets = new();
     private ShootingSystem _shootingSystem;
+    private SceneManager _sceneManager;
     private readonly int _amountToSpawn;
-    public SpawningSystem(Scene pScene, Game1 pGame, int pAmountToSpawn)
+    private readonly int _fakesAmount;
+    public SpawningSystem(Scene pScene, Game1 pGame, SceneManager sceneManager, int pAmountToSpawn, int pFakesAmount)
     {
         _scene = pScene;
         _game = pGame;
         _amountToSpawn = pAmountToSpawn;
+        _fakesAmount = pFakesAmount;
+        _sceneManager = sceneManager;
     }
     private readonly Keys _spawnKey = Keys.Space;
     private bool _canSpawn = true;
@@ -49,8 +53,24 @@ public class SpawningSystem : GameObject
     { 
         for (int i = 0; i < _amountToSpawn; i++)
         {
-            Target newTarget = CreateTarget();
+            Target newTarget = new Target(_game.Content.Load<Texture2D>("UI_Slot"), _scene, 2)
+            {
+                Position = GetPosition()
+            };
+
             _scene.Objects.Add(newTarget); 
+            CurrentTargets.Add(newTarget);
+        }
+
+        for (int i = 0; i < _fakesAmount; i++)
+        {
+            FakeTarget newTarget = new FakeTarget(_game.Content.Load<Texture2D>("UI_Slot"), _sceneManager)
+            {
+                Position = GetPosition(),
+                Color = Color.Green
+            };
+
+            _scene.Objects.Add(newTarget);
             CurrentTargets.Add(newTarget);
         }
     }
@@ -63,21 +83,32 @@ public class SpawningSystem : GameObject
         CurrentTargets.Clear();
         SpawnTargets();
     }
-    /// <summary>
-    /// Creates one new Target with a randomized position.
-    /// </summary>
-    /// <returns>A new Target</returns>
-    public Target CreateTarget()
+    public Vector2 GetPosition()
     {
         Random random = new();
         Vector2 newValue = new(
             random.Next(64, _game.GraphicsDevice.Viewport.Width - 64),
             random.Next(64, _game.GraphicsDevice.Viewport.Height - 64)
         );
-        Target newTarget = new(_game.Content.Load<Texture2D>("UI_Slot"), 2) // 
+
+        return newValue;
+    }
+
+    /// <summary>
+    /// Creates one new Target with a randomized position.
+    /// </summary>
+    /// <returns>A new Target</returns>
+  /* public Target CreateTarget()
+    {
+        Random random = new();
+        Vector2 newValue = new(
+            random.Next(64, _game.GraphicsDevice.Viewport.Width - 64),
+            random.Next(64, _game.GraphicsDevice.Viewport.Height - 64)
+        );
+        Target newTarget = new(_game.Content.Load<Texture2D>("UI_Slot"), _scene, 2) // 
         {
             Position = newValue
         };
         return newTarget;
-    }
+    } */
 }
