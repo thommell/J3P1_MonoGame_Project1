@@ -8,9 +8,4 @@ public class AmmoUI : UIObject
     private ShootingSystem _shootingSystem;
     public AmmoUI(Texture2D pTexture, bool pActive = true) : base(pTexture, pActive) {}
 
-    public override void LateLoad()
-    {
-        _shootingSystem =   
-        base.LateLoad();
-    }
 }
