@@ -20,6 +20,7 @@ public class SceneManager
 
     #region Properties
     public Scene CurrentScene => _currentScene;
+    public Game1 Game => _game;
 
     #endregion
 
