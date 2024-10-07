@@ -11,11 +11,16 @@ public class MainMenu : Scene
     {
         objects.Add(_quitButton = new(game, manager, game.Content.Load<Texture2D>("UI_Tile_128x64"), "Quit")
         {
-          Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.5f + 64)
+          Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.7f)
         });
-        objects.Add(new PlayButton(game, manager, game.Content.Load<Texture2D>("UI_Tile_128x64"), "Play")
+        objects.Add(new SwitchSceneButton(game, manager, game.Content.Load<Texture2D>("UI_Tile_128x64"), "Level Select",
+            manager.GetScene<LevelSelectionScene>())
         {
-            Position = new Vector2(_quitButton.Position.X, _quitButton.Position.Y - _quitButton.Texture.Height * 1.5f)
+            Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.5f)
+        });
+        objects.Add(new SwitchSceneButton(game, manager, game.Content.Load<Texture2D>("UI_Tile_128x64"), "Play", manager.GetScene<SpawningScene>())
+        {
+            Position = new Vector2(_quitButton.Position.X, game.GraphicsDevice.Viewport.Height * 0.3f)
         });
     }
 }

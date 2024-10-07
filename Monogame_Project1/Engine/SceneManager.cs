@@ -92,7 +92,9 @@ public class SceneManager
         List<Scene> scenes = new List<Scene>
         {
             new MainMenu(_game, this),
-            new SpawningScene(_game, this)
+            new TestScene(_game, this),
+            new SpawningScene(_game, this),
+            new LevelSelectionScene(_game, this)
         };
         return scenes;
     }

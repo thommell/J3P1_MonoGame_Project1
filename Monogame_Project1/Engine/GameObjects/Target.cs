@@ -5,32 +5,17 @@ namespace Monogame_Project1.Engine.GameObjects;
 public class Target : GameObject
 {
     #region Fields
-    
-    private ShootingSystem _shootingSystem;
-    private SpawningSystem _spawningSystem;
-    private Scene _currentScene;
     public int ScoreAmount { get; private set; }
     
     #endregion
     
     #region Constructors
     
-    public Target(Texture2D pTexture, Scene pScene) : base(pTexture)
+    public Target(Texture2D pTexture, int pScoreAmount) : base(pTexture)
     {
-        _currentScene = pScene;
-        ScoreAmount = 2;
-        _spawningSystem = _currentScene.GetObject<SpawningSystem>();
-        _shootingSystem = _currentScene.GetObject<ShootingSystem>();
+        ScoreAmount = pScoreAmount;
     }
     
-    #endregion
-    
-    #region Public Methods
-
-    public void Destroy()
-    {
-        _spawningSystem.RemoveTarget(this);
-    }
     #endregion
 }
 
