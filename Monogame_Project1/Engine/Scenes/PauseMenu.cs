@@ -1,4 +1,4 @@
-﻿using Monogame_Project1.Engine.BaseClasses;
+using Monogame_Project1.Engine.BaseClasses;
 
 namespace Monogame_Project1.Engine.Scenes;
 public class PauseMenu : GameObject
