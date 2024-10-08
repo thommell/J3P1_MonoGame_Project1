@@ -20,6 +20,7 @@ public class SceneManager
 
     #region Properties
     public Scene CurrentScene => _currentScene;
+    public Game1 Game => _game;
 
     #endregion
 
@@ -71,6 +72,8 @@ public class SceneManager
             {
                 _currentScene = pTargetScene;
                 LoadScene();
+                if (pTargetScene is LevelScene level && level.PauseSystem.IsPaused)
+                    level.PauseSystem.TogglePausedState();
                 return;
             }
         }
