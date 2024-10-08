@@ -9,6 +9,12 @@ namespace Monogame_Project1.Engine.GameObjects;
 
 public abstract class BaseTarget : GameObject
 {
+    #region Fields
+    
+    
+    
+    #endregion
+    
     #region Constructors
 
     public BaseTarget(Texture2D pTexture) : base(pTexture) { }
