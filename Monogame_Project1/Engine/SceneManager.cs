@@ -72,6 +72,8 @@ public class SceneManager
             {
                 _currentScene = pTargetScene;
                 LoadScene();
+                if (pTargetScene is LevelScene level && level.PauseSystem.IsPaused)
+                    level.PauseSystem.TogglePausedState();
                 return;
             }
         }
