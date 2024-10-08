@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Monogame_Project1.Engine.BaseClasses;
 
@@ -56,9 +56,9 @@ public class ShootingSystem : GameObject
     {
         Console.WriteLine("You hit the target!");
         _allowedToKill = false;
-        pTarget.IsActive = false;
-        pTarget.OnShot();
-        //_scoringSystem.AddScore(pTarget.ScoreAmount);
+        // pTarget.IsActive = false;
+        DeactivateObject(pTarget);
+        _scoringSystem.AddScore(pTarget.ScoreAmount);
     }
     public void OnMiss()
     {

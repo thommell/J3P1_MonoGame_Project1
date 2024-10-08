@@ -16,6 +16,7 @@ public class PauseSystem : GameObject
         _pixelTexture = pTexture;
         _previousKeyboardState = Keyboard.GetState();
         _sceneManager = pManager;
+        IsPaused = false;
     }
 
     public override void LateLoad()
