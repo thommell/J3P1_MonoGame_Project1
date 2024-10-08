@@ -6,6 +6,7 @@ namespace Monogame_Project1.Engine.BaseClasses;
 public class LevelScene : Scene
 {
     private PauseSystem _pauseSystem;
+    public PauseSystem PauseSystem => _pauseSystem;
     public LevelScene(Game1 pGame, SceneManager pManager) : base(pGame, pManager) {}
     public override void LoadContent(ContentManager pContent)
     {
@@ -20,6 +21,6 @@ public class LevelScene : Scene
     public override void Update(GameTime pGameTime)
     {
         if (!_pauseSystem.IsPaused) base.Update(pGameTime);
-        _pauseSystem.UpdateState();
+        _pauseSystem.Update(pGameTime);
     }
 }
