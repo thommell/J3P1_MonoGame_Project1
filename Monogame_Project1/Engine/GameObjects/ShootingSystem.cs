@@ -54,11 +54,10 @@ public class ShootingSystem : GameObject
     }
     public void OnHit(BaseTarget pTarget)
     {
-        Console.WriteLine("You hit the target!");
+        Console.WriteLine("You hit a target!");
         _allowedToKill = false;
-        // pTarget.IsActive = false;
         DeactivateObject(pTarget);
-        _scoringSystem.AddScore(pTarget.ScoreAmount);
+        pTarget.OnHit();
     }
     public void OnMiss()
     {
