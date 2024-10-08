@@ -12,6 +12,7 @@ public class SpawningScene : LevelScene
         objects.Add(new SpawningSystem(this, game, manager, 5, 5));
         objects.Add(new ShootingSystem(this, 999));
         objects.Add(new ScoringSystem(this));
+        objects.Add(new Timer(game, manager, 10f));
         
         base.LoadContent(pContent);
     }
