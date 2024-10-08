@@ -3,10 +3,9 @@ using Monogame_Project1.Engine.GameObjects;
 
 namespace Monogame_Project1.Engine.Scenes;
 
-public class SpawningScene : Scene
+public class SpawningScene : LevelScene
 {
     private ScoringSystem _scoreSystem;
-    private PauseMenu _pauseMenu;
     public SpawningScene(Game1 pGame, SceneManager pManager) : base(pGame, pManager) {}
     public override void LoadContent(ContentManager pContent)
     {

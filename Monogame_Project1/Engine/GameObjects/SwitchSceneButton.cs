@@ -11,7 +11,7 @@ namespace Monogame_Project1.Engine.GameObjects
     public class SwitchSceneButton : Button
     {
         private Scene _scene;
-        public SwitchSceneButton(Game1 pGame, SceneManager pManager, Texture2D pTexture, string text, Scene pScene) : base(pGame, pManager, pTexture, text) 
+        public SwitchSceneButton(Game1 pGame, SceneManager pManager, Texture2D pTexture, string text, Scene pScene, bool pIsActive = true) : base(pGame, pManager, pTexture, text, pIsActive) 
         { 
             _scene = pScene;
         }

@@ -30,7 +30,7 @@ public class Button : GameObject
     #endregion
 
     #region Constructor
-    public Button(Game1 pGame, SceneManager pManager, Texture2D pTexture, string text) : base(pTexture)
+    public Button(Game1 pGame, SceneManager pManager, Texture2D pTexture, string text, bool pIsActive = true) : base(pTexture, pIsActive)
     {
         manager = pManager;
         font = pGame.Content.Load<SpriteFont>("Font");
@@ -47,15 +47,15 @@ public class Button : GameObject
         previousMouseState = currentMouseState;
         currentMouseState = Mouse.GetState();
     
-        Rectangle _mouseRectangle = new(currentMouseState.X, currentMouseState.Y, 1, 1);
+        Rectangle mouseRectangle = new(currentMouseState.X, currentMouseState.Y, 1, 1);
     
-        if (_mouseRectangle.Intersects(BoundingBox))
+        if (mouseRectangle.Intersects(BoundingBox))
             OnHover();
     
-        if (!_mouseRectangle.Intersects(BoundingBox))
+        if (!mouseRectangle.Intersects(BoundingBox))
             OnNormal();
     
-        if (_mouseRectangle.Intersects(BoundingBox) && currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
+        if (mouseRectangle.Intersects(BoundingBox) && currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
             OnClick();
     
         base.Update(pGameTime);
