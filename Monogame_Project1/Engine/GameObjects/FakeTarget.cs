@@ -21,7 +21,7 @@ public class FakeTarget : BaseTarget
     #endregion
 
     #region Public Voids
-    public override void OnShot()
+    public override void OnHit()
     {
          _sceneManager.ChangeScene(_sceneManager.GetScene<MainMenu>());
     }

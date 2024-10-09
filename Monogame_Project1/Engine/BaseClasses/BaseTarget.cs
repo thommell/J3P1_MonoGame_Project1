@@ -15,7 +15,7 @@ public abstract class BaseTarget : GameObject
     #endregion
 
     #region Public Voids
-    public virtual void OnShot() { }
+    public virtual void OnHit() {}
 
     #endregion
 }
