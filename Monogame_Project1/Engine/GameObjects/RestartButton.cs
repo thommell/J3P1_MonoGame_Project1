@@ -13,6 +13,6 @@ public class RestartButton : Button
 
     protected override void OnClick()
     {
-        _manager.RestartGame();
+        _manager.RestartLevel();
     }
 }
