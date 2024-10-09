@@ -57,7 +57,9 @@ public class SpawningSystem : GameObject
             {
                 Position = GetPosition()
             };
-
+            // Temp Fix
+            newTarget.MovementSystem = CreateMovement(newTarget);
+            
             _scene.Objects.Add(newTarget); 
             CurrentTargets.Add(newTarget);
         }
@@ -70,6 +72,8 @@ public class SpawningSystem : GameObject
                 Color = Color.Green
             };
 
+            
+            newTarget.MovementSystem = CreateMovement(newTarget);            
             _scene.Objects.Add(newTarget);
             CurrentTargets.Add(newTarget);
         }
@@ -86,29 +90,27 @@ public class SpawningSystem : GameObject
     public Vector2 GetPosition()
     {
         Random random = new();
-        Vector2 newValue = new(
-            random.Next(64, _game.GraphicsDevice.Viewport.Width - 64),
-            random.Next(64, _game.GraphicsDevice.Viewport.Height - 64)
-        );
 
-        return newValue;
+        return new(random.Next(64, _game.GraphicsDevice.Viewport.Width - 64),
+            random.Next(64, _game.GraphicsDevice.Viewport.Height - 64)
+        ); 
     }
 
-    /// <summary>
-    /// Creates one new Target with a randomized position.
-    /// </summary>
-    /// <returns>A new Target</returns>
-  /* public Target CreateTarget()
+    private TargetMovement CreateMovement(BaseTarget pOwner)
     {
         Random random = new();
-        Vector2 newValue = new(
-            random.Next(64, _game.GraphicsDevice.Viewport.Width - 64),
-            random.Next(64, _game.GraphicsDevice.Viewport.Height - 64)
-        );
-        Target newTarget = new(_game.Content.Load<Texture2D>("UI_Slot"), _scene, 2) // 
+        int[] speedValues = { 100, 350 };
+        int[] elapsedValues = { 1, 5 };
+
+        return new TargetMovement(pOwner, GetElapsedTime(), GetMovementSpeed(), _game);
+
+        float GetElapsedTime() 
         {
-            Position = newValue
-        };
-        return newTarget;
-    } */
+            return random.Next(elapsedValues[0], elapsedValues[1]);
+        }
+        float GetMovementSpeed()
+        {
+            return random.Next(speedValues[0], speedValues[1]);
+        }
+    }
 }
