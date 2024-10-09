@@ -3,13 +3,13 @@ using Monogame_Project1.Engine.GameObjects;
 
 namespace Monogame_Project1.Engine.Scenes;
 
-public class SpawningScene : Scene
+public class SpawningScene : LevelScene
 {
     private ScoringSystem _scoreSystem;
     public SpawningScene(Game1 pGame, SceneManager pManager) : base(pGame, pManager) {}
     public override void LoadContent(ContentManager pContent)
     {
-        objects.Add(new SpawningSystem(this, game, 5));
+        objects.Add(new SpawningSystem(this, game, manager, 5, 5));
         objects.Add(new ShootingSystem(this, 999));
         objects.Add(new ScoringSystem(this));
         
@@ -20,6 +20,7 @@ public class SpawningScene : Scene
         _scoreSystem = GetObject<ScoringSystem>();
         base.LateLoad();
     }
+
     public override void Draw(SpriteBatch pSpriteBatch)
     {
         base.Draw(pSpriteBatch);

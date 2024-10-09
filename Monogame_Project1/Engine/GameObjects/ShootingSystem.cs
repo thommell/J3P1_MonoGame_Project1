@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Monogame_Project1.Engine.BaseClasses;
 
@@ -46,18 +46,18 @@ public class ShootingSystem : GameObject
         List<GameObject> targets = _spawningSystem.CurrentTargets;
         GameObject gameObjectHit = targets.FirstOrDefault(a => a.BoundingBox.Contains(_mousePoint) && _hasShot && IsActive);
         // Reverse casting to prevent C# type safety issue.
-        Target targetHit = (Target)gameObjectHit;
+        BaseTarget targetHit = (BaseTarget)gameObjectHit;
         if (targetHit != null)
             OnHit(targetHit);
         else
             OnMiss();
     }
-    public void OnHit(Target pTarget)
+    public void OnHit(BaseTarget pTarget)
     {
-        Console.WriteLine("You hit the target!");
+        Console.WriteLine("You hit a target!");
         _allowedToKill = false;
-        pTarget.IsActive = false;
-        _scoringSystem.AddScore(pTarget.ScoreAmount);
+        DeactivateObject(pTarget);
+        pTarget.OnHit();
     }
     public void OnMiss()
     {
