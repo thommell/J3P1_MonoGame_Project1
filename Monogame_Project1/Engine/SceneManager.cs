@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Monogame_Project1.Engine.BaseClasses;
-using Monogame_Project1.Engine.GameObjects;
+﻿using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.Scenes;
 
 namespace Monogame_Project1.Engine;
@@ -77,6 +75,13 @@ public class SceneManager
                 return;
             }
         }
+    }
+
+    public void RestartGame()
+    {
+        _currentScene = GetScene<MainMenu>();
+        _scenesList.Clear();
+        Initialize();
     }
 
     #endregion
