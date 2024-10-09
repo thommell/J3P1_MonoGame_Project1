@@ -41,7 +41,7 @@ public class SceneManager
     public void Initialize() 
     {
         _scenesList = CreateSceneList();
-        _currentScene = GetScene<UIScene>();
+        _currentScene = GetScene<SpawningScene>();
         LoadScene();
     }
     public void Update(GameTime pGameTime) 
