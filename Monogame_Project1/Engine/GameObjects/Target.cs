@@ -22,13 +22,13 @@ public class Target : BaseTarget
 
     #endregion
   
-    public override void OnShot()
+    public override void OnHit()
     {
         ScoringSystem scoringSystem = _scene.GetObject<ScoringSystem>();
 
         scoringSystem.AddScore(ScoreAmount);
 
-        base.OnShot();
+        base.OnHit();
     }
 }
 
