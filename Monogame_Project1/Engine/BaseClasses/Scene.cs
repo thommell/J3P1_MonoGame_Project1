@@ -9,6 +9,7 @@ public abstract class Scene
     protected Game1 game;
     protected SceneManager manager;
     protected List<GameObject> objects = new();
+    protected List<UIObject> uiObjects = new();
     #endregion
     
     #region Properties
@@ -36,7 +37,13 @@ public abstract class Scene
         for (int i = 0; i < objects.Count; i++)
         {
             if (!objects[i].IsActive) continue;
-            objects[i].LoadContent(pContent);
+                objects[i].LoadContent(pContent);
+        }
+
+        for (int i = 0; i < uiObjects.Count; i++)
+        {
+            if (!uiObjects[i].IsActive) continue;
+                uiObjects[i].LoadContent(pContent);
         }
     }
     public virtual void LateLoad()
@@ -44,7 +51,12 @@ public abstract class Scene
         for (int i = 0; i < objects.Count; i++)
         {
             if (!objects[i].IsActive) continue;
-            objects[i].LateLoad();
+                objects[i].LateLoad();
+        }
+        for (int i = 0; i < uiObjects.Count; i++)
+        {
+            if (!uiObjects[i].IsActive) continue;
+                uiObjects[i].LateLoad();
         }
     }
     public virtual void Update(GameTime pGameTime)
@@ -52,7 +64,12 @@ public abstract class Scene
         for (int i = 0; i < objects.Count; i++)
         {
             if (!objects[i].IsActive) continue;
-            objects[i].Update(pGameTime);
+                objects[i].Update(pGameTime);
+        }
+        for (int i = 0; i < uiObjects.Count; i++)
+        {
+            if (!uiObjects[i].IsActive) continue;
+                uiObjects[i].Update(pGameTime);
         }
     }
     public virtual void Draw(SpriteBatch pSpriteBatch)
@@ -60,8 +77,11 @@ public abstract class Scene
         for (int i = 0; i < objects.Count; i++)
         {
             if (!objects[i].IsActive) continue;
-            objects[i].Draw(pSpriteBatch);
+                objects[i].Draw(pSpriteBatch);
         }
+        for (int i = 0; i < uiObjects.Count; i++)
+            if (uiObjects[i].IsActive) 
+                uiObjects[i].Draw(pSpriteBatch);
     }
     public T GetObject<T>() where T : GameObject
     {
@@ -69,6 +89,16 @@ public abstract class Scene
         {
             if (objects[i] is T obj)
                 return obj;
+        }
+        return null;
+    }
+
+    public T GetUIObject<T>() where T : UIObject
+    {
+        for (int i = 0; i < uiObjects.Count; i++)
+        {
+            if (uiObjects[i] is T uiObj)
+                return uiObj;
         }
         return null;
     }
