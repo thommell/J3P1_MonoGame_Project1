@@ -10,6 +10,7 @@ public abstract class Scene
     protected SceneManager manager;
     protected List<GameObject> objects = new();
     protected List<UIObject> uiObjects = new();
+    protected SpriteFont font;
     #endregion
     
     #region Properties
@@ -26,6 +27,7 @@ public abstract class Scene
     {
         game = pGame;
         manager = pManager;
+        font = game.Content.Load<SpriteFont>("UIText");
     }
 
     #endregion

@@ -1,6 +1,7 @@
 ﻿using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.Scenes;
 using System;
+using Monogame_Project1.Engine.GameObjects;
 
 namespace Monogame_Project1.Engine;
 
@@ -14,13 +15,15 @@ public class SceneManager
     private Scene _currentScene;
     private List<Scene> _scenesList = new();
     private readonly Game1 _game;
-
+    protected ScoringSystem scoringSystem;
     #endregion
 
     #region Properties
     public Scene CurrentScene => _currentScene;
     public Game1 Game => _game;
 
+    public ScoringSystem ScoringSystem => scoringSystem;
+    
     #endregion
 
     #region Constructor
@@ -41,6 +44,7 @@ public class SceneManager
     {
         _scenesList = CreateSceneList();
         _currentScene = GetScene<SpawningScene>();
+        scoringSystem = new ScoringSystem(CurrentScene);
         LoadScene();
     }
     public void Update(GameTime pGameTime) 
@@ -96,7 +100,6 @@ public class SceneManager
                 Scene newSceneInstance = (Scene)Activator.CreateInstance(_currentScene.GetType(), _game, this);
                 _scenesList[currentSceneIndex] = newSceneInstance;
                 _currentScene = newSceneInstance;
-
                 LoadScene();
             }
         }
@@ -121,7 +124,9 @@ public class SceneManager
             new TestScene(_game, this),
             new SpawningScene(_game, this),
             new LevelSelectionScene(_game, this),
-            new UIScene(_game, this)
+            new UIScene(_game, this),
+            new WinScene(_game, this),
+            new LoseScene(_game, this)
         };
         return scenes;
     }

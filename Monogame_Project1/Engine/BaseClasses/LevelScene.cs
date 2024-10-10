@@ -15,8 +15,8 @@ public class LevelScene : Scene
     public override void LoadContent(ContentManager pContent)
     {
         objects.Add(new PauseSystem(pContent.Load<SpriteFont>("Font"), pContent.Load<Texture2D>("Pixel"), manager));
-        objects.Add(new TimeSystem(2f, GetObject<SpawningSystem>()));
-        objects.Add(new ResultHandler(GetObject<SpawningSystem>(), manager));
+        objects.Add(new TimeSystem(2f, GetObject<SpawningSystem>(), GetObject<Timer>()));
+        objects.Add(new ResultHandler(GetObject<SpawningSystem>(), manager, GetObject<Timer>()));
         base.LoadContent(pContent);
     }
     public override void LateLoad()
