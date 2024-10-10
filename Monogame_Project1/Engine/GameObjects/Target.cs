@@ -25,8 +25,10 @@ public class Target : BaseTarget
     public override void OnHit()
     {
         ScoringSystem scoringSystem = _scene.GetObject<ScoringSystem>();
+        AmmoSystem ammoSystem = _scene.GetObject<AmmoSystem>();
 
         scoringSystem.AddScore(ScoreAmount);
+        ammoSystem.ResetAmmo();
 
         base.OnHit();
     }
