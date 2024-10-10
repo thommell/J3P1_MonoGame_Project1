@@ -14,21 +14,21 @@ public class Target : BaseTarget
     
     #region Constructors
     
-    public Target(Texture2D pTexture, Scene pScene, int pScoreAmount) : base(pTexture)
+    public Target(Texture2D pTexture, Scene pScene, int pScoreAmount ) : base(pTexture)
     {
         ScoreAmount = pScoreAmount;
         _scene = pScene;
     }
 
     #endregion
-  
-    public override void OnShot()
+
+    public override void OnHit()
     {
         ScoringSystem scoringSystem = _scene.GetObject<ScoringSystem>();
 
         scoringSystem.AddScore(ScoreAmount);
 
-        base.OnShot();
+        base.OnHit();
     }
 }
 

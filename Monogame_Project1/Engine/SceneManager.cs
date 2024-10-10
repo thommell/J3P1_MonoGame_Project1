@@ -1,7 +1,6 @@
-﻿using System.Linq;
-using Monogame_Project1.Engine.BaseClasses;
-using Monogame_Project1.Engine.GameObjects;
+﻿using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.Scenes;
+using System;
 
 namespace Monogame_Project1.Engine;
 
@@ -75,6 +74,30 @@ public class SceneManager
                 if (pTargetScene is LevelScene level && level.PauseSystem.IsPaused)
                     level.PauseSystem.TogglePausedState();
                 return;
+            }
+        }
+    }
+
+    public void RestartGame()
+    {
+        _currentScene = GetScene<MainMenu>();
+        _scenesList.Clear();
+        Initialize();
+    }
+
+    public void RestartLevel()
+    {
+        if (_currentScene is LevelScene)
+        {
+            int currentSceneIndex = _scenesList.IndexOf(_currentScene);
+
+            if (currentSceneIndex != -1)
+            {
+                Scene newSceneInstance = (Scene)Activator.CreateInstance(_currentScene.GetType(), _game, this);
+                _scenesList[currentSceneIndex] = newSceneInstance;
+                _currentScene = newSceneInstance;
+
+                LoadScene();
             }
         }
     }
