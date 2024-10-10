@@ -14,7 +14,6 @@ public class ScoreUI : UIObject
     private ScoringSystem _scoringSystem;
 
     private SpriteFont _font;
-    private Rectangle _rect;
 
     private readonly float _rectWidth = 200f;
     private readonly float _rectHeight = 60f;
@@ -29,8 +28,7 @@ public class ScoreUI : UIObject
         _font = pContent.Load<SpriteFont>("UIText");
 
         _scoringSystem = _scene.GetObject<ScoringSystem>();
-
-        _rect = new Rectangle(_game.GraphicsDevice.Viewport.Width - (int)_rectWidth - 20, 30, (int)_rectWidth, (int)_rectHeight);  
+        
         base.LoadContent(pContent);
     }
     public override void Draw(SpriteBatch pSpriteBatch)
@@ -38,8 +36,17 @@ public class ScoreUI : UIObject
         string scoreText = "Score: " + _scoringSystem.CurrentScore.ToString();
         Vector2 textSize = _font.MeasureString(scoreText);
 
-        pSpriteBatch.Draw(texture, _rect, color);
-        pSpriteBatch.DrawString(_font, scoreText, new Vector2(_rect.X + (_rect.Width / 2) - (textSize.X / 2), _rect.Y + (_rect.Height / 2) - (textSize.Y / 2)), Color.White);
+        float textX = position.X + (texture.Width / 2) - (textSize.X / 2);
+        float textY = position.Y + (texture.Height / 2) - (textSize.Y / 2);
+
+        float spacingX = 180f;
+        //pSpriteBatch.Draw(texture, _rect, color);
+        //pSpriteBatch.DrawString(_font, scoreText, new Vector2(_rect.X + (_rect.Width / 2) - (textSize.X / 2), _rect.Y + (_rect.Height / 2) - (textSize.Y / 2)), Color.White);
+        pSpriteBatch.Draw(texture, new Vector2(Position.X, Position.Y), Color.White);
+
+        pSpriteBatch.DrawString(_font, scoreText, new Vector2(textX + spacingX + 2, textY - 2), Color.Black);
+        pSpriteBatch.DrawString(_font, scoreText, new Vector2(textX + spacingX, textY), Color.White);
+       // base.Draw(pSpriteBatch);
     }
 
 }
