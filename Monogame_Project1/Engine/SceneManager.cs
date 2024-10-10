@@ -15,6 +15,7 @@ public class SceneManager
     private Scene _currentScene;
     private List<Scene> _scenesList = new();
     private readonly Game1 _game;
+    public LevelScene PastLevelScene;
     protected ScoringSystem scoringSystem;
     #endregion
 
@@ -80,6 +81,8 @@ public class SceneManager
         {
             if (scene.GetType() == pTargetScene.GetType()) 
             {
+                if (_currentScene is LevelScene levelScene)
+                    PastLevelScene = levelScene;
                 _currentScene = pTargetScene;
                 LoadScene();
                 if (pTargetScene is LevelScene level && level.PauseSystem.IsPaused)
@@ -100,6 +103,7 @@ public class SceneManager
     {
         if (_currentScene is LevelScene)
         {
+            scoringSystem.ResetScore();
             int currentSceneIndex = _scenesList.FindIndex(scene => scene.GetType() == _currentScene.GetType());
 
             if (currentSceneIndex != -1)
@@ -107,10 +111,16 @@ public class SceneManager
                 Scene newSceneInstance = (Scene)Activator.CreateInstance(_currentScene.GetType(), _game, this);
                 _scenesList[currentSceneIndex] = newSceneInstance;
                 _currentScene = newSceneInstance;
-
                 _scenesList.Clear();
                 RestartInitialize();
             }
+        }
+        else
+        {
+            scoringSystem.ResetScore();
+            _currentScene = PastLevelScene;
+            _scenesList.Clear();
+            RestartInitialize();
         }
     }
 
