@@ -25,9 +25,6 @@ public class SpawningSystem : GameObject
         _fakesAmount = pFakesAmount;
         _sceneManager = sceneManager;
     }
-    private readonly Keys _spawnKey = Keys.Space;
-    private bool _canSpawn = true;
-
     public override void LateLoad()
     {
         _shootingSystem = _scene.GetObject<ShootingSystem>();
