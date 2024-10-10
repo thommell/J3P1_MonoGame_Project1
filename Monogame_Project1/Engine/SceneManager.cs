@@ -37,10 +37,17 @@ public class SceneManager
 
     #region Public Methods
 
-    public void Initialize() 
+    public void Awake()
     {
         _scenesList = CreateSceneList();
         _currentScene = GetScene<SpawningScene>();
+        LoadScene();
+    }
+
+    public void RestartInitialize() 
+    {
+        _scenesList = CreateSceneList();
+        _currentScene = GetScene<LevelScene>();
         LoadScene();
     }
     public void Update(GameTime pGameTime) 
@@ -82,7 +89,7 @@ public class SceneManager
     {
         _currentScene = GetScene<MainMenu>();
         _scenesList.Clear();
-        Initialize();
+        Awake();
     }
 
     public void RestartLevel()
@@ -97,7 +104,8 @@ public class SceneManager
                 _scenesList[currentSceneIndex] = newSceneInstance;
                 _currentScene = newSceneInstance;
 
-                LoadScene();
+                _scenesList.Clear();
+                RestartInitialize();
             }
         }
     }
