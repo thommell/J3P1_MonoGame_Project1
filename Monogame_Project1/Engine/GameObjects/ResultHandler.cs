@@ -33,10 +33,10 @@ public class ResultHandler : GameObject
             Console.WriteLine("User has finished the level!");
             HandleResult(Result.Win);
         }
-        if (_timer.Time <= 0f)
+        if (_timer.Time <= 0.5f)
             HandleResult(Result.Lose);
     }
-    private void HandleResult(Result pResult)
+    public void HandleResult(Result pResult)
     {
         switch (pResult)
         {

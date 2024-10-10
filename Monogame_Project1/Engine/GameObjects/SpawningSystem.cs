@@ -35,16 +35,6 @@ public class SpawningSystem : GameObject
         if (CurrentTargets.Count <= 0) return;
         _shootingSystem.CheckCollision();
     }
-    // private void CheckInput()
-    // {
-    //     // if (_kb.IsKeyDown(_spawnKey) && _canSpawn)
-    //     // {
-    //     //     _canSpawn = false;
-    //     //     CreateNewTargets();
-    //     // }
-    //     // if (_kb.IsKeyUp(_spawnKey))
-    //     //     _canSpawn = true;
-    // }
 
     public void StartSpawner()
     {

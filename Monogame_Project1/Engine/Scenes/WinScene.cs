@@ -11,7 +11,7 @@ public class WinScene : Scene
     private QuitButton _quitButton;
     private string _winText;
     private Vector2 _winTextBounds;
-    private SpriteFont _font;
+    private ScoringSystem _scoreSystem;
     public WinScene(Game1 pGame, SceneManager pManager) : base(pGame, pManager)
     { }
 
@@ -29,8 +29,8 @@ public class WinScene : Scene
         objects.Add(_nextSceneButton);
         objects.Add(_quitButton);
         _winText = "Congratulations, you've beaten the level!";
-        _font = game.Content.Load<SpriteFont>("UIText");
-        _winTextBounds = _font.MeasureString(_winText);
+        font = game.Content.Load<SpriteFont>("UIText");
+        _winTextBounds = font.MeasureString(_winText);
         base.LoadContent(pContent);
     }
 
@@ -42,6 +42,7 @@ public class WinScene : Scene
     }
     private void DrawText(SpriteBatch pSpriteBatch)
     {
-        pSpriteBatch.DrawString(_font, "You've beaten the level!", new Vector2(game.GraphicsDevice.Viewport.Width / 2 - _winTextBounds.X * 0.5f, game.GraphicsDevice.Viewport.Height / 1.5f), Color.White);
+        pSpriteBatch.DrawString(font, $"Your score is: {manager.ScoringSystem.CurrentScore.ToString()}", new Vector2(game.GraphicsDevice.Viewport.Width / 2 - _winTextBounds.X * 0.5f, game.GraphicsDevice.Viewport.Height / 3), Color.White);
+        pSpriteBatch.DrawString(font, _winText, new Vector2(game.GraphicsDevice.Viewport.Width / 2 - _winTextBounds.X * 0.5f, game.GraphicsDevice.Viewport.Height / 1.5f), Color.White);
     }
 }
