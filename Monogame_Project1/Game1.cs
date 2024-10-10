@@ -32,7 +32,7 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         _sceneManager = new SceneManager(_graphics, Content, _spriteBatch, this);
-        _sceneManager.Initialize();
+        _sceneManager.Awake();
     }
 
     protected override void Update(GameTime gameTime)
