@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Monogame_Project1.Engine.BaseClasses;
 
 namespace Monogame_Project1.Engine.GameObjects;
 
@@ -12,9 +13,11 @@ public class FakeTarget : BaseTarget
     #region Constructors
 
     private SceneManager _sceneManager;
+    private ResultHandler _resultHandler;
     public FakeTarget(Texture2D pTexture, SceneManager pSceneManager) : base(pTexture) 
     {
         _sceneManager = pSceneManager;
+        _resultHandler = _sceneManager.CurrentScene.GetObject<ResultHandler>();
     }
 
     #endregion
@@ -22,7 +25,7 @@ public class FakeTarget : BaseTarget
     #region Public Voids
     public override void OnHit()
     {
-         _sceneManager.ChangeScene(_sceneManager.GetScene<MainMenu>());
+        _resultHandler.HandleResult(Result.Lose);
     }
 
     #endregion
