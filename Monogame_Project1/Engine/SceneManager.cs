@@ -121,7 +121,9 @@ public class SceneManager
             new TestScene(_game, this),
             new SpawningScene(_game, this),
             new LevelSelectionScene(_game, this),
-            new UIScene(_game, this)
+            new UIScene(_game, this),
+            new WinScene(_game, this),
+            new LoseScene(_game, this)
         };
         return scenes;
     }

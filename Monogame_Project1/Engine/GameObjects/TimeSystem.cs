@@ -7,12 +7,14 @@ public class TimeSystem : GameObject
     private float _elapsedTime;
     private readonly float _originalTime;
     private SpawningSystem _spawningSystem;
+    private Timer _timer;
     private bool _isWaiting;
-    public TimeSystem(float pTime, SpawningSystem pSpawningSystem)
+    public TimeSystem(float pTime, SpawningSystem pSpawningSystem, Timer timer)
     {
         _elapsedTime = pTime;
         _originalTime = pTime;
         _spawningSystem = pSpawningSystem;
+        _timer = timer;
     }
     public override void Update(GameTime pGameTime)
     {
@@ -29,6 +31,7 @@ public class TimeSystem : GameObject
     {
         if (_elapsedTime >= 0.1f) return;
         ResetTimer();
+        _timer.IsRunning = true;
         _spawningSystem.StartSpawner();
     }
 

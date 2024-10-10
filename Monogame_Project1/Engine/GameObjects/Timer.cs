@@ -16,6 +16,7 @@ public class Timer : GameObject
     private Game1 _game;
     private SceneManager _sceneManager;
     private float _time;
+    private bool _isRunning;
     private float _startTime;
 
     //UI
@@ -29,6 +30,22 @@ public class Timer : GameObject
     private readonly float _barHeight = 20f;
     private readonly float _barWidth = 400f;
     private readonly float _outlineWidth = 10f;
+    #endregion
+    
+    #region Properties
+
+    public bool IsRunning
+    {
+        get => _isRunning;
+        set => _isRunning = value;
+    }
+
+    public float Time
+    {
+        get => _time;
+        set => _time = value;
+    }
+    
     #endregion
 
     #region Constructors
@@ -64,11 +81,9 @@ public class Timer : GameObject
 
     public override void Update(GameTime pGameTime)
     {
-        if (_time >= 0) OnTimerActive(pGameTime);
+        if (_time >= 0 && _isRunning) OnTimerActive(pGameTime);
             
         else OnTimesUp();
-
-        base.Update(pGameTime);
     }
     public override void Draw(SpriteBatch pSpriteBatch)
     {
@@ -96,7 +111,7 @@ public class Timer : GameObject
     private void OnTimesUp()
     {
         _time = _startTime;
-        _sceneManager.ChangeScene(_sceneManager.GetScene<MainMenu>());
+        // _sceneManager.ChangeScene(_sceneManager.GetScene<MainMenu>());
     }
     private Color GetColor()
     {
