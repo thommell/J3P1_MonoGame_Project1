@@ -1,3 +1,4 @@
+using System;
 using Monogame_Project1.Engine.BaseClasses;
 
 namespace Monogame_Project1.Engine.GameObjects;
@@ -10,7 +11,6 @@ public class ScoringSystem : GameObject
     private int _score; 
     
     #endregion
-    
     
     #region Properties
     
@@ -34,7 +34,7 @@ public class ScoringSystem : GameObject
     }
     public void RemoveScore(int pRemovedScore)
     {
-        _score -= pRemovedScore;
+        Math.Abs(_score -= pRemovedScore);
     }
     public void ResetScore()
     {
