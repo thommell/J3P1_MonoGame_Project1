@@ -1,5 +1,6 @@
 using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.GameObjects;
+using Monogame_Project1.Engine.UIObjects;
 
 namespace Monogame_Project1.Engine.Scenes;
 
@@ -10,13 +11,21 @@ public class SpawningScene : LevelScene
     public override void LoadContent(ContentManager pContent)
     {
         objects.Add(new SpawningSystem(this, game, manager, 5, 5));
-        objects.Add(new ShootingSystem(this, 999));
+        objects.Add(new ShootingSystem(this));
         objects.Add(manager.ScoringSystem);
+        objects.Add(new AmmoSystem(3));
         objects.Add(new Timer(game, manager, 10f));
         UIObject scoreUI = new ScoreUI(pContent.Load<Texture2D>("BrokenTarget"), game, this)
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width - 370, 30)           
         };
+
+        UIObject ammoUI = new AmmoUI(pContent.Load<Texture2D>("TNT"), this, game)
+        {
+            Position = new Vector2(game.GraphicsDevice.Viewport.Width - 380, game.GraphicsDevice.Viewport.Height - 150),
+        };
+
+        uiObjects.Add(ammoUI);
         uiObjects.Add(scoreUI);
         base.LoadContent(pContent);
     }
