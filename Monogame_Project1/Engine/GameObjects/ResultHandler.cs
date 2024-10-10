@@ -54,6 +54,7 @@ public class ResultHandler : GameObject
     }
     private void HandleWinResult()
     {
+        _spawningSystem.HasSpawned = false;
         _sceneManager.ChangeScene(_sceneManager.GetScene<WinScene>());
     }
 
