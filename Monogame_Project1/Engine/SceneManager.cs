@@ -89,7 +89,7 @@ public class SceneManager
     {
         if (_currentScene is LevelScene)
         {
-            int currentSceneIndex = _scenesList.IndexOf(_currentScene);
+            int currentSceneIndex = _scenesList.FindIndex(scene => scene.GetType() == _currentScene.GetType());
 
             if (currentSceneIndex != -1)
             {
