@@ -37,10 +37,17 @@ public class SceneManager
 
     #region Public Methods
 
-    public void Initialize() 
+    public void Awake()
     {
         _scenesList = CreateSceneList();
-        _currentScene = GetScene<SpawningScene>();
+        _currentScene = GetScene<MainMenu>();
+        LoadScene();
+    }
+
+    public void RestartInitialize() 
+    {
+        _scenesList = CreateSceneList();
+        _currentScene = GetScene<LevelScene>();
         LoadScene();
     }
     public void Update(GameTime pGameTime) 
@@ -82,14 +89,14 @@ public class SceneManager
     {
         _currentScene = GetScene<MainMenu>();
         _scenesList.Clear();
-        Initialize();
+        Awake();
     }
 
     public void RestartLevel()
     {
         if (_currentScene is LevelScene)
         {
-            int currentSceneIndex = _scenesList.IndexOf(_currentScene);
+            int currentSceneIndex = _scenesList.FindIndex(scene => scene.GetType() == _currentScene.GetType());
 
             if (currentSceneIndex != -1)
             {
@@ -97,7 +104,8 @@ public class SceneManager
                 _scenesList[currentSceneIndex] = newSceneInstance;
                 _currentScene = newSceneInstance;
 
-                LoadScene();
+                _scenesList.Clear();
+                RestartInitialize();
             }
         }
     }
@@ -121,7 +129,9 @@ public class SceneManager
             new TestScene(_game, this),
             new SpawningScene(_game, this),
             new LevelSelectionScene(_game, this),
-            new UIScene(_game, this)
+            new UIScene(_game, this),
+            new WinScene(_game, this),
+            new LoseScene(_game, this)
         };
         return scenes;
     }
