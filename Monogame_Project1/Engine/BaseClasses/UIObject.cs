@@ -58,9 +58,14 @@ public class UIObject
         color = Color.White;
         isActive = pActive;
     }
+    public UIObject( bool pActive = true)
+    {
+        color = Color.White;
+        isActive = pActive;
+    }
 
     #endregion
-    
+
     public virtual void LoadContent(ContentManager pContent) {}
     public virtual void LateLoad() {}
     public virtual void Update(GameTime pGameTime) {}

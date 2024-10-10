@@ -21,7 +21,7 @@ public class SpawningScene : LevelScene
             Position = new Vector2(game.GraphicsDevice.Viewport.Width - 370, 30)           
         };
 
-        UIObject ammoUI = new AmmoUI(pContent.Load<Texture2D>("TNT"), this, game)
+        UIObject ammoUI = new AmmoUI(pContent.Load<Texture2D>("Bullet"), pContent.Load<Texture2D>("UsedBullet"), this, game)
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width - 380, game.GraphicsDevice.Viewport.Height - 150),
         };
