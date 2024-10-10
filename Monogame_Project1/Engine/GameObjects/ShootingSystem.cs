@@ -12,6 +12,8 @@ public class ShootingSystem : GameObject
     private ScoringSystem _scoringSystem;
     private SpawningSystem _spawningSystem;
     private Point _mousePoint;
+
+    public int Ammo  { get => _ammo; set => _ammo = value; }
     public ShootingSystem(Scene pScene, int pAmmo) 
     {
         _scene = pScene;
