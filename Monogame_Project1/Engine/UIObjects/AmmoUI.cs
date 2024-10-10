@@ -33,9 +33,17 @@ public class AmmoUI : UIObject
 
     public override void Draw(SpriteBatch pSpriteBatch)
     {
-        pSpriteBatch.DrawString(_spriteFont, _shootingSystem.Ammo.ToString(), new Vector2(position.X + texture.Width, position.Y), Color.White);
+        string ammoText = "Ammo: " + _shootingSystem.Ammo.ToString();
+        Vector2 textSize = _spriteFont.MeasureString(ammoText);
 
-        base.Draw(pSpriteBatch);
+        float textX = position.X + (texture.Width / 2) - (textSize.X / 2);
+        float textY = position.Y + (texture.Height / 2) - (textSize.Y / 2);
+
+        float spacingX = 180f;
+        //pSpriteBatch.Draw(texture, _rect, color);
+        //pSpriteBatch.DrawString(_font, scoreText, new Vector2(_rect.X + (_rect.Width / 2) - (textSize.X / 2), _rect.Y + (_rect.Height / 2) - (textSize.Y / 2)), Color.White);
+        pSpriteBatch.Draw(texture, new Vector2(Position.X, Position.Y), Color.White);
+        pSpriteBatch.DrawString(_spriteFont, ammoText, new Vector2(textX + spacingX + 2, textY - 2), Color.Black);
+        pSpriteBatch.DrawString(_spriteFont, ammoText, new Vector2(textX + spacingX, textY), Color.White);
     }
-
 }
