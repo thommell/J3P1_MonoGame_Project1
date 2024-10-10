@@ -14,6 +14,9 @@ public class SpawningSystem : GameObject
     private SceneManager _sceneManager;
     private readonly int _amountToSpawn;
     private readonly int _fakesAmount;
+    private bool _hasSpawned;
+    
+    public bool HasSpawned => _hasSpawned;
     public SpawningSystem(Scene pScene, Game1 pGame, SceneManager sceneManager, int pAmountToSpawn, int pFakesAmount)
     {
         _scene = pScene;
@@ -32,19 +35,23 @@ public class SpawningSystem : GameObject
     }
     public override void Update(GameTime pGameTime)
     {
-        _kb = Keyboard.GetState();
+        if (CurrentTargets.Count <= 0) return;
         _shootingSystem.CheckCollision();
-        CheckInput();
     }
-    private void CheckInput()
+    // private void CheckInput()
+    // {
+    //     // if (_kb.IsKeyDown(_spawnKey) && _canSpawn)
+    //     // {
+    //     //     _canSpawn = false;
+    //     //     CreateNewTargets();
+    //     // }
+    //     // if (_kb.IsKeyUp(_spawnKey))
+    //     //     _canSpawn = true;
+    // }
+
+    public void StartSpawner()
     {
-        if (_kb.IsKeyDown(_spawnKey) && _canSpawn)
-        {
-            _canSpawn = false;
-            CreateNewTargets();
-        }
-        if (_kb.IsKeyUp(_spawnKey))
-            _canSpawn = true;
+        CreateNewTargets();
     }
     /// <summary>
     /// Spawns new Targets and adds them to the current scene's objects and CurrentTargets' list.
@@ -57,7 +64,9 @@ public class SpawningSystem : GameObject
             {
                 Position = GetPosition()
             };
-
+            // Temp Fix
+            newTarget.MovementSystem = CreateMovement(newTarget);
+            
             _scene.Objects.Add(newTarget); 
             CurrentTargets.Add(newTarget);
         }
@@ -69,15 +78,17 @@ public class SpawningSystem : GameObject
                 Position = GetPosition(),
                 Color = Color.Green
             };
-
+            
+            newTarget.MovementSystem = CreateMovement(newTarget);            
             _scene.Objects.Add(newTarget);
             CurrentTargets.Add(newTarget);
+            _hasSpawned = true;
         }
     }
     /// <summary>
     /// Destroys the current scene's Target's and creates new ones.
     /// </summary>
-    public void CreateNewTargets()
+    private void CreateNewTargets()
     {
         _scene.DeactivateObjects(CurrentTargets);
         CurrentTargets.Clear();
@@ -86,29 +97,27 @@ public class SpawningSystem : GameObject
     public Vector2 GetPosition()
     {
         Random random = new();
-        Vector2 newValue = new(
-            random.Next(64, _game.GraphicsDevice.Viewport.Width - 64),
-            random.Next(64, _game.GraphicsDevice.Viewport.Height - 64)
-        );
 
-        return newValue;
+        return new(random.Next(64, _game.GraphicsDevice.Viewport.Width - 64),
+            random.Next(64, _game.GraphicsDevice.Viewport.Height - 64)
+        ); 
     }
 
-    /// <summary>
-    /// Creates one new Target with a randomized position.
-    /// </summary>
-    /// <returns>A new Target</returns>
-  /* public Target CreateTarget()
+    private TargetMovement CreateMovement(BaseTarget pOwner)
     {
         Random random = new();
-        Vector2 newValue = new(
-            random.Next(64, _game.GraphicsDevice.Viewport.Width - 64),
-            random.Next(64, _game.GraphicsDevice.Viewport.Height - 64)
-        );
-        Target newTarget = new(_game.Content.Load<Texture2D>("UI_Slot"), _scene, 2) // 
+        int[] speedValues = { 100, 350 };
+        int[] elapsedValues = { 1, 5 };
+
+        return new TargetMovement(pOwner, GetElapsedTime(), GetMovementSpeed(), _game);
+
+        float GetElapsedTime() 
         {
-            Position = newValue
-        };
-        return newTarget;
-    } */
+            return random.Next(elapsedValues[0], elapsedValues[1]);
+        }
+        float GetMovementSpeed()
+        {
+            return random.Next(speedValues[0], speedValues[1]);
+        }
+    }
 }
