@@ -81,7 +81,7 @@ public class SceneManager
         {
             if (scene.GetType() == pTargetScene.GetType()) 
             {
-                if (pTargetScene is LevelScene levelScene)
+                if (_currentScene is LevelScene levelScene)
                     PastLevelScene = levelScene;
                 _currentScene = pTargetScene;
                 LoadScene();
@@ -103,6 +103,7 @@ public class SceneManager
     {
         if (_currentScene is LevelScene)
         {
+            scoringSystem.ResetScore();
             int currentSceneIndex = _scenesList.FindIndex(scene => scene.GetType() == _currentScene.GetType());
 
             if (currentSceneIndex != -1)
@@ -110,7 +111,6 @@ public class SceneManager
                 Scene newSceneInstance = (Scene)Activator.CreateInstance(_currentScene.GetType(), _game, this);
                 _scenesList[currentSceneIndex] = newSceneInstance;
                 _currentScene = newSceneInstance;
-
                 _scenesList.Clear();
                 RestartInitialize();
             }
@@ -118,6 +118,8 @@ public class SceneManager
         else
         {
             _currentScene = PastLevelScene;
+            _scenesList.Clear();
+            RestartInitialize();
         }
     }
 
