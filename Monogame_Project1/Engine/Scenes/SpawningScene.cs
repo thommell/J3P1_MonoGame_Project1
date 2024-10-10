@@ -12,7 +12,15 @@ public class SpawningScene : LevelScene
         objects.Add(new SpawningSystem(this, game, manager, 5, 5));
         objects.Add(new ShootingSystem(this, 999));
         objects.Add(new ScoringSystem(this));
-        
+        objects.Add(new Timer(game, manager, 10f));
+
+        UIObject scoreUI = new ScoreUI(pContent.Load<Texture2D>("BrokenTarget"), game, this)
+        {
+            Position = new Vector2(game.GraphicsDevice.Viewport.Width - 370, 30)           
+        };
+        uiObjects.Add(scoreUI);
+
+
         base.LoadContent(pContent);
     }
     public override void LateLoad()
