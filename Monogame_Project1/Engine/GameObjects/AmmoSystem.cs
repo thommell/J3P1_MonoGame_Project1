@@ -13,6 +13,9 @@ public class AmmoSystem : GameObject
     private int _startAmmo;
     public int Ammo {  get { return _ammo; } set { _ammo = value; } }
 
+    public int StartAmmo { get { return _startAmmo; } set { _startAmmo = value; } }
+
+
     public AmmoSystem(int pAmmo)
     {
         _ammo = pAmmo;

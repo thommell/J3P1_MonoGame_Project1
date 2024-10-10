@@ -111,7 +111,6 @@ public class Timer : GameObject
     private void OnTimesUp()
     {
         _time = _startTime;
-        // _sceneManager.ChangeScene(_sceneManager.GetScene<MainMenu>());
     }
     private Color GetColor()
     {
