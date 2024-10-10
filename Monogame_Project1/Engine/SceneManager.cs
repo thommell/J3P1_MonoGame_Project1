@@ -14,6 +14,7 @@ public class SceneManager
     private Scene _currentScene;
     private List<Scene> _scenesList = new();
     private readonly Game1 _game;
+    public LevelScene PastLevelScene;
 
     #endregion
 
@@ -37,10 +38,17 @@ public class SceneManager
 
     #region Public Methods
 
-    public void Initialize() 
+    public void Awake()
     {
         _scenesList = CreateSceneList();
         _currentScene = GetScene<MainMenu>();
+        LoadScene();
+    }
+
+    public void RestartInitialize() 
+    {
+        _scenesList = CreateSceneList();
+        _currentScene = GetScene<LevelScene>();
         LoadScene();
     }
     public void Update(GameTime pGameTime) 
@@ -69,6 +77,8 @@ public class SceneManager
         {
             if (scene.GetType() == pTargetScene.GetType()) 
             {
+                if (pTargetScene is LevelScene levelScene)
+                    PastLevelScene = levelScene;
                 _currentScene = pTargetScene;
                 LoadScene();
                 if (pTargetScene is LevelScene level && level.PauseSystem.IsPaused)
@@ -82,7 +92,7 @@ public class SceneManager
     {
         _currentScene = GetScene<MainMenu>();
         _scenesList.Clear();
-        Initialize();
+        Awake();
     }
 
     public void RestartLevel()
@@ -97,8 +107,13 @@ public class SceneManager
                 _scenesList[currentSceneIndex] = newSceneInstance;
                 _currentScene = newSceneInstance;
 
-                LoadScene();
+                _scenesList.Clear();
+                RestartInitialize();
             }
+        }
+        else
+        {
+            _currentScene = PastLevelScene;
         }
     }
 
