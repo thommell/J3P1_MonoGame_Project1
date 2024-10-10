@@ -6,7 +6,7 @@ namespace Monogame_Project1.Engine.UIObjects;
 
 public class AmmoUI : UIObject
 {
-    private ShootingSystem _shootingSystem;
+    private AmmoSystem _ammoSystem;
     private Scene _scene;
     private Game1 _game;
 
@@ -24,7 +24,7 @@ public class AmmoUI : UIObject
 
     public override void LoadContent(ContentManager pContent)
     {
-        _shootingSystem = _scene.GetObject<ShootingSystem>();
+        _ammoSystem = _scene.GetObject<AmmoSystem>();
         _spriteFont = pContent.Load<SpriteFont>("UIText");
         //_rec = new Rectangle(50, 50, (int)_recWidth, (int)_recHeight);
 
@@ -33,7 +33,7 @@ public class AmmoUI : UIObject
 
     public override void Draw(SpriteBatch pSpriteBatch)
     {
-        string ammoText = "Ammo: " + _shootingSystem.Ammo.ToString();
+        string ammoText = "Ammo: " + _ammoSystem.Ammo.ToString();
         Vector2 textSize = _spriteFont.MeasureString(ammoText);
 
         float textX = position.X + (texture.Width / 2) - (textSize.X / 2);
