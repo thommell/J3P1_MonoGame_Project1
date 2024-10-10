@@ -25,6 +25,8 @@ public class SpawningScene : LevelScene
             Position = new Vector2(game.GraphicsDevice.Viewport.Width - 380, game.GraphicsDevice.Viewport.Height - 150),
         };
 
+        uiObjects.Add(new CrosshairUI(pContent.Load<Texture2D>("FixedCrosshair"), game, Color.Black));
+
         uiObjects.Add(ammoUI);
         uiObjects.Add(scoreUI);
         base.LoadContent(pContent);
