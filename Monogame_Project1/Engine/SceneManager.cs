@@ -1,4 +1,4 @@
-﻿using Monogame_Project1.Engine.BaseClasses;
+using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.Scenes;
 using System;
 using Monogame_Project1.Engine.GameObjects;
@@ -40,11 +40,18 @@ public class SceneManager
 
     #region Public Methods
 
-    public void Initialize() 
+    public void Awake()
     {
         _scenesList = CreateSceneList();
         _currentScene = GetScene<SpawningScene>();
         scoringSystem = new ScoringSystem(CurrentScene);
+        LoadScene();
+    }
+
+    public void RestartInitialize() 
+    {
+        _scenesList = CreateSceneList();
+        _currentScene = GetScene<LevelScene>();
         LoadScene();
     }
     public void Update(GameTime pGameTime) 
@@ -86,21 +93,23 @@ public class SceneManager
     {
         _currentScene = GetScene<MainMenu>();
         _scenesList.Clear();
-        Initialize();
+        Awake();
     }
 
     public void RestartLevel()
     {
         if (_currentScene is LevelScene)
         {
-            int currentSceneIndex = _scenesList.IndexOf(_currentScene);
+            int currentSceneIndex = _scenesList.FindIndex(scene => scene.GetType() == _currentScene.GetType());
 
             if (currentSceneIndex != -1)
             {
                 Scene newSceneInstance = (Scene)Activator.CreateInstance(_currentScene.GetType(), _game, this);
                 _scenesList[currentSceneIndex] = newSceneInstance;
                 _currentScene = newSceneInstance;
-                LoadScene();
+
+                _scenesList.Clear();
+                RestartInitialize();
             }
         }
     }
