@@ -51,12 +51,7 @@ public class PauseSystem : GameObject
     {
         UpdateState();
         if (IsPaused)
-        {
             _pausedObjects.ForEach(pausedObject => pausedObject.Update(pGameTime));
-            _sceneManager.Game.IsMouseVisible = true;
-        }
-        else
-            _sceneManager.Game.IsMouseVisible = false;
     }
     public override void Draw(SpriteBatch pSpriteBatch)
     {
