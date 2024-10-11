@@ -136,9 +136,15 @@ public class SceneManager
         CurrentScene.IsLoaded = true;
 
         if (CurrentScene is LevelScene)
-            Game.IsMouseVisible = false;
-        else if (CurrentScene is not LevelScene)
-            Game.IsMouseVisible = true;
+        {
+            _game.IsMouseVisible = false;
+        }
+        else
+        {
+            _game.IsMouseVisible = true;
+        }
+
+        Console.WriteLine(_game.IsMouseVisible);
     }
     private List<Scene> CreateSceneList()
     {

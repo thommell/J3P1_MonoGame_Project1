@@ -1,3 +1,4 @@
+using System;
 using Monogame_Project1.Engine.BaseClasses;
 
 namespace Monogame_Project1.Engine.GameObjects;
@@ -9,12 +10,15 @@ public class TimeSystem : GameObject
     private SpawningSystem _spawningSystem;
     private Timer _timer;
     private bool _isWaiting;
-    public TimeSystem(float pTime, SpawningSystem pSpawningSystem, Timer timer)
+    private SpriteFont _font;
+    private float _displayedElapsedTime;
+    public TimeSystem(float pTime, SpawningSystem pSpawningSystem, Timer timer, SpriteFont font)
     {
         _elapsedTime = pTime;
         _originalTime = pTime;
         _spawningSystem = pSpawningSystem;
         _timer = timer;
+        _font = font;
     }
     public override void Update(GameTime pGameTime)
     {
@@ -23,7 +27,8 @@ public class TimeSystem : GameObject
     private void UpdateTimer(GameTime pGameTime)
     {
         if (_isWaiting) return;
-        _elapsedTime -= (float)pGameTime.ElapsedGameTime.TotalSeconds;
+        var rawElapsedTime = _elapsedTime -= (float)pGameTime.ElapsedGameTime.TotalSeconds;
+        _displayedElapsedTime = (float)Math.Round(rawElapsedTime);
         CheckTimer();
     }
 
@@ -38,5 +43,17 @@ public class TimeSystem : GameObject
     private void ResetTimer()
     {
         _isWaiting = true;
+    }
+
+    public override void Draw(SpriteBatch pSpriteBatch)
+    {
+        DrawTimer(pSpriteBatch);
+        base.Draw(pSpriteBatch);
+    }
+
+    private void DrawTimer(SpriteBatch pSpriteBatch)
+    {
+        if (!_isWaiting)
+            pSpriteBatch.DrawString(_font, _displayedElapsedTime.ToString(), new Vector2(50f, 50f), Color.White);
     }
 }
