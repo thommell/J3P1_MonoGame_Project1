@@ -117,6 +117,7 @@ public class SceneManager
         }
         else
         {
+            scoringSystem.ResetScore();
             _currentScene = PastLevelScene;
             _scenesList.Clear();
             RestartInitialize();
