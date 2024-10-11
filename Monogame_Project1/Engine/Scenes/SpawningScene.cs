@@ -11,9 +11,9 @@ public class SpawningScene : LevelScene
     public override void LoadContent(ContentManager pContent)
     {
         objects.Add(new SpawningSystem(this, game, manager, 5, 5));
+        objects.Add(new ShootingSystem(this));
         objects.Add(manager.ScoringSystem);
         objects.Add(new AmmoSystem(3));
-        objects.Add(new ShootingSystem(this));
         objects.Add(new Timer(game, manager, 10f));
         UIObject scoreUI = new ScoreUI(pContent.Load<Texture2D>("BrokenTarget"), game, this)
         {
@@ -24,6 +24,8 @@ public class SpawningScene : LevelScene
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width - 380, game.GraphicsDevice.Viewport.Height - 150),
         };
+
+        uiObjects.Add(new CrosshairUI(pContent.Load<Texture2D>("FixedCrosshair"), game, Color.Black));
 
         uiObjects.Add(ammoUI);
         uiObjects.Add(scoreUI);

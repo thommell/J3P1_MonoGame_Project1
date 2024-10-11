@@ -15,8 +15,12 @@ public class SpawningSystem : GameObject
     private readonly int _amountToSpawn;
     private readonly int _fakesAmount;
     private bool _hasSpawned;
-    
-    public bool HasSpawned => _hasSpawned;
+
+    public bool HasSpawned
+    {
+        get => _hasSpawned;
+        set => _hasSpawned = value;
+    }
     public SpawningSystem(Scene pScene, Game1 pGame, SceneManager sceneManager, int pAmountToSpawn, int pFakesAmount)
     {
         _scene = pScene;
