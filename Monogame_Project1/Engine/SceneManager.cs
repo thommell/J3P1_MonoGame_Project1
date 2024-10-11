@@ -44,7 +44,7 @@ public class SceneManager
     public void Awake()
     {
         _scenesList = CreateSceneList();
-        _currentScene = GetScene<SpawningScene>();
+        _currentScene = GetScene<MainMenu>();
         scoringSystem = new ScoringSystem(CurrentScene);
         LoadScene();
     }
