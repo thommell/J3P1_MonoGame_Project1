@@ -1,6 +1,7 @@
 using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.Scenes;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,10 @@ namespace Monogame_Project1.Engine.GameObjects
         }
         protected override void OnClick()
         {
+            if (manager.CurrentScene is not MainMenu)
+            {
+                manager.RestartGame();
+            }
             manager.ChangeScene(_scene);
         }
     }

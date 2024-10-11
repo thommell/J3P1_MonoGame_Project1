@@ -16,8 +16,6 @@ public class LevelSelectionScene : Scene
     }
     public override void LoadContent(ContentManager pContent)
     {
-        //Level Buttonsdotnet tool install --global dotnet-mgcb-editor --version 3.8.0.1641
-
         objects.Add(new SelectionScreenButton(game, manager, pContent.Load<Texture2D>("UI_Tile_64x64"), "Level 1", manager.GetScene<SpawningScene>(), pContent.Load<Texture2D>("Lock"))
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.1f, game.GraphicsDevice.Viewport.Height * 0.4f)
