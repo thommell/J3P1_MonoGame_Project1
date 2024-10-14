@@ -90,7 +90,7 @@ public class SpawningSystem : GameObject
         Random random = new();
 
         return new(random.Next(64, _game.GraphicsDevice.Viewport.Width - 64),
-            random.Next(64, _game.GraphicsDevice.Viewport.Height - 64)
+            random.Next(64, _game.GraphicsDevice.Viewport.Height - 166 - 64)
         ); 
     }
 

@@ -15,9 +15,10 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
     private SceneManager _sceneManager;
 
-    public static int ScreenWidth = 1500;
-    public static int ScreenHeight = 720;
+    public static int ScreenWidth = 1920;
+    public static int ScreenHeight = 1080;
 
+    private Rectangle bottomBorder;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -33,6 +34,8 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         _sceneManager = new SceneManager(_graphics, Content, _spriteBatch, this);
         _sceneManager.Awake();
+
+        bottomBorder = new Rectangle(0, 1080 - 167, 1920, 167);
     }
 
     protected override void Update(GameTime gameTime)
@@ -47,6 +50,8 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
+        _spriteBatch.Draw(Content.Load<Texture2D>("Background"), new Vector2(0, 0), Color.White);
+        _spriteBatch.Draw(Content.Load<Texture2D>("Pixel"), bottomBorder, Color.Gray * 0f);
         _sceneManager.Draw(_spriteBatch);
         _spriteBatch.End();
         base.Draw(gameTime);

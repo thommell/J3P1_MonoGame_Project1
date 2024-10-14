@@ -67,7 +67,7 @@ public class TargetMovement
             _elapsedTime = 0.0;
         }
         
-        if (_owner.Position.Y < 0 + _owner.Origin.Y || _owner.Position.Y > _game.GraphicsDevice.Viewport.Height - _owner.Origin.Y)
+        if (_owner.Position.Y < 0 + _owner.Origin.Y || _owner.Position.Y > _game.GraphicsDevice.Viewport.Height - 166 - _owner.Origin.Y)
         {
             _direction.Y = -_direction.Y; // Invert Y direction
             _elapsedTime = 0.0;
