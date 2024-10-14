@@ -1,23 +1,36 @@
 ﻿using Monogame_Project1.Engine.BaseClasses;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Monogame_Project1.Engine.GameObjects;
 
-public class Target : GameObject
+public class Target : BaseTarget
 {
-    private ShootingSystem _shootingSystem;
-    public Target(Texture2D pTexture, Vector2 pPosition, ShootingSystem pShootingSystem) : base(pTexture)
-    {
-        position = pPosition;
-        _shootingSystem = pShootingSystem;
-    }
-    public void CheckCollision()
-    {
+    #region Fields
+    public int ScoreAmount { get; private set; }
 
+    private readonly Scene _scene;
+ 
+    #endregion
+    
+    #region Constructors
+    
+    public Target(Texture2D pTexture, Scene pScene, int pScoreAmount) : base(pTexture)
+    {
+        ScoreAmount = pScoreAmount;
+        _scene = pScene;
+    }
+
+    #endregion
+
+    public override void OnHit()
+    {
+        ScoringSystem scoringSystem = _scene.GetObject<ScoringSystem>();
+        AmmoSystem ammoSystem = _scene.GetObject<AmmoSystem>();
+
+        scoringSystem.AddScore(ScoreAmount);
+        ammoSystem.ResetAmmo();
+
+        base.OnHit();
     }
 }
 

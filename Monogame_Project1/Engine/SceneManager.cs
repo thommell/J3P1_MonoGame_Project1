@@ -1,6 +1,7 @@
-﻿using System.Linq;
 using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.Scenes;
+using System;
+using Monogame_Project1.Engine.GameObjects;
 
 namespace Monogame_Project1.Engine;
 
@@ -14,12 +15,16 @@ public class SceneManager
     private Scene _currentScene;
     private List<Scene> _scenesList = new();
     private readonly Game1 _game;
-
+    public LevelScene PastLevelScene;
+    protected ScoringSystem scoringSystem;
     #endregion
 
     #region Properties
     public Scene CurrentScene => _currentScene;
+    public Game1 Game => _game;
 
+    public ScoringSystem ScoringSystem => scoringSystem;
+    
     #endregion
 
     #region Constructor
@@ -36,10 +41,18 @@ public class SceneManager
 
     #region Public Methods
 
-    public void Initialize() 
+    public void Awake()
     {
         _scenesList = CreateSceneList();
-        _currentScene = GetScene<MainMenu>();
+        _currentScene = GetScene<SpawningScene>();
+        scoringSystem = new ScoringSystem(CurrentScene);
+        LoadScene();
+    }
+
+    public void RestartInitialize() 
+    {
+        _scenesList = CreateSceneList();
+        _currentScene = GetScene<LevelScene>();
         LoadScene();
     }
     public void Update(GameTime pGameTime) 
@@ -68,10 +81,46 @@ public class SceneManager
         {
             if (scene.GetType() == pTargetScene.GetType()) 
             {
+                if (_currentScene is LevelScene levelScene)
+                    PastLevelScene = levelScene;
                 _currentScene = pTargetScene;
                 LoadScene();
+                if (pTargetScene is LevelScene level && level.PauseSystem.IsPaused)
+                    level.PauseSystem.TogglePausedState();
                 return;
             }
+        }
+    }
+
+    public void RestartGame()
+    {
+        _currentScene = GetScene<MainMenu>();
+        _scenesList.Clear();
+        Awake();
+    }
+
+    public void RestartLevel()
+    {
+        if (_currentScene is LevelScene)
+        {
+            scoringSystem.ResetScore();
+            int currentSceneIndex = _scenesList.FindIndex(scene => scene.GetType() == _currentScene.GetType());
+
+            if (currentSceneIndex != -1)
+            {
+                Scene newSceneInstance = (Scene)Activator.CreateInstance(_currentScene.GetType(), _game, this);
+                _scenesList[currentSceneIndex] = newSceneInstance;
+                _currentScene = newSceneInstance;
+                _scenesList.Clear();
+                RestartInitialize();
+            }
+        }
+        else
+        {
+            scoringSystem.ResetScore();
+            _currentScene = PastLevelScene;
+            _scenesList.Clear();
+            RestartInitialize();
         }
     }
 
@@ -83,6 +132,7 @@ public class SceneManager
     {
         if (CurrentScene.IsLoaded) return;
         _currentScene.LoadContent(_contentManager);
+        _currentScene.LateLoad();
         CurrentScene.IsLoaded = true;
     }
     private List<Scene> CreateSceneList()
@@ -91,7 +141,11 @@ public class SceneManager
         {
             new MainMenu(_game, this),
             new TestScene(_game, this),
-            new SpawningScene(_game, this)
+            new SpawningScene(_game, this),
+            new LevelSelectionScene(_game, this),
+            new UIScene(_game, this),
+            new WinScene(_game, this),
+            new LoseScene(_game, this)
         };
         return scenes;
     }

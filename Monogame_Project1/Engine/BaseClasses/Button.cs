@@ -30,7 +30,7 @@ public class Button : GameObject
     #endregion
 
     #region Constructor
-    public Button(Game1 pGame, SceneManager pManager, Texture2D pTexture, string text) : base(pTexture)
+    public Button(Game1 pGame, SceneManager pManager, Texture2D pTexture, string text, bool pIsActive = true) : base(pTexture, pIsActive)
     {
         manager = pManager;
         font = pGame.Content.Load<SpriteFont>("Font");
@@ -47,15 +47,15 @@ public class Button : GameObject
         previousMouseState = currentMouseState;
         currentMouseState = Mouse.GetState();
     
-        Rectangle _mouseRectangle = new(currentMouseState.X, currentMouseState.Y, 1, 1);
+        Rectangle mouseRectangle = new(currentMouseState.X, currentMouseState.Y, 1, 1);
     
-        if (_mouseRectangle.Intersects(Rectangle))
+        if (mouseRectangle.Intersects(BoundingBox))
             OnHover();
     
-        if (!_mouseRectangle.Intersects(Rectangle))
+        if (!mouseRectangle.Intersects(BoundingBox))
             OnNormal();
     
-        if (_mouseRectangle.Intersects(Rectangle) && currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
+        if (mouseRectangle.Intersects(BoundingBox) && currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
             OnClick();
     
         base.Update(pGameTime);
@@ -80,8 +80,8 @@ public class Button : GameObject
     
         if (!string.IsNullOrEmpty(Text))
         {
-            float x = (Rectangle.X + (Rectangle.Width / 2)) - (font.MeasureString(Text).X / 2);
-            float y = (Rectangle.Y + (Rectangle.Height / 2)) - (font.MeasureString(Text).Y / 2);
+            float x = (BoundingBox.X + (BoundingBox.Width / 2)) - (font.MeasureString(Text).X / 2);
+            float y = (BoundingBox.Y + (BoundingBox.Height / 2)) - (font.MeasureString(Text).Y / 2);
     
             pSpriteBatch.DrawString(font, Text, new Vector2(x, y), color, Rotation, new Vector2(0, 0), 1f, SpriteEffects.None, Layer + 0.01f);
         }
