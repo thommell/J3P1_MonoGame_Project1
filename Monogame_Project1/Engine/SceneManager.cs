@@ -134,6 +134,17 @@ public class SceneManager
         _currentScene.LoadContent(_contentManager);
         _currentScene.LateLoad();
         CurrentScene.IsLoaded = true;
+
+        if (CurrentScene is LevelScene)
+        {
+            _game.IsMouseVisible = false;
+        }
+        else
+        {
+            _game.IsMouseVisible = true;
+        }
+
+        Console.WriteLine(_game.IsMouseVisible);
     }
     private List<Scene> CreateSceneList()
     {

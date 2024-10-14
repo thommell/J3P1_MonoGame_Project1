@@ -25,7 +25,7 @@ public class Game1 : Game
         IsMouseVisible = true;
         _graphics.PreferredBackBufferWidth = ScreenWidth;
         _graphics.PreferredBackBufferHeight = ScreenHeight;
-        // _graphics.IsFullScreen = true;
+        //_graphics.IsFullScreen = true;
     }
 
     protected override void LoadContent()
