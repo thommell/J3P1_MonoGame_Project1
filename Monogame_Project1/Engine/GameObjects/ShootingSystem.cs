@@ -1,33 +1,35 @@
-﻿using System;
+using System;
 using System.Linq;
 using Monogame_Project1.Engine.BaseClasses;
 
 namespace Monogame_Project1.Engine.GameObjects;
 public class ShootingSystem : GameObject
 {
-    private int _ammo;
     private bool _hasShot;
     private bool _allowedToKill = true;
     private readonly Scene _scene;
     private ScoringSystem _scoringSystem;
     private SpawningSystem _spawningSystem;
-    public ShootingSystem(Scene pScene, int pAmmo) 
+    private AmmoSystem _ammoSystem;
+    private Point _mousePoint;
+
+    public ShootingSystem(Scene pScene) 
     {
-        _scene = pScene;
-        _ammo = pAmmo;
+        _scene = pScene;       
     }
     public override void LateLoad()
     {
         _scoringSystem = _scene.GetObject<ScoringSystem>();
         _spawningSystem = _scene.GetObject<SpawningSystem>();
+        _ammoSystem = _scene.GetObject<AmmoSystem>();
     }
     public override void Update(GameTime gameTime)
     {
         var mouseState = Mouse.GetState();
+        _mousePoint = new Point(mouseState.X, mouseState.Y);
         switch (mouseState.LeftButton)
         {
-            case ButtonState.Pressed when !_hasShot && _ammo > 0:
-                _ammo--;
+            case ButtonState.Pressed when !_hasShot && _ammoSystem.Ammo > 0:
                 _hasShot = true;
                 Console.WriteLine("Shot");
                 break;
@@ -41,21 +43,28 @@ public class ShootingSystem : GameObject
     public void CheckCollision()
     {
         if (!_allowedToKill) return;
-        var mouseState = Mouse.GetState(); 
-        var mousePoint = new Point(mouseState.X, mouseState.Y);
-        var targets = _spawningSystem.CurrentTargets;
-        var targetHit = targets.FirstOrDefault(a => a.Rectangle.Contains(mousePoint) && _hasShot);
+        List<GameObject> targets = _spawningSystem.CurrentTargets;
+        GameObject gameObjectHit = targets.FirstOrDefault(target => target.BoundingBox.Contains(_mousePoint) && _hasShot && target.IsActive);
+        // Reverse casting to prevent C# type safety issue.
+        BaseTarget targetHit = (BaseTarget)gameObjectHit;
         if (targetHit != null)
-        {
-            Console.WriteLine("You hit the target!");
-            _allowedToKill = false;
-            targetHit.Destroy();
-            _scoringSystem.AddScore(targetHit.ScoreAmount);
-            return;
-        }
+            OnHit(targetHit);
+        else
+            OnMiss();
+    }
+    public void OnHit(BaseTarget pTarget)
+    {
+        Console.WriteLine("You hit a target!");
+        _allowedToKill = false;
+        DeactivateObject(pTarget);
+        pTarget.OnHit();
+    }
+    public void OnMiss()
+    {
         if (!_hasShot) return;
         _allowedToKill = false;
         Console.WriteLine("You missed!");
         _scoringSystem.RemoveScore(2);
+        _ammoSystem.SubtractAmmo(1);
     }
 }

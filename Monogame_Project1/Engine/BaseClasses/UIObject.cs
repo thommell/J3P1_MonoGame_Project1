@@ -1,20 +1,15 @@
-using System;
-
 namespace Monogame_Project1.Engine.BaseClasses;
 
-public abstract class GameObject : IBoxCollider
+public class UIObject
 {
-    #region Fields
     protected float layer;
     protected Vector2 position;
     protected Vector2 origin;
     protected float rotation;
     protected Texture2D texture;
     protected Color color;
-    protected bool isActive;
-    #endregion
-
-    #region Properties
+    protected bool isActive;  
+      
     public float Layer
     {
         get => layer;
@@ -32,7 +27,7 @@ public abstract class GameObject : IBoxCollider
     }
     public float Rotation
     {
-        get => rotation;
+        get => rotation; 
         set => rotation = value;
     }
     public Texture2D Texture
@@ -45,55 +40,43 @@ public abstract class GameObject : IBoxCollider
         get => color;
         set => color = value;
     }
-    
-    public Rectangle BoundingBox
-    {
-        get
-        {
-            if (texture != null)
-                return new((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, texture.Width, texture.Height);
-    
-            throw new Exception("Texture not found/invalid.");
-        }
-    }
 
-    public bool IsActive { get => isActive; set => isActive = value; }
-    #endregion
+    public bool IsActive
+    {
+        get => isActive;
+        set => isActive = value;
+    }
+    
+    #region Public Methods
 
     #region Constructor
 
-    protected GameObject(Texture2D pTexture, bool pActive = true)
+    public UIObject(Texture2D pTexture, bool pActive = true)
     {
         texture = pTexture;
         origin = new(texture.Width / 2, texture.Height / 2);
         color = Color.White;
         isActive = pActive;
     }
-
-    protected GameObject(bool pActive = true)
+    public UIObject( bool pActive = true)
     {
+        color = Color.White;
         isActive = pActive;
     }
 
     #endregion
-
-    #region Public Methods
 
     public virtual void LoadContent(ContentManager pContent) {}
     public virtual void LateLoad() {}
     public virtual void Update(GameTime pGameTime) {}
     public virtual void Draw(SpriteBatch pSpriteBatch)
     {
-        if (texture != null)
-            pSpriteBatch.Draw(texture, position, null, color, rotation, origin, 1f, SpriteEffects.None, layer);
+        if (texture != null) pSpriteBatch.Draw(texture, position, null, color, rotation, origin, 1f, SpriteEffects.None, layer);
     }
     public void DeactivateObject(GameObject pObject)
     {
         pObject.IsActive = false;
     }
-
+    
     #endregion
-
 }
-
-

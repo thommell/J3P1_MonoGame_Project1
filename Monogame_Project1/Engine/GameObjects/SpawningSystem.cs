@@ -1,25 +1,34 @@
 using System;
+using System.Linq;
 using Monogame_Project1.Engine.BaseClasses;
 
 namespace Monogame_Project1.Engine.GameObjects;
 
 public class SpawningSystem : GameObject
 {
-    private Scene _scene;
-    private Game1 _game;
-    private KeyboardState kb;
-    public List<Target> CurrentTargets = new();
+    private readonly Scene _scene;
+    private readonly Game1 _game;
+    private KeyboardState _kb;
+    public List<GameObject> CurrentTargets = new();
     private ShootingSystem _shootingSystem;
-    private int _amountToSpawn;
-    public SpawningSystem(Scene pScene, Game1 pGame, int pAmountToSpawn)
+    private SceneManager _sceneManager;
+    private readonly int _amountToSpawn;
+    private readonly int _fakesAmount;
+    private bool _hasSpawned;
+
+    public bool HasSpawned
+    {
+        get => _hasSpawned;
+        set => _hasSpawned = value;
+    }
+    public SpawningSystem(Scene pScene, Game1 pGame, SceneManager sceneManager, int pAmountToSpawn, int pFakesAmount)
     {
         _scene = pScene;
         _game = pGame;
         _amountToSpawn = pAmountToSpawn;
+        _fakesAmount = pFakesAmount;
+        _sceneManager = sceneManager;
     }
-    private Keys _spawnKey = Keys.Space;
-    private bool _canSpawn = true;
-
     public override void LateLoad()
     {
         _shootingSystem = _scene.GetObject<ShootingSystem>();
@@ -27,55 +36,79 @@ public class SpawningSystem : GameObject
     }
     public override void Update(GameTime pGameTime)
     {
-        kb = Keyboard.GetState();
+        if (CurrentTargets.Count <= 0) return;
         _shootingSystem.CheckCollision();
-        CheckInput();
     }
-    private void CheckInput()
+
+    public void StartSpawner()
     {
-        if (kb.IsKeyDown(_spawnKey) && _canSpawn)
-        {
-            _canSpawn = false;
-            CheckTargets();
-        }
-        if (kb.IsKeyUp(_spawnKey))
-        {
-            _canSpawn = true;
-        } 
+        CreateNewTargets();
     }
+    /// <summary>
+    /// Spawns new Targets and adds them to the current scene's objects and CurrentTargets' list.
+    /// </summary>
     private void SpawnTargets()
     { 
         for (int i = 0; i < _amountToSpawn; i++)
         {
-            var newTarget = CreateTarget();
+            Target newTarget = new Target(_game.Content.Load<Texture2D>("Target"), _scene, 2)
+            {
+                Position = GetPosition()
+            };
+            // Temp Fix
+            newTarget.MovementSystem = CreateMovement(newTarget);
+            
             _scene.Objects.Add(newTarget); 
             CurrentTargets.Add(newTarget);
         }
-    }
-    public void CheckTargets()
-    {
-        for (int i = CurrentTargets.Count - 1; i >= 0; i--)
+
+        for (int i = 0; i < _fakesAmount; i++)
         {
-            RemoveTarget(CurrentTargets[i]);
+            FakeTarget newTarget = new FakeTarget(_game.Content.Load<Texture2D>("Bomb"), _sceneManager)
+            {
+                Position = GetPosition(),
+                Color = Color.Green
+            };
+            
+            newTarget.MovementSystem = CreateMovement(newTarget);            
+            _scene.Objects.Add(newTarget);
+            CurrentTargets.Add(newTarget);
+            _hasSpawned = true;
         }
+    }
+    /// <summary>
+    /// Destroys the current scene's Target's and creates new ones.
+    /// </summary>
+    private void CreateNewTargets()
+    {
+        _scene.DeactivateObjects(CurrentTargets);
+        CurrentTargets.Clear();
         SpawnTargets();
     }
-    public void RemoveTarget(Target pTarget)
-    {
-        _scene.Objects.Remove(pTarget);
-        CurrentTargets.Remove(pTarget);
-    }
-    public Target CreateTarget()
+    public Vector2 GetPosition()
     {
         Random random = new();
-        Vector2 newValue = new(
-            random.Next(64, _game.GraphicsDevice.Viewport.Width - 64),
+
+        return new(random.Next(64, _game.GraphicsDevice.Viewport.Width - 64),
             random.Next(64, _game.GraphicsDevice.Viewport.Height - 64)
-        );
-        Target newTarget = new(_game.Content.Load<Texture2D>("UI_Slot"), _scene)
+        ); 
+    }
+
+    private TargetMovement CreateMovement(BaseTarget pOwner)
+    {
+        Random random = new();
+        int[] speedValues = { 100, 350 };
+        int[] elapsedValues = { 1, 5 };
+
+        return new TargetMovement(pOwner, GetElapsedTime(), GetMovementSpeed(), _game);
+
+        float GetElapsedTime() 
         {
-            Position = newValue
-        };
-        return newTarget;
+            return random.Next(elapsedValues[0], elapsedValues[1]);
+        }
+        float GetMovementSpeed()
+        {
+            return random.Next(speedValues[0], speedValues[1]);
+        }
     }
 }

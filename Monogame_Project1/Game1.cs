@@ -15,13 +15,16 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
     private SceneManager _sceneManager;
 
+    public static int ScreenWidth = 1500;
+    public static int ScreenHeight = 720;
+
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        _graphics.PreferredBackBufferWidth = 1500;
-        _graphics.PreferredBackBufferHeight = 720;
+        _graphics.PreferredBackBufferWidth = ScreenWidth;
+        _graphics.PreferredBackBufferHeight = ScreenHeight;
         // _graphics.IsFullScreen = true;
     }
 
@@ -29,13 +32,13 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         _sceneManager = new SceneManager(_graphics, Content, _spriteBatch, this);
-        _sceneManager.Initialize();
+        _sceneManager.Awake();
     }
 
     protected override void Update(GameTime gameTime)
     {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit();
+        //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+        //    Exit();
         _sceneManager.Update(gameTime);
         base.Update(gameTime);
     }
