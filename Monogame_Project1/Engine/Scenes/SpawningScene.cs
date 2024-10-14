@@ -10,7 +10,7 @@ public class SpawningScene : LevelScene
     public SpawningScene(Game1 pGame, SceneManager pManager) : base(pGame, pManager) {}
     public override void LoadContent(ContentManager pContent)
     {
-        objects.Add(new SpawningSystem(this, game, manager, 5, 5));
+        objects.Add(new SpawningSystem(manager, new Vector2(10f,10f)));
         objects.Add(new ShootingSystem(this));
         objects.Add(manager.ScoringSystem);
         objects.Add(new AmmoSystem(3));

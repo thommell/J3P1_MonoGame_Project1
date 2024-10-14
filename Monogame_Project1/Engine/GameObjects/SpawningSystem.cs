@@ -8,12 +8,14 @@ public class SpawningSystem : GameObject
 {
     private readonly Scene _scene;
     private readonly Game1 _game;
-    private KeyboardState _kb;
-    public List<GameObject> CurrentTargets = new();
+    public List<GameObject> currentTargets = new();
     private ShootingSystem _shootingSystem;
     private SceneManager _sceneManager;
-    private readonly int _amountToSpawn;
-    private readonly int _fakesAmount;
+
+    /// <summary>
+    /// X = Target Y = FakeTarget
+    /// </summary>
+    private readonly Vector2 _targetAmounts; 
     private bool _hasSpawned;
 
     public bool HasSpawned
@@ -21,13 +23,12 @@ public class SpawningSystem : GameObject
         get => _hasSpawned;
         set => _hasSpawned = value;
     }
-    public SpawningSystem(Scene pScene, Game1 pGame, SceneManager sceneManager, int pAmountToSpawn, int pFakesAmount)
+    public SpawningSystem(SceneManager pSceneManager, Vector2 pAmountsToSpawn)
     {
-        _scene = pScene;
-        _game = pGame;
-        _amountToSpawn = pAmountToSpawn;
-        _fakesAmount = pFakesAmount;
-        _sceneManager = sceneManager;
+        _sceneManager = pSceneManager;
+        _game = _sceneManager.Game;
+        _scene = _sceneManager.CurrentScene;
+        _targetAmounts = pAmountsToSpawn;
     }
     public override void LateLoad()
     {
@@ -36,7 +37,7 @@ public class SpawningSystem : GameObject
     }
     public override void Update(GameTime pGameTime)
     {
-        if (CurrentTargets.Count <= 0) return;
+        if (currentTargets.Count <= 0) return;
         _shootingSystem.CheckCollision();
     }
 
@@ -49,7 +50,14 @@ public class SpawningSystem : GameObject
     /// </summary>
     private void SpawnTargets()
     { 
-        for (int i = 0; i < _amountToSpawn; i++)
+        CreateTargets();
+        CreateFakes();
+    }
+
+    private void CreateTargets()
+    {
+        
+        for (int i = 0; i < _targetAmounts.X; i++)
         {
             Target newTarget = new Target(_game.Content.Load<Texture2D>("Target"), _scene, 2)
             {
@@ -59,10 +67,13 @@ public class SpawningSystem : GameObject
             newTarget.MovementSystem = CreateMovement(newTarget);
             
             _scene.Objects.Add(newTarget); 
-            CurrentTargets.Add(newTarget);
+            currentTargets.Add(newTarget);
         }
+    }
 
-        for (int i = 0; i < _fakesAmount; i++)
+    private void CreateFakes()
+    {
+        for (int i = 0; i < _targetAmounts.Y; i++)
         {
             FakeTarget newTarget = new FakeTarget(_game.Content.Load<Texture2D>("Bomb"), _sceneManager)
             {
@@ -72,7 +83,7 @@ public class SpawningSystem : GameObject
             
             newTarget.MovementSystem = CreateMovement(newTarget);            
             _scene.Objects.Add(newTarget);
-            CurrentTargets.Add(newTarget);
+            currentTargets.Add(newTarget);
             _hasSpawned = true;
         }
     }
@@ -81,8 +92,8 @@ public class SpawningSystem : GameObject
     /// </summary>
     private void CreateNewTargets()
     {
-        _scene.DeactivateObjects(CurrentTargets);
-        CurrentTargets.Clear();
+        _scene.DeactivateObjects(currentTargets);
+        currentTargets.Clear();
         SpawnTargets();
     }
     public Vector2 GetPosition()

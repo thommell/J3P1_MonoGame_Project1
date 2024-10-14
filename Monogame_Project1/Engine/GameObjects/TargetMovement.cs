@@ -4,11 +4,12 @@ using Monogame_Project1.Engine.BaseClasses;
 
 namespace Monogame_Project1.Engine.GameObjects;
 
-public class TargetMovement 
+public class TargetMovement : GameObject
 {
     private Vector2 _direction;
     private Scene _currentScene;
     private BaseTarget _owner;
+    private List<Target> _targets;
     private Random _random = new();
     private float _timer;
     private double _elapsedTime; 
@@ -23,7 +24,13 @@ public class TargetMovement
         _direction = GetRandomDirection();
         _game = pGame;
     }
-    
+
+    public override void LateLoad()
+    {
+        _targets = new List<Target>();
+        base.LateLoad();
+    }
+
     private static readonly Vector2[] Directions =
     {
         new(0, -1),   // Up
@@ -73,5 +80,4 @@ public class TargetMovement
             _elapsedTime = 0.0;
         }
     }
-
 }

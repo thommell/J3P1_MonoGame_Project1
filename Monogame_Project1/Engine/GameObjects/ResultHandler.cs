@@ -31,7 +31,7 @@ public class ResultHandler : GameObject
         
         if (_timer.Time <= 0.1f)
             HandleResult(Result.Lose);
-        if (_spawningSystem.CurrentTargets.Any(a => a is Target && a.IsActive) && _spawningSystem.HasSpawned) return;
+        if (_spawningSystem.currentTargets.Any(a => a is Target && a.IsActive) && _spawningSystem.HasSpawned) return;
         {
             Console.WriteLine("User has finished the level!");
             HandleResult(Result.Win);
