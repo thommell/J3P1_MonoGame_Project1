@@ -22,6 +22,10 @@ namespace Monogame_Project1.Engine.GameObjects
             {
                 manager.RestartGame();
             }
+            else if (manager.CurrentScene is WinScene)
+            {
+                manager.ChangeScene(manager.GetScene<LevelSelectionScene>());
+            }
             manager.ChangeScene(_scene);
         }
     }

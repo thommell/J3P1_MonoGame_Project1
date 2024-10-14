@@ -7,6 +7,7 @@ global using Microsoft.Xna.Framework.Design;
 global using Microsoft.Xna.Framework.Media;
 global using System.Collections.Generic;
 using Monogame_Project1.Engine;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1;
 public class Game1 : Game
@@ -34,15 +35,12 @@ public class Game1 : Game
         _sceneManager = new SceneManager(_graphics, Content, _spriteBatch, this);
         _sceneManager.Awake();
     }
-
     protected override void Update(GameTime gameTime)
     {
-        //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-        //    Exit();
         _sceneManager.Update(gameTime);
+        ResultHandlerSingleton.Instance.Update(gameTime);
         base.Update(gameTime);
     }
-
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);

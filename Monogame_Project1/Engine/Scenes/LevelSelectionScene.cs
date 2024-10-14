@@ -3,6 +3,7 @@ using Monogame_Project1.Engine.GameObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,11 +37,16 @@ public class LevelSelectionScene : Scene
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.9f, game.GraphicsDevice.Viewport.Height * 0.4f)
         });
-
         //Main Menu Button
         objects.Add(new SwitchSceneButton(game, manager, pContent.Load<Texture2D>("UI_Tile_64x64"), "Menu", manager.GetScene<MainMenu>())
         {
             Position = new Vector2(50, 50)
         });
+    }
+
+    public override void Update(GameTime pGameTime)
+    {
+        
+        base.Update(pGameTime);
     }
 }

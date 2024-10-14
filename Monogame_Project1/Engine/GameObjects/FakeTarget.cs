@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Monogame_Project1.Engine.BaseClasses;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine.GameObjects;
 
@@ -25,7 +26,7 @@ public class FakeTarget : BaseTarget
     #region Public Voids
     public override void OnHit()
     {
-        _resultHandler.HandleResult(Result.Lose);
+        ResultHandlerSingleton.Instance.HandleResult((LevelScene)_sceneManager.CurrentScene, Result.Lose);
     }
 
     #endregion

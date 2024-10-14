@@ -1,7 +1,5 @@
 using System;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Reflection.Metadata.Ecma335;
 using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.Scenes;
 
@@ -19,6 +17,12 @@ public class ResultHandler : GameObject
     private SceneManager _sceneManager;
     private Timer _timer;
     private Result _result = Result.Undecided;
+
+    public Result Result
+    {
+        get => _result;
+        set => _result = value;
+    }
     public ResultHandler(SpawningSystem spawningSystem, SceneManager pSceneManager, Timer timer)
     {
         _spawningSystem = spawningSystem;

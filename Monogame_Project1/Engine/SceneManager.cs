@@ -2,6 +2,7 @@
 using Monogame_Project1.Engine.Scenes;
 using System;
 using Monogame_Project1.Engine.GameObjects;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine;
 
@@ -17,11 +18,13 @@ public class SceneManager
     private readonly Game1 _game;
     public LevelScene PastLevelScene;
     protected ScoringSystem scoringSystem;
+    public ResultHandlerSingleton resultHandler;
     #endregion
 
     #region Properties
     public Scene CurrentScene => _currentScene;
     public Game1 Game => _game;
+    public List<Scene> ScenesList => _scenesList;
 
     public ScoringSystem ScoringSystem => scoringSystem;
     
@@ -35,6 +38,7 @@ public class SceneManager
         _contentManager = pContentManager;
         _spriteBatch = pSpriteBatch;
         _game = pGame;
+        ResultHandlerSingleton.Instance.sceneManager = this;
     }
 
     #endregion
@@ -46,14 +50,18 @@ public class SceneManager
         _scenesList = CreateSceneList();
         _currentScene = GetScene<MainMenu>();
         scoringSystem = new ScoringSystem(CurrentScene);
-        LoadScene();
+        // LoadScene();
+        LoadAllScenes();
+        ResultHandlerSingleton.Instance.GetData();
     }
 
     public void RestartInitialize() 
     {
         _scenesList = CreateSceneList();
         _currentScene = GetScene<LevelScene>();
-        LoadScene();
+        // LoadScene();
+        // _currentScene.LoadContent(_contentManager);
+        RestartGame();
     }
     public void Update(GameTime pGameTime) 
     {
@@ -72,6 +80,17 @@ public class SceneManager
         }
         return null;
     }
+
+    public List<T> GetScenes<T>() where T : Scene
+    {
+        List<T> levelScenes = new();
+        for (int i = 0; i < _scenesList.Count; i++) 
+        {
+            if (_scenesList[i] is T scene)
+                levelScenes.Add(scene);
+        }
+        return levelScenes;
+    }
     public void ChangeScene(Scene pTargetScene) 
     {
         // Check if the target scene has the same type as the current scene, if so skip the check.
@@ -84,7 +103,7 @@ public class SceneManager
                 if (_currentScene is LevelScene levelScene)
                     PastLevelScene = levelScene;
                 _currentScene = pTargetScene;
-                LoadScene();
+                // LoadScene();
                 if (pTargetScene is LevelScene level && level.PauseSystem.IsPaused)
                     level.PauseSystem.TogglePausedState();
                 return;
@@ -128,6 +147,15 @@ public class SceneManager
 
     #region Private Methods
 
+    private void LoadAllScenes()
+    {
+        foreach (var s in ScenesList)
+        {
+            s.LoadContent(_contentManager);
+            s.LateLoad();
+            _game.IsMouseVisible = s is LevelScene;
+        }
+    }
     private void LoadScene() 
     {
         if (CurrentScene.IsLoaded) return;
@@ -152,7 +180,7 @@ public class SceneManager
         {
             new MainMenu(_game, this),
             new TestScene(_game, this),
-            new SpawningScene(_game, this),
+            // new SpawningScene(_game, this),
             new LevelSelectionScene(_game, this),
             new UIScene(_game, this),
             new WinScene(_game, this),

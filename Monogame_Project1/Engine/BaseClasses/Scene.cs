@@ -95,6 +95,23 @@ public abstract class Scene
         return null;
     }
 
+    public List<T> GetObjects<T>() where T : GameObject
+    {
+        List<T> objectHolder = new List<T>();
+        for (int i = 0; i < objects.Count; i++)
+            if (objects[i] is T obj)
+                objectHolder.Add(obj);
+        return objectHolder;
+    }
+
+    // public Dictionary<Scene, GameObject> GetObjects<TScene, TGameObject>() 
+    //     where TScene : Scene
+    //     where TGameObject : GameObject
+    // {
+    //     Dictionary<TScene, TGameObject> objectHolder = new Dictionary<TScene, TGameObject>();
+    //     return objectHolder; 
+    // }
+
     public T GetUIObject<T>() where T : UIObject
     {
         for (int i = 0; i < uiObjects.Count; i++)

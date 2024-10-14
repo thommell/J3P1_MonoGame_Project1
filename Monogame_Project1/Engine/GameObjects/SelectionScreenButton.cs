@@ -2,12 +2,20 @@ using Monogame_Project1.Engine.BaseClasses;
 
 namespace Monogame_Project1.Engine.GameObjects
 {
-    internal class SelectionScreenButton : Button
+    public class SelectionScreenButton : Button
     {
         private Texture2D _lock;
 
         private Scene _sceneToSwitchTo;
         private bool _locked;
+
+        public bool IsLocked
+        {
+            get => _locked;
+            set => _locked = value;
+        }
+
+        public Scene SceneToSwitchTo => _sceneToSwitchTo;
 
         public SelectionScreenButton(Game1 pGame, SceneManager pManager, Texture2D pTexture, string text, Scene pSceneToSwitchTo, Texture2D pLock, bool pLocked = false) : base(pGame, pManager, pTexture, text)
         {

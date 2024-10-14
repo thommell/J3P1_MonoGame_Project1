@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.GameObjects;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine.Scenes;
 
@@ -31,6 +32,8 @@ public class WinScene : Scene
         _winText = "Congratulations, you've beaten the level!";
         font = game.Content.Load<SpriteFont>("UIText");
         _winTextBounds = font.MeasureString(_winText);
+        if (manager.PastLevelScene != null)
+            ResultHandlerSingleton.Instance.SetResult(manager.PastLevelScene, Result.Win);
         base.LoadContent(pContent);
     }
 
