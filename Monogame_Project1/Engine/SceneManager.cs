@@ -1,4 +1,4 @@
-using Monogame_Project1.Engine.BaseClasses;
+﻿using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.Scenes;
 using System;
 using Monogame_Project1.Engine.GameObjects;
@@ -44,7 +44,7 @@ public class SceneManager
     public void Awake()
     {
         _scenesList = CreateSceneList();
-        _currentScene = GetScene<SpawningScene>();
+        _currentScene = GetScene<MainMenu>();
         scoringSystem = new ScoringSystem(CurrentScene);
         LoadScene();
     }
@@ -145,7 +145,12 @@ public class SceneManager
             new LevelSelectionScene(_game, this),
             new UIScene(_game, this),
             new WinScene(_game, this),
-            new LoseScene(_game, this)
+            new LoseScene(_game, this),
+            new Level1(_game, this),
+            new Level2(_game, this),
+            new Level3(_game, this),
+            new Level4(_game, this),
+            new Level5(_game, this)
         };
         return scenes;
     }

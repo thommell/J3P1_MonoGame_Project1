@@ -16,23 +16,23 @@ public class LevelSelectionScene : Scene
     }
     public override void LoadContent(ContentManager pContent)
     {
-        objects.Add(new SelectionScreenButton(game, manager, pContent.Load<Texture2D>("UI_Tile_64x64"), "Level 1", manager.GetScene<SpawningScene>(), pContent.Load<Texture2D>("Lock"))
+        objects.Add(new SelectionScreenButton(game, manager, pContent.Load<Texture2D>("UI_Tile_64x64"), "Level 1", manager.GetScene<Level1>(), pContent.Load<Texture2D>("Lock"))
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.1f, game.GraphicsDevice.Viewport.Height * 0.4f)
         });
-        objects.Add(new SelectionScreenButton(game, manager, pContent.Load<Texture2D>("UI_Tile_64x64"), "Level 2", manager.GetScene<TestScene>(), pContent.Load<Texture2D>("Lock"), true)
+        objects.Add(new SelectionScreenButton(game, manager, pContent.Load<Texture2D>("UI_Tile_64x64"), "Level 2", manager.GetScene<Level2>(), pContent.Load<Texture2D>("Lock"), true)
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.3f, game.GraphicsDevice.Viewport.Height * 0.4f)
         });
-        objects.Add(new SelectionScreenButton(game, manager, pContent.Load<Texture2D>("UI_Tile_64x64"), "Level 3", manager.GetScene<TestScene>(), pContent.Load<Texture2D>("Lock"), true)
+        objects.Add(new SelectionScreenButton(game, manager, pContent.Load<Texture2D>("UI_Tile_64x64"), "Level 3", manager.GetScene<Level3>(), pContent.Load<Texture2D>("Lock"), true)
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.4f)
         });
-        objects.Add(new SelectionScreenButton(game, manager, pContent.Load<Texture2D>("UI_Tile_64x64"), "Level 4", manager.GetScene<TestScene>(), pContent.Load<Texture2D>("Lock"), true)
+        objects.Add(new SelectionScreenButton(game, manager, pContent.Load<Texture2D>("UI_Tile_64x64"), "Level 4", manager.GetScene<Level4>(), pContent.Load<Texture2D>("Lock"), true)
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.7f, game.GraphicsDevice.Viewport.Height * 0.4f)
         });
-        objects.Add(new SelectionScreenButton(game, manager, pContent.Load<Texture2D>("UI_Tile_64x64"), "Level 5", manager.GetScene<TestScene>(), pContent.Load<Texture2D>("Lock"), true)
+        objects.Add(new SelectionScreenButton(game, manager, pContent.Load<Texture2D>("UI_Tile_64x64"), "Level 5", manager.GetScene<Level5>(), pContent.Load<Texture2D>("Lock"), true)
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.9f, game.GraphicsDevice.Viewport.Height * 0.4f)
         });
