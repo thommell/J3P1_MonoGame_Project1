@@ -11,17 +11,27 @@ public class ShootingSystem : GameObject
     private ScoringSystem _scoringSystem;
     private SpawningSystem _spawningSystem;
     private AmmoSystem _ammoSystem;
+    private AnimationsPlayer _animPlayer;
     private Point _mousePoint;
+
+    private Texture2D _explosionTextures;
 
     public ShootingSystem(Scene pScene) 
     {
         _scene = pScene;       
+    }
+    public override void LoadContent(ContentManager pContent)
+    {
+        _explosionTextures = pContent.Load<Texture2D>("Explosion");
+
+        base.LoadContent(pContent);
     }
     public override void LateLoad()
     {
         _scoringSystem = _scene.GetObject<ScoringSystem>();
         _spawningSystem = _scene.GetObject<SpawningSystem>();
         _ammoSystem = _scene.GetObject<AmmoSystem>();
+        _animPlayer = _scene.GetObject<AnimationsPlayer>();
     }
     public override void Update(GameTime gameTime)
     {
@@ -30,7 +40,9 @@ public class ShootingSystem : GameObject
         switch (mouseState.LeftButton)
         {
             case ButtonState.Pressed when !_hasShot && _ammoSystem.Ammo > 0:
+
                 _hasShot = true;
+                _animPlayer.AddAnimation(_mousePoint, _explosionTextures, 3, 3, 0.05f);
                 Console.WriteLine("Shot");
                 break;
             case ButtonState.Released when _hasShot:
@@ -47,7 +59,7 @@ public class ShootingSystem : GameObject
         GameObject gameObjectHit = targets.FirstOrDefault(target => target.BoundingBox.Contains(_mousePoint) && _hasShot && target.IsActive);
         // Reverse casting to prevent C# type safety issue.
         BaseTarget targetHit = (BaseTarget)gameObjectHit;
-        if (targetHit != null)
+        if (targetHit != null && !targetHit.Hit)
             OnHit(targetHit);
         else
             OnMiss();

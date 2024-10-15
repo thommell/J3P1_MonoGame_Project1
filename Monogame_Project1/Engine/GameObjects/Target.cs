@@ -14,7 +14,7 @@ public class Target : BaseTarget
     
     #region Constructors
     
-    public Target(Texture2D pTexture, Scene pScene, int pScoreAmount) : base(pTexture)
+    public Target(Texture2D pTexture, Scene pScene, Game1 pGame, int pScoreAmount) : base(pTexture, pGame)
     {
         ScoreAmount = pScoreAmount;
         _scene = pScene;

@@ -51,7 +51,7 @@ public class SpawningSystem : GameObject
     { 
         for (int i = 0; i < _amountToSpawn; i++)
         {
-            Target newTarget = new Target(_game.Content.Load<Texture2D>("Target"), _scene, 2)
+            Target newTarget = new Target(_game.Content.Load<Texture2D>("Target"), _scene, _game, 2)
             {
                 Position = GetPosition()
             };
@@ -64,7 +64,7 @@ public class SpawningSystem : GameObject
 
         for (int i = 0; i < _fakesAmount; i++)
         {
-            FakeTarget newTarget = new FakeTarget(_game.Content.Load<Texture2D>("Bomb"), _sceneManager)
+            FakeTarget newTarget = new FakeTarget(_game.Content.Load<Texture2D>("Bomb"), _sceneManager, _game)
             {
                 Position = GetPosition(),
                 Color = Color.Green

@@ -14,7 +14,7 @@ public class FakeTarget : BaseTarget
 
     private SceneManager _sceneManager;
     private ResultHandler _resultHandler;
-    public FakeTarget(Texture2D pTexture, SceneManager pSceneManager) : base(pTexture) 
+    public FakeTarget(Texture2D pTexture, SceneManager pSceneManager, Game1 pGame) : base(pTexture, pGame) 
     {
         _sceneManager = pSceneManager;
         _resultHandler = _sceneManager.CurrentScene.GetObject<ResultHandler>();
