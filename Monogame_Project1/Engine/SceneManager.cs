@@ -1,7 +1,8 @@
-using Monogame_Project1.Engine.BaseClasses;
+﻿using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.Scenes;
 using System;
 using Monogame_Project1.Engine.GameObjects;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine;
 
@@ -22,6 +23,7 @@ public class SceneManager
     #region Properties
     public Scene CurrentScene => _currentScene;
     public Game1 Game => _game;
+    public List<Scene> ScenesList => _scenesList;
 
     public ScoringSystem ScoringSystem => scoringSystem;
     
@@ -44,17 +46,21 @@ public class SceneManager
     public void Awake()
     {
         _scenesList = CreateSceneList();
-        _currentScene = GetScene<SpawningScene>();
+        _currentScene = GetScene<MainMenu>();
         scoringSystem = new ScoringSystem(CurrentScene);
-        LoadScene();
+        // LoadScene();
+        LoadAllScenes();
+       // ResultHandlerSingleton.Instance.GetData();
     }
 
-    public void RestartInitialize() 
-    {
-        _scenesList = CreateSceneList();
-        _currentScene = GetScene<LevelScene>();
-        LoadScene();
-    }
+    // public void RestartInitialize() 
+    // {
+    //     _scenesList = CreateSceneList();
+    //     _currentScene = GetScene<LevelScene>();
+    //     // LoadScene();
+    //     // _currentScene.LoadContent(_contentManager);
+    //     RestartGame();
+    // }
     public void Update(GameTime pGameTime) 
     {
         _currentScene.Update(pGameTime);
@@ -72,6 +78,17 @@ public class SceneManager
         }
         return null;
     }
+
+    public List<T> GetScenes<T>() where T : Scene
+    {
+        List<T> levelScenes = new();
+        for (int i = 0; i < _scenesList.Count; i++) 
+        {
+            if (_scenesList[i] is T scene)
+                levelScenes.Add(scene);
+        }
+        return levelScenes;
+    }
     public void ChangeScene(Scene pTargetScene) 
     {
         // Check if the target scene has the same type as the current scene, if so skip the check.
@@ -84,7 +101,7 @@ public class SceneManager
                 if (_currentScene is LevelScene levelScene)
                     PastLevelScene = levelScene;
                 _currentScene = pTargetScene;
-                LoadScene();
+                // LoadScene();
                 if (pTargetScene is LevelScene level && level.PauseSystem.IsPaused)
                     level.PauseSystem.TogglePausedState();
                 return;
@@ -112,7 +129,7 @@ public class SceneManager
                 _scenesList[currentSceneIndex] = newSceneInstance;
                 _currentScene = newSceneInstance;
                 _scenesList.Clear();
-                RestartInitialize();
+                // RestartInitialize();
             }
         }
         else
@@ -120,7 +137,7 @@ public class SceneManager
             scoringSystem.ResetScore();
             _currentScene = PastLevelScene;
             _scenesList.Clear();
-            RestartInitialize();
+            // RestartInitialize();
         }
     }
 
@@ -128,26 +145,48 @@ public class SceneManager
 
     #region Private Methods
 
+    private void LoadAllScenes()
+    {
+        foreach (var s in ScenesList)
+        {
+            s.LoadContent(_contentManager);
+            s.LateLoad();
+            _game.IsMouseVisible = s is LevelScene;
+        }
+    }
     private void LoadScene() 
     {
         if (CurrentScene.IsLoaded) return;
         _currentScene.LoadContent(_contentManager);
         _currentScene.LateLoad();
         CurrentScene.IsLoaded = true;
+
+        if (CurrentScene is LevelScene)
+        {
+            _game.IsMouseVisible = false;
+        }
+        else
+        {
+            _game.IsMouseVisible = true;
+        }
+
+        Console.WriteLine(_game.IsMouseVisible);
     }
     private List<Scene> CreateSceneList()
     {
-        List<Scene> scenes = new List<Scene>
-        {
-            new MainMenu(_game, this),
-            new TestScene(_game, this),
-            new SpawningScene(_game, this),
-            new LevelSelectionScene(_game, this),
-            new UIScene(_game, this),
-            new WinScene(_game, this),
-            new LoseScene(_game, this)
-        };
-        return scenes;
+        // List<Scene> scenes = new List<Scene>
+        // {
+        //     new MainMenu(),
+        //     new LevelSelectionScene(),
+        //     new WinScene(),
+        //     new LoseScene(),
+        //     new Level1(),
+        //     new Level2(),
+        //     new Level3(),
+        //     new Level4(),
+        //     new Level5()
+        // };
+        return null;
     }
 
     #endregion
