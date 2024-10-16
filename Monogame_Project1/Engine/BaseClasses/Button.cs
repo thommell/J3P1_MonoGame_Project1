@@ -1,3 +1,5 @@
+using System;
+
 namespace Monogame_Project1.Engine.BaseClasses;
 
 #region Enums
@@ -7,7 +9,8 @@ public enum ButtonStatus
     Normal,
     Hovered,
     Pressed,
-    Clicked
+    Clicked,
+    Holded
 }
 
 #endregion
@@ -22,6 +25,7 @@ public class Button : GameObject
     private readonly SpriteFont font;
     private MouseState currentMouseState;
     private MouseState previousMouseState;
+    private bool isBeingHeld;
    
     #endregion
     
@@ -44,12 +48,13 @@ public class Button : GameObject
 
     public override void Update(GameTime pGameTime)
     {
+        ButtonStatus previousButtonStatus = status;
         previousMouseState = currentMouseState;
         currentMouseState = Mouse.GetState();
     
         Rectangle mouseRectangle = new(currentMouseState.X, currentMouseState.Y, 1, 1);
     
-        if (mouseRectangle.Intersects(BoundingBox))
+        if (mouseRectangle.Intersects(BoundingBox) && currentMouseState.LeftButton == ButtonState.Released)
             OnHover();
     
         if (!mouseRectangle.Intersects(BoundingBox))
@@ -57,7 +62,17 @@ public class Button : GameObject
     
         if (mouseRectangle.Intersects(BoundingBox) && currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
             OnClick();
-    
+
+        if (currentMouseState.LeftButton == ButtonState.Released)
+            isBeingHeld = false;
+
+        if (mouseRectangle.Intersects(BoundingBox) && currentMouseState.LeftButton == ButtonState.Pressed && previousButtonStatus == ButtonStatus.Hovered)
+            isBeingHeld = true;
+
+        if (isBeingHeld)
+            OnHold();
+      
+       
         base.Update(pGameTime);
     }
 
@@ -65,7 +80,7 @@ public class Button : GameObject
     {
         switch (status)
         {
-            case ButtonStatus.Normal:
+            case ButtonStatus.Normal: 
                 color = Color.White;
                 break;
             case ButtonStatus.Hovered:
@@ -73,6 +88,9 @@ public class Button : GameObject
                 break;
             case ButtonStatus.Pressed:
                 color = Color.Red;
+                break;
+            case ButtonStatus.Holded:
+                color = Color.Green;
                 break;
         }
     
@@ -94,7 +112,11 @@ public class Button : GameObject
     {
         status = ButtonStatus.Pressed;
     }
-    protected void OnHover()
+    protected virtual void OnHold()
+    {
+        status = ButtonStatus.Holded;
+    }
+    protected virtual void OnHover()
     {
         status = ButtonStatus.Hovered;
     }

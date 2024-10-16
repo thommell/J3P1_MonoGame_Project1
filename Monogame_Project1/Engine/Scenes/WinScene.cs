@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.GameObjects;
+using Monogame_Project1.Engine.UIObjects;
 
 namespace Monogame_Project1.Engine.Scenes;
 
@@ -28,6 +29,10 @@ public class WinScene : Scene
         };
         objects.Add(_nextSceneButton);
         objects.Add(_quitButton);
+        objects.Add(new SoundSliderUI(pContent.Load<Texture2D>("TestSprite"), manager, game)
+        {
+            Position = new Vector2(100, 100)
+        });
         _winText = "Congratulations, you've beaten the level!";
         font = game.Content.Load<SpriteFont>("UIText");
         _winTextBounds = font.MeasureString(_winText);
