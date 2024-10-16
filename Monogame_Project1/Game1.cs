@@ -7,6 +7,7 @@ global using Microsoft.Xna.Framework.Design;
 global using Microsoft.Xna.Framework.Media;
 global using System.Collections.Generic;
 using Monogame_Project1.Engine;
+using Monogame_Project1.Engine.GameObjects;
 
 namespace Monogame_Project1;
 public class Game1 : Game
@@ -30,6 +31,7 @@ public class Game1 : Game
 
     protected override void LoadContent()
     {
+         AudioManager.Instance.LoadContent(Content);
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         _sceneManager = new SceneManager(_graphics, Content, _spriteBatch, this);
         _sceneManager.Awake();
