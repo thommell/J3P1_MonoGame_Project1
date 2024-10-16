@@ -1,4 +1,4 @@
-﻿global using Microsoft.Xna.Framework;
+global using Microsoft.Xna.Framework;
 global using Microsoft.Xna.Framework.Graphics;
 global using Microsoft.Xna.Framework.Input;
 global using Microsoft.Xna.Framework.Audio;
@@ -31,6 +31,7 @@ public class Game1 : Game
 
     protected override void LoadContent()
     {
+         AudioManager.Instance.LoadContent(Content);
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         // _sceneManager = new SceneManager(_graphics, Content, _spriteBatch, this);
         // _sceneManager.Awake();

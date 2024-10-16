@@ -1,4 +1,4 @@
-﻿using Monogame_Project1.Engine.Scenes;
+using Monogame_Project1.Engine.Scenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
