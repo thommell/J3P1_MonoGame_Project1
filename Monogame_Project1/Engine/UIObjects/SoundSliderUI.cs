@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine.UIObjects;
 
@@ -26,10 +27,9 @@ public class SoundSliderUI : GameObject
 
     private float _currentValue;
 
-    public SoundSliderUI(Texture2D pTexture, SceneManager pManager, Game1 pGame) : base(pTexture)
-    {
-        _game = pGame;
-        _manager = pManager;
+    public SoundSliderUI(Texture2D pTexture) : base(pTexture)
+    { 
+        _game = SceneManagerSingleton.Instance.Game;
     }
 
     public override void LoadContent(ContentManager pContent)

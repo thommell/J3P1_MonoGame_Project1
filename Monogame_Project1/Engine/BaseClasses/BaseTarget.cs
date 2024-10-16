@@ -1,5 +1,6 @@
 ﻿using Monogame_Project1.Engine.GameObjects;
 using System;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine.BaseClasses;
 
@@ -37,9 +38,9 @@ public abstract class BaseTarget : GameObject
     
     #region Constructors
 
-    public BaseTarget(Texture2D pTexture, Game1 pGame) : base(pTexture)
+    public BaseTarget(Texture2D pTexture) : base(pTexture)
     {
-        _game = pGame;
+        _game = SceneManagerSingleton.Instance.Game;
     }
 
     #endregion

@@ -1,6 +1,7 @@
 using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.GameObjects;
 using Monogame_Project1.Engine.Singletons;
+using Monogame_Project1.Engine.UIObjects;
 
 namespace Monogame_Project1.Engine.Scenes;
 
@@ -23,7 +24,7 @@ public class MainMenu : Scene
             Position = new Vector2(_quitButton.Position.X, game.GraphicsDevice.Viewport.Height * 0.3f)
         });
 
-        objects.Add(new SoundSliderUI(pContent.Load<Texture2D>("TestSprite"), manager, game)
+        objects.Add(new SoundSliderUI(pContent.Load<Texture2D>("TestSprite"))
         {
             Position = new Vector2(100, 100)
         });

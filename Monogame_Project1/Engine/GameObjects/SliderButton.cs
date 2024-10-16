@@ -13,7 +13,7 @@ public class SliderButton : Button
     private float _leftSide;
     private float _rightSide;
 
-    public SliderButton(Game1 pGame, SceneManager pSceneManager, Texture2D pTexture, float pLeftSide, float pRightSide) : base(pGame, pSceneManager, pTexture, null) 
+    public SliderButton(Game1 pGame, SceneManager pSceneManager, Texture2D pTexture, float pLeftSide, float pRightSide) : base(pTexture, null) 
     {
         _leftSide = pLeftSide;
         _rightSide = pRightSide;
