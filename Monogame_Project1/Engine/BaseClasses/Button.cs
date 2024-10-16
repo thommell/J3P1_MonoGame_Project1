@@ -1,3 +1,5 @@
+using Monogame_Project1.Engine.Singletons;
+
 namespace Monogame_Project1.Engine.BaseClasses;
 
 #region Enums
@@ -17,7 +19,6 @@ public class Button : GameObject
     #region Variables
 
     protected Game1 game;
-    protected SceneManager manager;
     private ButtonStatus status;
     private readonly SpriteFont font;
     private MouseState currentMouseState;
@@ -30,11 +31,10 @@ public class Button : GameObject
     #endregion
 
     #region Constructor
-    public Button(Game1 pGame, SceneManager pManager, Texture2D pTexture, string text, bool pIsActive = true) : base(pTexture, pIsActive)
+    public Button(Texture2D pTexture, string text, bool pIsActive = true) : base(pTexture, pIsActive)
     {
-        manager = pManager;
-        font = pGame.Content.Load<SpriteFont>("Font");
-        game = pGame;
+        game = SceneManagerSingleton.Instance.Game;
+        font = game.Content.Load<SpriteFont>("Font");
         status = ButtonStatus.Normal;
         Text = text;
     }

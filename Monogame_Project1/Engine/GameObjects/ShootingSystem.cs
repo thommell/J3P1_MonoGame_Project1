@@ -43,7 +43,7 @@ public class ShootingSystem : GameObject
     public void CheckCollision()
     {
         if (!_allowedToKill) return;
-        List<GameObject> targets = _spawningSystem.CurrentTargets;
+        List<GameObject> targets = _spawningSystem.currentTargets;
         GameObject gameObjectHit = targets.FirstOrDefault(target => target.BoundingBox.Contains(_mousePoint) && _hasShot && target.IsActive);
         // Reverse casting to prevent C# type safety issue.
         BaseTarget targetHit = (BaseTarget)gameObjectHit;

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine.GameObjects;
 
@@ -14,7 +15,6 @@ public class Timer : GameObject
     #region Fields
     //timer
     private Game1 _game;
-    private SceneManager _sceneManager;
     private float _time;
     private bool _isRunning;
     private float _startTime;
@@ -49,15 +49,13 @@ public class Timer : GameObject
     #endregion
 
     #region Constructors
-    public Timer(Game1 pGame, SceneManager pSceneManager, float pTime)
+    public Timer(float pTime)
     {
-        _game = pGame;
+        _game = SceneManagerSingleton.Instance.Game;
         _time = pTime;
-        _sceneManager = pSceneManager;
-
         _startTime = _time;
     }
-    public Timer(Game1 pGame, SceneManager pSceneManager, float pTime, float pBarHeight, float pBarWidth, float pOutlineWidth = 10f) : this(pGame, pSceneManager, pTime)
+    public Timer(float pTime, float pBarHeight, float pBarWidth, float pOutlineWidth = 10f) : this(pTime)
     {
         _barHeight = pBarHeight;
         _barWidth = pBarWidth;
@@ -87,7 +85,7 @@ public class Timer : GameObject
     }
     public override void Draw(SpriteBatch pSpriteBatch)
     {
-        SpriteFont font = _game.Content.Load<SpriteFont>("Font");
+        // SpriteFont font = _game.Content.Load<SpriteFont>("Font");
 
         base.Draw(pSpriteBatch);
 
@@ -116,9 +114,9 @@ public class Timer : GameObject
     {
         if (_time <= _startTime * 0.25) return Color.Red;
 
-        else if (_time <= _startTime * 0.50) return Color.Orange;
+        if (_time <= _startTime * 0.50) return Color.Orange;
 
-        else if (_time <= _startTime * 0.75) return Color.Yellow;
+        if (_time <= _startTime * 0.75) return Color.Yellow;
 
         return Color.Green;
     }
