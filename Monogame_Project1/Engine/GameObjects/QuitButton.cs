@@ -5,7 +5,7 @@ namespace Monogame_Project1.Engine.GameObjects;
 
 public class QuitButton : Button
 {
-    public QuitButton(Game1 pGame, SceneManager pManager, Texture2D pTexture, string text) : base(pGame, pManager, pTexture, text) { }
+    public QuitButton(Texture2D pTexture, string text) : base(pTexture, text) { }
     protected override void OnClick()
     {
         Environment.Exit(0);

@@ -18,7 +18,6 @@ public class SceneManager
     private readonly Game1 _game;
     public LevelScene PastLevelScene;
     protected ScoringSystem scoringSystem;
-    public ResultHandlerSingleton resultHandler;
     #endregion
 
     #region Properties
@@ -38,7 +37,6 @@ public class SceneManager
         _contentManager = pContentManager;
         _spriteBatch = pSpriteBatch;
         _game = pGame;
-        ResultHandlerSingleton.Instance.sceneManager = this;
     }
 
     #endregion
@@ -52,17 +50,17 @@ public class SceneManager
         scoringSystem = new ScoringSystem(CurrentScene);
         // LoadScene();
         LoadAllScenes();
-        ResultHandlerSingleton.Instance.GetData();
+       // ResultHandlerSingleton.Instance.GetData();
     }
 
-    public void RestartInitialize() 
-    {
-        _scenesList = CreateSceneList();
-        _currentScene = GetScene<LevelScene>();
-        // LoadScene();
-        // _currentScene.LoadContent(_contentManager);
-        RestartGame();
-    }
+    // public void RestartInitialize() 
+    // {
+    //     _scenesList = CreateSceneList();
+    //     _currentScene = GetScene<LevelScene>();
+    //     // LoadScene();
+    //     // _currentScene.LoadContent(_contentManager);
+    //     RestartGame();
+    // }
     public void Update(GameTime pGameTime) 
     {
         _currentScene.Update(pGameTime);
@@ -131,7 +129,7 @@ public class SceneManager
                 _scenesList[currentSceneIndex] = newSceneInstance;
                 _currentScene = newSceneInstance;
                 _scenesList.Clear();
-                RestartInitialize();
+                // RestartInitialize();
             }
         }
         else
@@ -139,7 +137,7 @@ public class SceneManager
             scoringSystem.ResetScore();
             _currentScene = PastLevelScene;
             _scenesList.Clear();
-            RestartInitialize();
+            // RestartInitialize();
         }
     }
 
@@ -176,22 +174,19 @@ public class SceneManager
     }
     private List<Scene> CreateSceneList()
     {
-        List<Scene> scenes = new List<Scene>
-        {
-            new MainMenu(_game, this),
-            new TestScene(_game, this),
-            // new SpawningScene(_game, this),
-            new LevelSelectionScene(_game, this),
-            new UIScene(_game, this),
-            new WinScene(_game, this),
-            new LoseScene(_game, this),
-            new Level1(_game, this),
-            new Level2(_game, this),
-            new Level3(_game, this),
-            new Level4(_game, this),
-            new Level5(_game, this)
-        };
-        return scenes;
+        // List<Scene> scenes = new List<Scene>
+        // {
+        //     new MainMenu(),
+        //     new LevelSelectionScene(),
+        //     new WinScene(),
+        //     new LoseScene(),
+        //     new Level1(),
+        //     new Level2(),
+        //     new Level3(),
+        //     new Level4(),
+        //     new Level5()
+        // };
+        return null;
     }
 
     #endregion

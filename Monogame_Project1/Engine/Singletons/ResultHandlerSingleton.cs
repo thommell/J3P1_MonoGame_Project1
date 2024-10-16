@@ -13,7 +13,6 @@ public class ResultHandlerSingleton
 
     public Dictionary<LevelScene, Result> sceneResults = new();
     public List<LevelScene> levelScenes = new();
-    public SceneManager sceneManager;
     public LevelSelectionScene levelSelect;
 
     #region Components
@@ -24,11 +23,19 @@ public class ResultHandlerSingleton
     #endregion
     public void GetData()
     {
-        sceneResults = GetNewResults();
-        levelScenes = sceneManager.GetScenes<LevelScene>();
-        levelSelect = sceneManager.GetScene<LevelSelectionScene>();
-        SetResult(sceneManager.GetScene<Level1>(), Result.Win);
+        GetSceneData();
+        levelSelect = SceneManagerSingleton.Instance.GetScene<LevelSelectionScene>();
+        SetResult(SceneManagerSingleton.Instance.GetScene<Level1>(), Result.Win);
     }
+
+    private void GetSceneData()
+    {
+        foreach (var pair in SceneManagerSingleton.Instance.GetScenes<LevelScene>())
+        {
+            sceneResults.Add((LevelScene)pair.Value, Result.Undecided);
+        }
+    }
+
     public void SetResult(LevelScene pLevel, Result pResult)
     {
         if (sceneResults.ContainsKey(pLevel))
@@ -37,39 +44,33 @@ public class ResultHandlerSingleton
             sceneResults[pLevel] = pResult;
         }
         else
-        {
-            Console.WriteLine($"{pLevel} doesn't exit?");
-        }
-
-        if (pLevel == sceneManager.GetScene<Level2>())
-        {
-            
-        }
+            throw new NullReferenceException($"{pLevel} is not a valid level scene!");
     }
     public void ResetData()
     {
-        sceneResults = GetNewResults();
+        sceneResults.Clear();
+        GetSceneData();
     }
 
-    private Dictionary<LevelScene, Result> GetNewResults()
-    {
-        return sceneManager.GetScenes<LevelScene>().ToDictionary(level => level, _ => Result.Undecided);
-    }
+    // private Dictionary<LevelScene, Result> GetNewResults()
+    // {
+    // return SceneManagerSingleton.Instance.GetScenes<LevelScene>(level => level, _ => Result.Undecided);
+    // }
     public void Update(GameTime pGameTime)
     {
-        if (sceneManager.CurrentScene is not LevelScene)
+        if (SceneManagerSingleton.Instance.CurrentScene is not LevelScene)
             return;
-        _currentSpawningSystem = sceneManager.CurrentScene.GetObject<SpawningSystem>();
-        _currentSpawningTimer = sceneManager.CurrentScene.GetObject<Timer>();
+        _currentSpawningSystem = SceneManagerSingleton.Instance.CurrentScene.GetObject<SpawningSystem>();
+        _currentSpawningTimer = SceneManagerSingleton.Instance.CurrentScene.GetObject<Timer>();
 
         if (!_currentSpawningSystem.HasSpawned)
             return;
         if (_currentSpawningTimer.Time <= 0.1f)
-            HandleResult((LevelScene)sceneManager.CurrentScene, Result.Lose);
-        if (_currentSpawningSystem.CurrentTargets.Any(a => a is Target && a.IsActive) && _currentSpawningSystem.HasSpawned) return;
+            HandleResult((LevelScene)SceneManagerSingleton.Instance.CurrentScene, Result.Lose);
+        if (_currentSpawningSystem.currentTargets.Any(a => a is Target && a.IsActive) && _currentSpawningSystem.HasSpawned) return;
         {
             Console.WriteLine("User has finished the level!");
-            HandleResult((LevelScene)sceneManager.CurrentScene, Result.Win);
+            HandleResult((LevelScene)SceneManagerSingleton.Instance.CurrentScene, Result.Win);
         }
     }
     public void HandleResult(LevelScene pScene ,Result pResult)
@@ -90,10 +91,10 @@ public class ResultHandlerSingleton
     private void HandleWinResult()
     {
         _currentSpawningSystem.HasSpawned = false;
-        sceneManager.ChangeScene(sceneManager.GetScene<WinScene>());
+        SceneManagerSingleton.Instance.SwapScene(SceneManagerSingleton.Instance.GetScene<WinScene>());
     }
     private void HandleLoseResult()
     {
-        sceneManager.ChangeScene(sceneManager.GetScene<LoseScene>());
+        SceneManagerSingleton.Instance.SwapScene(SceneManagerSingleton.Instance.GetScene<LoseScene>());
     }
 }

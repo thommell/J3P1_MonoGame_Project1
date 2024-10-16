@@ -1,4 +1,5 @@
 using Monogame_Project1.Engine.BaseClasses;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine.GameObjects
 {
@@ -17,7 +18,7 @@ namespace Monogame_Project1.Engine.GameObjects
 
         public Scene SceneToSwitchTo => _sceneToSwitchTo;
 
-        public SelectionScreenButton(Game1 pGame, SceneManager pManager, Texture2D pTexture, string text, Scene pSceneToSwitchTo, Texture2D pLock, bool pLocked = false) : base(pGame, pManager, pTexture, text)
+        public SelectionScreenButton(Texture2D pTexture, string text, Scene pSceneToSwitchTo, Texture2D pLock, bool pLocked = false) : base(pTexture, text)
         {
             _sceneToSwitchTo = pSceneToSwitchTo;
             _locked = pLocked;
@@ -37,7 +38,7 @@ namespace Monogame_Project1.Engine.GameObjects
         }
         protected override void OnClick()
         {
-            manager.ChangeScene(_sceneToSwitchTo);   
+            SceneManagerSingleton.Instance.SwapScene(_sceneToSwitchTo);   
         }
         public void Unlock()
         {

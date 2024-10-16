@@ -28,14 +28,13 @@ public class ResultHandler : GameObject
         _spawningSystem = spawningSystem;
         _sceneManager = pSceneManager;
         _timer = timer;
-    }
-    public override void Update(GameTime pGameTime)
+    }public override void Update(GameTime pGameTime)
     {
         if (!_spawningSystem.HasSpawned) return;
         
         if (_timer.Time <= 0.1f)
             HandleResult(Result.Lose);
-        if (_spawningSystem.CurrentTargets.Any(a => a is Target && a.IsActive) && _spawningSystem.HasSpawned) return;
+        if (_spawningSystem.currentTargets.Any(a => a is Target && a.IsActive) && _spawningSystem.HasSpawned) return;
         {
             Console.WriteLine("User has finished the level!");
             HandleResult(Result.Win);
