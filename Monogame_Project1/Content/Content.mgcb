@@ -97,6 +97,18 @@
 /processorParam:TextureFormat=Color
 /build:Crosshair.gif
 
+#begin Explosion.gif
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Explosion.gif
+
 #begin FixedCrosshair.gif
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -115,6 +127,18 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Font.spritefont
+
+#begin Gunshot.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Gunshot.mp3
+
+#begin GunshotWav.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:GunshotWav.wav
 
 #begin Lock.gif
 /importer:TextureImporter
@@ -140,6 +164,18 @@
 /processorParam:TextureFormat=Color
 /build:Pixel.png
 
+#begin Potoo.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Potoo.png
+
 #begin Target.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -151,6 +187,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Target.png
+
+#begin TestMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:TestMusic.mp3
 
 #begin TestSprite.gif
 /importer:TextureImporter

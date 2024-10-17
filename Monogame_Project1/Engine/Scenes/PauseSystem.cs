@@ -1,5 +1,9 @@
+using System;
+using System.Xml.Linq;
 using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.GameObjects;
+using Monogame_Project1.Engine.Singletons;
+using Monogame_Project1.Engine.UIObjects;
 
 namespace Monogame_Project1.Engine.Scenes;
 public class PauseSystem : GameObject
@@ -9,35 +13,55 @@ public class PauseSystem : GameObject
     private readonly Texture2D _pixelTexture;
     private KeyboardState _previousKeyboardState;
     private SwitchSceneButton _menuButton;
+    private SoundSliderUI _soundSliderUI;
+    private MusicSliderUI _musicSliderUI;
     private RestartButton _restartButton;
-    private SceneManager _sceneManager;
     private List<GameObject> _pausedObjects = new();
-    public PauseSystem(SpriteFont pFont, Texture2D pTexture, SceneManager pManager)
+    public PauseSystem(SpriteFont pFont, Texture2D pTexture)
     {
         _font = pFont;
         _pixelTexture = pTexture;
         _previousKeyboardState = Keyboard.GetState();
-        _sceneManager = pManager;
         IsPaused = false;
     }
+    public override void LoadContent(ContentManager pContent)
+    {
+        _soundSliderUI = (new SoundSliderUI(SceneManager.Instance.Game.Content.Load<Texture2D>("TestSprite"), "SFX", false)
+        {
+            Position = new Vector2(SceneManager.Instance.Game.GraphicsDevice.Viewport.Width * 0.2f, SceneManager.Instance.Game.GraphicsDevice.Viewport.Height * 0.8f)
+        });
+        _musicSliderUI = (new MusicSliderUI(SceneManager.Instance.Game.Content.Load<Texture2D>("TestSprite"), "Music", false)
+        {
+            Position = new Vector2(SceneManager.Instance.Game.GraphicsDevice.Viewport.Width * 0.6f, SceneManager.Instance.Game.GraphicsDevice.Viewport.Height * 0.8f)
+        });
+        
+        _soundSliderUI.LoadContent(pContent);
+        _musicSliderUI.LoadContent(pContent);
 
+        base.LoadContent(pContent);
+    }
     public override void LateLoad()
     {
-        _menuButton = new SwitchSceneButton(_sceneManager.Game, _sceneManager, _sceneManager.Game.Content.Load<Texture2D>("UI_Tile_128x64"), "Menu",
-            _sceneManager.GetScene<MainMenu>(), false)
+        _menuButton = new SwitchSceneButton(SceneManager.Instance.Game.Content.Load<Texture2D>("UI_Tile_128x64"), "Menu",
+            SceneManager.Instance.GetScene<MainMenu>(), false)
         {
-            Position = new Vector2(_sceneManager.Game.GraphicsDevice.Viewport.Width * 0.5f, _sceneManager.Game.GraphicsDevice.Viewport.Height * 0.5f - 50)
+            Position = new Vector2(SceneManager.Instance.Game.GraphicsDevice.Viewport.Width * 0.5f, SceneManager.Instance.Game.GraphicsDevice.Viewport.Height * 0.5f - 50)
         };
-        _restartButton = new RestartButton(_sceneManager.Game, _sceneManager,
-            _sceneManager.Game.Content.Load<Texture2D>("UI_Tile_128x64"), "Restart", false)
+        _restartButton = new RestartButton(
+            SceneManager.Instance.Game.Content.Load<Texture2D>("UI_Tile_128x64"), "Restart", false)
         {
-            Position = new Vector2(_sceneManager.Game.GraphicsDevice.Viewport.Width * 0.5f,
-                _sceneManager.Game.GraphicsDevice.Viewport.Height * 0.5f + 100)
+            Position = new Vector2(SceneManager.Instance.Game.GraphicsDevice.Viewport.Width * 0.5f,
+                SceneManager.Instance.Game.GraphicsDevice.Viewport.Height * 0.5f + 100)
         };
-        _sceneManager.CurrentScene.Objects.Add(_menuButton);
-        _sceneManager.CurrentScene.Objects.Add(_restartButton);
+
+        SceneManager.Instance.CurrentScene.Objects.Add(_menuButton);
+        SceneManager.Instance.CurrentScene.Objects.Add(_restartButton);
+        SceneManager.Instance.CurrentScene.Objects.Add(_soundSliderUI);
+        SceneManager.Instance.CurrentScene.Objects.Add(_musicSliderUI);
         _pausedObjects.Add(_menuButton);
         _pausedObjects.Add(_restartButton);
+        _pausedObjects.Add(_soundSliderUI);
+        _pausedObjects.Add(_musicSliderUI);
         base.LateLoad();
     }
 
@@ -50,8 +74,10 @@ public class PauseSystem : GameObject
     public override void Update(GameTime pGameTime)
     {
         UpdateState();
-        if (IsPaused)
-            _pausedObjects.ForEach(pausedObject => pausedObject.Update(pGameTime));
+        if (!IsPaused) return;
+        for (int i = 0; i <= _pausedObjects.Count - 1; i++)
+            _pausedObjects[i].Update(pGameTime);
+        SceneManager.Instance.Game.IsMouseVisible = true;
     }
     public override void Draw(SpriteBatch pSpriteBatch)
     {
@@ -60,7 +86,6 @@ public class PauseSystem : GameObject
         _pausedObjects.ForEach(pausedObject => pausedObject.Draw(pSpriteBatch));
         DrawState(pSpriteBatch);
     }
-
     public void UpdateState()
     {
         KeyboardState currentKeyboardState = Keyboard.GetState();
