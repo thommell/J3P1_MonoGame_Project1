@@ -9,7 +9,6 @@ public class Level1 : LevelScene
 {
     public override void LoadContent(ContentManager pContent)
     {
-        AudioManager.Instance.PlayMusic("TestMusic", true);
 
         objects.Add(new SpawningSystem(this,  5, 5));
         objects.Add(new ShootingSystem(this));
@@ -26,7 +25,6 @@ public class Level1 : LevelScene
             Position = new Vector2(game.GraphicsDevice.Viewport.Width - 380, game.GraphicsDevice.Viewport.Height - 150),
         };
 
-        uiObjects.Add(new CrosshairUI(pContent.Load<Texture2D>("FixedCrosshair"), game, Color.Black));
 
         uiObjects.Add(ammoUi);
         uiObjects.Add(scoreUi);

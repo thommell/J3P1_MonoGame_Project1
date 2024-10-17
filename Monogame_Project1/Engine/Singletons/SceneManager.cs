@@ -37,7 +37,11 @@ public sealed class SceneManager
         levelSelectionScene.LateLoad();
         LoadScene();
         ResultHandler.Instance.GetData();
-        pastLevelScene = GetScene<Level1>();
+    }
+
+    public Scene AssignPlayButton()
+    {
+       return GetScene<Level1>();
     }
     public void LoadScene()
     {
@@ -121,7 +125,7 @@ public sealed class SceneManager
             }
         }
     }
-    private void UpdateCrosshairVisibility()
+    public void UpdateCrosshairVisibility()
     {
         if (_currentScene is LevelScene)
             _game.IsMouseVisible = false;
