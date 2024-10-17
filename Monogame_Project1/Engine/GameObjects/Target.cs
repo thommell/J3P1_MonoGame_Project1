@@ -21,14 +21,16 @@ public class Target : BaseTarget
     }
 
     #endregion
-  
-    public override void OnShot()
+
+    public override void OnHit()
     {
         ScoringSystem scoringSystem = _scene.GetObject<ScoringSystem>();
+        AmmoSystem ammoSystem = _scene.GetObject<AmmoSystem>();
 
         scoringSystem.AddScore(ScoreAmount);
+        ammoSystem.ResetAmmo();
 
-        base.OnShot();
+        base.OnHit();
     }
 }
 

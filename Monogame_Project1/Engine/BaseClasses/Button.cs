@@ -1,3 +1,5 @@
+using Monogame_Project1.Engine.Singletons;
+
 namespace Monogame_Project1.Engine.BaseClasses;
 
 #region Enums
@@ -7,7 +9,8 @@ public enum ButtonStatus
     Normal,
     Hovered,
     Pressed,
-    Clicked
+    Clicked,
+    Holded
 }
 
 #endregion
@@ -17,11 +20,11 @@ public class Button : GameObject
     #region Variables
 
     protected Game1 game;
-    protected SceneManager manager;
     private ButtonStatus status;
     private readonly SpriteFont font;
     private MouseState currentMouseState;
     private MouseState previousMouseState;
+    private bool isBeingHeld;
    
     #endregion
     
@@ -30,11 +33,10 @@ public class Button : GameObject
     #endregion
 
     #region Constructor
-    public Button(Game1 pGame, SceneManager pManager, Texture2D pTexture, string text) : base(pTexture)
+    public Button(Texture2D pTexture, string text, bool pIsActive = true) : base(pTexture, pIsActive)
     {
-        manager = pManager;
-        font = pGame.Content.Load<SpriteFont>("Font");
-        game = pGame;
+        game = SceneManager.Instance.Game;
+        font = game.Content.Load<SpriteFont>("Font");
         status = ButtonStatus.Normal;
         Text = text;
     }
@@ -44,20 +46,31 @@ public class Button : GameObject
 
     public override void Update(GameTime pGameTime)
     {
+        ButtonStatus previousButtonStatus = status;
         previousMouseState = currentMouseState;
         currentMouseState = Mouse.GetState();
     
-        Rectangle _mouseRectangle = new(currentMouseState.X, currentMouseState.Y, 1, 1);
+        Rectangle mouseRectangle = new(currentMouseState.X, currentMouseState.Y, 1, 1);
     
-        if (_mouseRectangle.Intersects(BoundingBox))
+        if (mouseRectangle.Intersects(BoundingBox) && currentMouseState.LeftButton == ButtonState.Released)
             OnHover();
     
-        if (!_mouseRectangle.Intersects(BoundingBox))
+        if (!mouseRectangle.Intersects(BoundingBox))
             OnNormal();
     
-        if (_mouseRectangle.Intersects(BoundingBox) && currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
+        if (mouseRectangle.Intersects(BoundingBox) && currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
             OnClick();
-    
+
+        if (currentMouseState.LeftButton == ButtonState.Released)
+            isBeingHeld = false;
+
+        if (mouseRectangle.Intersects(BoundingBox) && currentMouseState.LeftButton == ButtonState.Pressed && previousButtonStatus == ButtonStatus.Hovered)
+            isBeingHeld = true;
+
+        if (isBeingHeld)
+            OnHold();
+      
+       
         base.Update(pGameTime);
     }
 
@@ -65,7 +78,7 @@ public class Button : GameObject
     {
         switch (status)
         {
-            case ButtonStatus.Normal:
+            case ButtonStatus.Normal: 
                 color = Color.White;
                 break;
             case ButtonStatus.Hovered:
@@ -73,6 +86,9 @@ public class Button : GameObject
                 break;
             case ButtonStatus.Pressed:
                 color = Color.Red;
+                break;
+            case ButtonStatus.Holded:
+                color = Color.Green;
                 break;
         }
     
@@ -94,7 +110,11 @@ public class Button : GameObject
     {
         status = ButtonStatus.Pressed;
     }
-    protected void OnHover()
+    protected virtual void OnHold()
+    {
+        status = ButtonStatus.Holded;
+    }
+    protected virtual void OnHover()
     {
         status = ButtonStatus.Hovered;
     }
