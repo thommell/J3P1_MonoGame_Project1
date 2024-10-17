@@ -5,12 +5,13 @@ using Monogame_Project1.Engine.UIObjects;
 
 namespace Monogame_Project1.Engine.Scenes;
 
-public class Level1 : LevelScene
+public class WaveSpawnTestScene : LevelScene
 {
     public override void LoadContent(ContentManager pContent)
     {
         objects.Add(new SpawningSystem(this));
         objects.Add(new ShootingSystem(this));
+        objects.Add(new AnimationsPlayer());
         objects.Add(SceneManager.Instance.ScoringSystem);
         objects.Add(new AmmoSystem(3));
         objects.Add(new Timer(10f));
@@ -25,9 +26,8 @@ public class Level1 : LevelScene
         };
 
         uiObjects.Add(new CrosshairUI(pContent.Load<Texture2D>("FixedCrosshair"), game, Color.Black));
-
         uiObjects.Add(ammoUi);
         uiObjects.Add(scoreUi);
-        base.LoadContent(pContent);
+        base.LoadContent(pContent); 
     }
 }

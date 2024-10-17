@@ -1,6 +1,7 @@
 using System;
 using Monogame_Project1.Engine.GameObjects;
 using Monogame_Project1.Engine.Scenes;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine.BaseClasses;
 
@@ -22,8 +23,15 @@ public class LevelScene : Scene
     }
     public override void Update(GameTime pGameTime)
     {
+        WaveManager.Instance.Update();
         if (!_pauseSystem.IsPaused) 
             base.Update(pGameTime);
         _pauseSystem.Update(pGameTime);
+    }
+
+    public override void Draw(SpriteBatch pSpriteBatch)
+    {
+        WaveManager.Instance.Draw();
+        base.Draw(pSpriteBatch);
     }
 }

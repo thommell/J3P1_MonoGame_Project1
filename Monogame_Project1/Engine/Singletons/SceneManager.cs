@@ -30,7 +30,7 @@ public sealed class SceneManager
     public void Awake()
     {
         CreateScenes(ref _scenesDictionary);
-        _currentScene = GetScene<MainMenu>();
+        _currentScene = GetScene<WaveSpawnTestScene>();
         levelSelectionScene = GetScene<LevelSelectionScene>();
         scoringSystem = new ScoringSystem(CurrentScene);
         levelSelectionScene.LoadContent(Game.Content);
@@ -38,6 +38,7 @@ public sealed class SceneManager
         LoadScene();
         ResultHandler.Instance.GetData();
         pastLevelScene = GetScene<Level1>();
+        WaveManager.Instance.Initialize(_currentScene);
     }
     public void LoadScene()
     {
@@ -46,6 +47,8 @@ public sealed class SceneManager
         _currentScene.LateLoad();
     }
     public void Update(GameTime pGameTime) => _currentScene.Update(pGameTime);
+    
+
     public void Draw(SpriteBatch pSpriteBatch) => _currentScene.Draw(pSpriteBatch);
     public void SwapScene(Scene pScene)
     {
@@ -61,7 +64,6 @@ public sealed class SceneManager
     }
     private void SetScene(Scene pScene)
     {
-        
         _currentScene = pScene;
         if (pScene is not LevelSelectionScene)
         {
@@ -109,6 +111,7 @@ public sealed class SceneManager
         pScenesDictionary.Add("WinScene", new WinScene());
         pScenesDictionary.Add("LoseScene", new LoseScene());
         pScenesDictionary.Add("LevelSelectScene", new LevelSelectionScene());
+        pScenesDictionary.Add("WaveTest", new WaveSpawnTestScene());
         AssignSceneNames();
         return;
 
