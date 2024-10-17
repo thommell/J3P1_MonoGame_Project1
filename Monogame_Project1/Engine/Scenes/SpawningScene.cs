@@ -31,18 +31,4 @@ public class SpawningScene : LevelScene
         uiObjects.Add(scoreUI);
         base.LoadContent(pContent);
     }
-    public override void Draw(SpriteBatch pSpriteBatch)
-    {
-        base.Draw(pSpriteBatch);
-        pSpriteBatch.DrawString(
-            game.Content.Load<SpriteFont>("Font"),
-            "Press space to spawn objects!",
-            new Vector2(game.GraphicsDevice.Viewport.Height * 0.5f + 300f,
-                game.GraphicsDevice.Viewport.Height * 0.9f),
-            Color.White);
-        pSpriteBatch.DrawString(
-            game.Content.Load<SpriteFont>("Font"),
-            manager.ScoringSystem.CurrentScore.ToString(),
-            new Vector2(64, 64), Color.White);
-    }
 }
