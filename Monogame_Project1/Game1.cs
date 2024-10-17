@@ -1,4 +1,4 @@
-﻿global using Microsoft.Xna.Framework;
+global using Microsoft.Xna.Framework;
 global using Microsoft.Xna.Framework.Graphics;
 global using Microsoft.Xna.Framework.Input;
 global using Microsoft.Xna.Framework.Audio;
@@ -7,13 +7,15 @@ global using Microsoft.Xna.Framework.Design;
 global using Microsoft.Xna.Framework.Media;
 global using System.Collections.Generic;
 using Monogame_Project1.Engine;
+using Monogame_Project1.Engine.GameObjects;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1;
 public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    private SceneManager _sceneManager;
+    // private SceneManager _sceneManager;
 
     public static int ScreenWidth = 1920;
     public static int ScreenHeight = 1080;
@@ -31,28 +33,26 @@ public class Game1 : Game
 
     protected override void LoadContent()
     {
+         AudioManager.Instance.LoadContent(Content);
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        _sceneManager = new SceneManager(_graphics, Content, _spriteBatch, this);
-        _sceneManager.Awake();
-
-        bottomBorder = new Rectangle(0, 1080 - 167, 1920, 167);
+        // _sceneManager = new SceneManager(_graphics, Content, _spriteBatch, this);
+        // _sceneManager.Awake();
+        SceneManagerSingleton.Instance.Game = this;
+        SceneManagerSingleton.Instance.Awake();
     }
-
     protected override void Update(GameTime gameTime)
     {
-        //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-        //    Exit();
-        _sceneManager.Update(gameTime);
+        // _sceneManager.Update(gameTime);
+        SceneManagerSingleton.Instance.Update(gameTime);
+        ResultHandlerSingleton.Instance.Update(gameTime);
         base.Update(gameTime);
     }
-
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
-        _spriteBatch.Draw(Content.Load<Texture2D>("Background"), new Vector2(0, 0), Color.White);
-        _spriteBatch.Draw(Content.Load<Texture2D>("Pixel"), bottomBorder, Color.Gray * 0f);
-        _sceneManager.Draw(_spriteBatch);
+        // _sceneManager.Draw(_spriteBatch);
+        SceneManagerSingleton.Instance.Draw(_spriteBatch);
         _spriteBatch.End();
         base.Draw(gameTime);
     }
