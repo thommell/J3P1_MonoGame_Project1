@@ -7,7 +7,6 @@ global using Microsoft.Xna.Framework.Design;
 global using Microsoft.Xna.Framework.Media;
 global using System.Collections.Generic;
 using Monogame_Project1.Engine;
-using Monogame_Project1.Engine.GameObjects;
 using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1;

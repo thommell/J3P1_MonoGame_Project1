@@ -176,6 +176,12 @@
 /processorParam:TextureFormat=Color
 /build:Target.png
 
+#begin TestMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:TestMusic.mp3
+
 #begin TestSprite.gif
 /importer:TextureImporter
 /processor:TextureProcessor

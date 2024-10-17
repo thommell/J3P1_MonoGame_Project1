@@ -28,6 +28,10 @@ public class MainMenu : Scene
         {
             Position = new Vector2(100, 100)
         });
+        objects.Add(new MusicSliderUI(pContent.Load<Texture2D>("TestSprite"))
+        {
+            Position = new Vector2(100, 250)
+        });
 
         base.LoadContent(pContent);
     }
