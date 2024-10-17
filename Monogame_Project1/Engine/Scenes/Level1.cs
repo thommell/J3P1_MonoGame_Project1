@@ -1,21 +1,20 @@
 using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.GameObjects;
+using Monogame_Project1.Engine.Singletons;
 using Monogame_Project1.Engine.UIObjects;
 
 namespace Monogame_Project1.Engine.Scenes;
 
 public class Level1 : LevelScene
 {
-    public Level1(Game1 pGame, SceneManager pManager) : base(pGame, pManager)
-    { }
-
     public override void LoadContent(ContentManager pContent)
     {
-        objects.Add(new SpawningSystem(this, game, manager, 5, 5));
+        objects.Add(new SpawningSystem(this,  5, 5));
         objects.Add(new ShootingSystem(this));
-        objects.Add(manager.ScoringSystem);
+        objects.Add(SceneManager.Instance.ScoringSystem);
         objects.Add(new AmmoSystem(3));
-        objects.Add(new Timer(game, manager, 10f));
+        objects.Add(new Timer(10f));
+        objects.Add(new AnimationsPlayer());
         UIObject scoreUi = new ScoreUI(pContent.Load<Texture2D>("BrokenTarget"), game, this)
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width - 370, 30)           

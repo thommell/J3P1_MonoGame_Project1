@@ -1,33 +1,29 @@
 using System;
 using System.Linq;
 using Monogame_Project1.Engine.BaseClasses;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine.GameObjects;
 
 public class SpawningSystem : GameObject
 {
     private readonly Scene _scene;
-    private readonly Game1 _game;
     private KeyboardState _kb;
-    public List<GameObject> CurrentTargets = new();
+    public List<GameObject> currentTargets = new();
     private ShootingSystem _shootingSystem;
-    private SceneManager _sceneManager;
     private readonly int _amountToSpawn;
     private readonly int _fakesAmount;
     private bool _hasSpawned;
-
     public bool HasSpawned
     {
         get => _hasSpawned;
         set => _hasSpawned = value;
     }
-    public SpawningSystem(Scene pScene, Game1 pGame, SceneManager sceneManager, int pAmountToSpawn, int pFakesAmount)
+    public SpawningSystem(Scene pScene, int pAmountToSpawn, int pFakesAmount)
     {
         _scene = pScene;
-        _game = pGame;
         _amountToSpawn = pAmountToSpawn;
         _fakesAmount = pFakesAmount;
-        _sceneManager = sceneManager;
     }
     public override void LateLoad()
     {
@@ -36,10 +32,9 @@ public class SpawningSystem : GameObject
     }
     public override void Update(GameTime pGameTime)
     {
-        if (CurrentTargets.Count <= 0) return;
+        if (currentTargets.Count <= 0) return;
         _shootingSystem.CheckCollision();
     }
-
     public void StartSpawner()
     {
         CreateNewTargets();
@@ -51,7 +46,7 @@ public class SpawningSystem : GameObject
     { 
         for (int i = 0; i < _amountToSpawn; i++)
         {
-            Target newTarget = new Target(_game.Content.Load<Texture2D>("Target"), _scene, 2)
+            Target newTarget = new Target(SceneManager.Instance.Game.Content.Load<Texture2D>("Target"), _scene, 2)
             {
                 Position = GetPosition()
             };
@@ -59,12 +54,12 @@ public class SpawningSystem : GameObject
             newTarget.MovementSystem = CreateMovement(newTarget);
             
             _scene.Objects.Add(newTarget); 
-            CurrentTargets.Add(newTarget);
+            currentTargets.Add(newTarget);
         }
 
         for (int i = 0; i < _fakesAmount; i++)
         {
-            FakeTarget newTarget = new FakeTarget(_game.Content.Load<Texture2D>("Bomb"), _sceneManager)
+            FakeTarget newTarget = new FakeTarget(SceneManager.Instance.Game.Content.Load<Texture2D>("Bomb"))
             {
                 Position = GetPosition(),
                 Color = Color.Green
@@ -72,7 +67,7 @@ public class SpawningSystem : GameObject
             
             newTarget.MovementSystem = CreateMovement(newTarget);            
             _scene.Objects.Add(newTarget);
-            CurrentTargets.Add(newTarget);
+            currentTargets.Add(newTarget);
             _hasSpawned = true;
         }
     }
@@ -81,16 +76,16 @@ public class SpawningSystem : GameObject
     /// </summary>
     private void CreateNewTargets()
     {
-        _scene.DeactivateObjects(CurrentTargets);
-        CurrentTargets.Clear();
+        _scene.DeactivateObjects(currentTargets);
+        currentTargets.Clear();
         SpawnTargets();
     }
     public Vector2 GetPosition()
     {
         Random random = new();
 
-        return new(random.Next(64, _game.GraphicsDevice.Viewport.Width - 64),
-            random.Next(64, _game.GraphicsDevice.Viewport.Height - 64)
+        return new(random.Next(64, SceneManager.Instance.Game.GraphicsDevice.Viewport.Width - 64),
+            random.Next(64, SceneManager.Instance.Game.GraphicsDevice.Viewport.Height - 64)
         ); 
     }
 
@@ -100,7 +95,7 @@ public class SpawningSystem : GameObject
         int[] speedValues = { 100, 350 };
         int[] elapsedValues = { 1, 5 };
 
-        return new TargetMovement(pOwner, GetElapsedTime(), GetMovementSpeed(), _game);
+        return new TargetMovement(pOwner, GetElapsedTime(), GetMovementSpeed());
 
         float GetElapsedTime() 
         {

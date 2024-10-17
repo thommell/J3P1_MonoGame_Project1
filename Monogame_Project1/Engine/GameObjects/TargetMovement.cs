@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using Monogame_Project1.Engine.BaseClasses;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine.GameObjects;
 
@@ -14,14 +15,12 @@ public class TargetMovement
     private double _elapsedTime; 
     private const double ChangeInterval = 1.0;
     private float _speed;
-    private Game1 _game;
-    public TargetMovement(BaseTarget pOwner, double elapsedTime, float pSpeed, Game1 pGame)
+    public TargetMovement(BaseTarget pOwner, double elapsedTime, float pSpeed)
     {
         _owner = pOwner;
         _elapsedTime = elapsedTime;
         _speed = pSpeed;
         _direction = GetRandomDirection();
-        _game = pGame;
     }
     
     private static readonly Vector2[] Directions =
@@ -61,13 +60,13 @@ public class TargetMovement
     private void ClampTarget()
     {
         // If the target goes out of bounds, invert direction
-        if (_owner.Position.X < 0 + _owner.Origin.X || _owner.Position.X > _game.GraphicsDevice.Viewport.Width - _owner.Origin.X)
+        if (_owner.Position.X < 0 + _owner.Origin.X || _owner.Position.X > SceneManager.Instance.Game.GraphicsDevice.Viewport.Width - _owner.Origin.X)
         {
             _direction.X = -_direction.X; // Invert X direction
             _elapsedTime = 0.0;
         }
         
-        if (_owner.Position.Y < 0 + _owner.Origin.Y || _owner.Position.Y > _game.GraphicsDevice.Viewport.Height - _owner.Origin.Y)
+        if (_owner.Position.Y < 0 + _owner.Origin.Y || _owner.Position.Y > SceneManager.Instance.Game.GraphicsDevice.Viewport.Height - _owner.Origin.Y)
         {
             _direction.Y = -_direction.Y; // Invert Y direction
             _elapsedTime = 0.0;

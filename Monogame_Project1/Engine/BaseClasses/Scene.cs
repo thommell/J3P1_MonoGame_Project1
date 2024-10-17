@@ -1,21 +1,33 @@
-﻿using Monogame_Project1.Engine.GameObjects;
+﻿using System;
+using Monogame_Project1.Engine.GameObjects;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine.BaseClasses;
 
 public abstract class Scene
 {
     #region Variables
-    
     protected Game1 game;
-    protected SceneManager manager;
     protected List<GameObject> objects = new();
     protected List<UIObject> uiObjects = new();
     protected SpriteFont font;
+    protected string sceneName;
     #endregion
     
     #region Properties
     
     public bool IsLoaded { get; set; }
+
+    public string SceneName
+    {
+        get => sceneName;
+        set
+        {
+            if (sceneName != null)
+                throw new Exception("The scene already has a name!");
+            sceneName = value.ToLower();
+        }
+    }
 
     public List<GameObject> Objects => objects;
     
@@ -23,11 +35,16 @@ public abstract class Scene
 
     #region Constructor
 
-    public Scene(Game1 pGame, SceneManager pManager)
+    // public Scene(Game1 pGame, SceneManager pManager)
+    // {
+    //     // game = pGame;
+    //     // manager = pManager;
+    //     // font = game.Content.Load<SpriteFont>("UIText");
+    // }
+    public Scene()
     {
-        game = pGame;
-        manager = pManager;
-        font = game.Content.Load<SpriteFont>("UIText");
+        font = SceneManager.Instance.Game.Content.Load<SpriteFont>("UIText");
+        game = SceneManager.Instance.Game;
     }
 
     #endregion
@@ -47,6 +64,11 @@ public abstract class Scene
             if (!uiObjects[i].IsActive) continue;
                 uiObjects[i].LoadContent(pContent);
         }
+    }
+    public void UnloadScene()
+    {
+        Console.WriteLine($"Unloading {SceneManager.Instance.CurrentScene.SceneName}");
+        objects.Clear();
     }
     public virtual void LateLoad()
     {
@@ -103,15 +125,6 @@ public abstract class Scene
                 objectHolder.Add(obj);
         return objectHolder;
     }
-
-    // public Dictionary<Scene, GameObject> GetObjects<TScene, TGameObject>() 
-    //     where TScene : Scene
-    //     where TGameObject : GameObject
-    // {
-    //     Dictionary<TScene, TGameObject> objectHolder = new Dictionary<TScene, TGameObject>();
-    //     return objectHolder; 
-    // }
-
     public T GetUIObject<T>() where T : UIObject
     {
         for (int i = 0; i < uiObjects.Count; i++)
