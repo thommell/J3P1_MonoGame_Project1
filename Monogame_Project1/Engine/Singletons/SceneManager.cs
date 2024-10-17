@@ -17,6 +17,7 @@ public sealed class SceneManager
     private Game1 _game;
     
     public LevelScene pastLevelScene;
+    public LevelSelectionScene levelSelectionScene;
     public ScoringSystem scoringSystem;
     public Scene CurrentScene => _currentScene;
 
@@ -30,7 +31,10 @@ public sealed class SceneManager
     {
         CreateScenes(ref _scenesDictionary);
         _currentScene = GetScene<MainMenu>();
+        levelSelectionScene = GetScene<LevelSelectionScene>();
         scoringSystem = new ScoringSystem(CurrentScene);
+        levelSelectionScene.LoadContent(Game.Content);
+        levelSelectionScene.LateLoad();
         LoadScene();
         ResultHandler.Instance.GetData();
         pastLevelScene = GetScene<Level1>();
@@ -57,9 +61,13 @@ public sealed class SceneManager
     }
     private void SetScene(Scene pScene)
     {
+        
         _currentScene = pScene;
-        pScene.UnloadScene();
-        LoadScene();
+        if (pScene is not LevelSelectionScene)
+        {
+            pScene.UnloadScene();
+            LoadScene();
+        }
         UpdateCrosshairVisibility();
     }
     public void RestartLevel(LevelScene pScene)

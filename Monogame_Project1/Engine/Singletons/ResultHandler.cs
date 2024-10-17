@@ -15,6 +15,7 @@ public class ResultHandler
     public Dictionary<LevelScene, Results> sceneResults = new();
     public List<LevelScene> levelScenes = new();
     public LevelSelectionScene levelSelect;
+    private List<SelectionScreenButton> _buttons;
 
     #region Components
 
@@ -26,6 +27,7 @@ public class ResultHandler
     {
         GetSceneData();
         levelSelect = SceneManager.Instance.GetScene<LevelSelectionScene>();
+        _buttons = levelSelect.GetObjects<SelectionScreenButton>();
         SetResult(SceneManager.Instance.GetScene<Level1>(), Results.Win);
     }
 
@@ -43,10 +45,39 @@ public class ResultHandler
         {
             // Change the Result (value) of the contained key (pLevel) to pResult.
             sceneResults[pLevel] = pResult;
+            UpdateLocks();
         }
         else
             throw new NullReferenceException($"{pLevel} is not a valid level scene!");
     }
+
+    private void UpdateLocks()
+    {
+        var scenes = SceneManager.Instance.GetScenes<LevelScene>(); 
+
+        int i = 0; 
+        
+        foreach (var entry in scenes)
+        {
+            var scene = entry.Value;
+            if (scene is not LevelScene currentScene) continue;
+            if (!sceneResults.TryGetValue(SceneManager.Instance.pastLevelScene = currentScene, out Results result) || 
+                result != Results.Win) 
+            {
+                continue;
+            }
+            if (i < _buttons.Count)
+            {
+                _buttons[i].Unlock();
+                if (i + 1 < _buttons.Count)
+                {
+                    Console.WriteLine($"Button: {_buttons[i + 1].SceneToSwitchTo} is locked: {_buttons[i + 1].IsLocked}");
+                }
+            }
+            i++; 
+        } 
+    }
+
     public void ResetData()
     {
         sceneResults.Clear();
@@ -80,7 +111,7 @@ public class ResultHandler
             case Results.Lose:
                 HandleLoseResult();
                 break;
-            case Results.Undecided:
+            default:
                 return;
         }
     }

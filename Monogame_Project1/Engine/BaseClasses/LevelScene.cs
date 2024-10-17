@@ -11,6 +11,7 @@ public class LevelScene : Scene
     public override void LoadContent(ContentManager pContent)
     {
         objects.Add(new PauseSystem(pContent.Load<SpriteFont>("Font"), pContent.Load<Texture2D>("Pixel")));
+        objects.Add(new AnimationsPlayer());
         objects.Add(new TimeSystem(3f, GetObject<SpawningSystem>(), GetObject<Timer>(), font));
         base.LoadContent(pContent);
     }
