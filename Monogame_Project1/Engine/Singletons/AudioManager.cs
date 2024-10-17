@@ -33,7 +33,7 @@ public class AudioManager
         //for music use Mp3-files
 
         _musics.Add("TestMusic", pContent.Load<Song>("TestMusic"));
-
+        _musics.Add("MenuMusic", pContent.Load<Song>("Menu"));
     }
     public void PlaySound(string pSoundName, float pPitch = 0f)
     {
