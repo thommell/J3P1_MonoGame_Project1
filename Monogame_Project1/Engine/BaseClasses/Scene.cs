@@ -34,13 +34,6 @@ public abstract class Scene
     #endregion
 
     #region Constructor
-
-    // public Scene(Game1 pGame, SceneManager pManager)
-    // {
-    //     // game = pGame;
-    //     // manager = pManager;
-    //     // font = game.Content.Load<SpriteFont>("UIText");
-    // }
     public Scene()
     {
         font = SceneManager.Instance.Game.Content.Load<SpriteFont>("UIText");
