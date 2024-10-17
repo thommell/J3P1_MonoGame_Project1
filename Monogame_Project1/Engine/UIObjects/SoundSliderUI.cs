@@ -29,7 +29,7 @@ public class SoundSliderUI : GameObject
 
     public SoundSliderUI(Texture2D pTexture) : base(pTexture)
     { 
-        _game = SceneManagerSingleton.Instance.Game;
+        _game = SceneManager.Instance.Game;
     }
 
     public override void LoadContent(ContentManager pContent)
@@ -41,7 +41,7 @@ public class SoundSliderUI : GameObject
 
         _outline = new Rectangle(_recForeGround.Location.X - (int)_outlineWidth / 2, _recForeGround.Location.Y - (int)_outlineWidth / 2, (int)_barWidth + (int)_outlineWidth, (int)_barHeight + (int)_outlineWidth);
 
-        _slider = new SliderButton(_game, _manager, pContent.Load<Texture2D>("UI_Tile_64x64"), position.X, position.X + _recForeGround.Width)
+        _slider = new SliderButton(pContent.Load<Texture2D>("UI_Tile_64x64"), position.X, position.X + _recForeGround.Width)
         {
             Position = new Vector2(position.X + (_currentValue * _recForeGround.Width), position.Y + (_recForeGround.Height / 2))
         };

@@ -1,3 +1,4 @@
+using System;
 using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.Singletons;
 
@@ -7,7 +8,7 @@ namespace Monogame_Project1.Engine.GameObjects
     {
         private Texture2D _lock;
 
-        private Scene _sceneToSwitchTo;
+        private LevelScene _sceneToSwitchTo;
         private bool _locked;
 
         public bool IsLocked
@@ -16,9 +17,9 @@ namespace Monogame_Project1.Engine.GameObjects
             set => _locked = value;
         }
 
-        public Scene SceneToSwitchTo => _sceneToSwitchTo;
+        public LevelScene SceneToSwitchTo => _sceneToSwitchTo;
 
-        public SelectionScreenButton(Texture2D pTexture, string text, Scene pSceneToSwitchTo, Texture2D pLock, bool pLocked = false) : base(pTexture, text)
+        public SelectionScreenButton(Texture2D pTexture, string text, LevelScene pSceneToSwitchTo, Texture2D pLock, bool pLocked = false) : base(pTexture, text)
         {
             _sceneToSwitchTo = pSceneToSwitchTo;
             _locked = pLocked;
@@ -26,7 +27,11 @@ namespace Monogame_Project1.Engine.GameObjects
         }
         public override void Update(GameTime pGameTime)
         {
-            if (_locked) return;
+            if (_locked)
+            {
+                Console.WriteLine(IsLocked);
+                return;
+            }
 
             base.Update(pGameTime);
         }
@@ -38,7 +43,7 @@ namespace Monogame_Project1.Engine.GameObjects
         }
         protected override void OnClick()
         {
-            SceneManagerSingleton.Instance.SwapScene(_sceneToSwitchTo);   
+            SceneManager.Instance.SwapScene(_sceneToSwitchTo);   
         }
         public void Unlock()
         {

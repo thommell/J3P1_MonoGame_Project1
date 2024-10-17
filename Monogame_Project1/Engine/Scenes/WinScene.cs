@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using Monogame_Project1.Engine.BaseClasses;
+using Monogame_Project1.Engine.Enums;
 using Monogame_Project1.Engine.GameObjects;
 using Monogame_Project1.Engine.Singletons;
 using Monogame_Project1.Engine.UIObjects;
@@ -17,7 +18,7 @@ public class WinScene : Scene
     public override void LoadContent(ContentManager pContent)
     {
         _nextSceneButton = new SwitchSceneButton(game.Content.Load<Texture2D>("UI_Tile_128x64"),
-            "Next Level", SceneManagerSingleton.Instance.GetScene<LevelSelectionScene>())
+            "Next Level", SceneManager.Instance.GetScene<LevelSelectionScene>())
             {
                 Position = new Vector2(game.GraphicsDevice.Viewport.Width / 2, game.GraphicsDevice.Viewport.Height / 3),
             };
@@ -34,8 +35,8 @@ public class WinScene : Scene
         _winText = "Congratulations, you've beaten the level!";
         font = game.Content.Load<SpriteFont>("UIText");
         _winTextBounds = font.MeasureString(_winText);
-        if (SceneManagerSingleton.Instance.pastLevelScene != null)
-            ResultHandlerSingleton.Instance.SetResult(SceneManagerSingleton.Instance.pastLevelScene, Result.Win);
+        if (SceneManager.Instance.pastLevelScene != null)
+            ResultHandler.Instance.SetResult(SceneManager.Instance.pastLevelScene, Results.Win);
         base.LoadContent(pContent);
     }
 
@@ -47,7 +48,7 @@ public class WinScene : Scene
     }
     private void DrawText(SpriteBatch pSpriteBatch)
     {
-        pSpriteBatch.DrawString(font, $"Your score is: {SceneManagerSingleton.Instance.ScoringSystem.CurrentScore.ToString()}", new Vector2(game.GraphicsDevice.Viewport.Width / 2 - _winTextBounds.X * 0.5f, game.GraphicsDevice.Viewport.Height / 3), Color.White);
+        pSpriteBatch.DrawString(font, $"Your score is: {SceneManager.Instance.ScoringSystem.CurrentScore.ToString()}", new Vector2(game.GraphicsDevice.Viewport.Width / 2 - _winTextBounds.X * 0.5f, game.GraphicsDevice.Viewport.Height / 3), Color.White);
         pSpriteBatch.DrawString(font, _winText, new Vector2(game.GraphicsDevice.Viewport.Width / 2 - _winTextBounds.X * 0.5f, game.GraphicsDevice.Viewport.Height / 1.5f), Color.White);
     }
 }

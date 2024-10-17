@@ -26,7 +26,7 @@ public class LoseScene : Scene
         objects.Add(_restartButton);
         
         _loseTextBounds = font.MeasureString(LoseText);
-        _scoreTextBounds = font.MeasureString($"Your score was {SceneManagerSingleton.Instance.ScoringSystem.CurrentScore}");
+        _scoreTextBounds = font.MeasureString($"Your score was {SceneManager.Instance.ScoringSystem.CurrentScore}");
         
         base.LoadContent(pContent);
     }
@@ -37,7 +37,7 @@ public class LoseScene : Scene
     }
     private void DrawText(SpriteBatch pSpriteBatch)
     {
-        pSpriteBatch.DrawString(font, $"Your score was: {SceneManagerSingleton.Instance.ScoringSystem.CurrentScore.ToString()}", new Vector2(game.GraphicsDevice.Viewport.Width / 2 - _scoreTextBounds.X * 0.5f, game.GraphicsDevice.Viewport.Height / 8), Color.White);
+        pSpriteBatch.DrawString(font, $"Your score was: {SceneManager.Instance.ScoringSystem.CurrentScore.ToString()}", new Vector2(game.GraphicsDevice.Viewport.Width / 2 - _scoreTextBounds.X * 0.5f, game.GraphicsDevice.Viewport.Height / 8), Color.White);
         pSpriteBatch.DrawString(font, "You've lost.", new Vector2(game.GraphicsDevice.Viewport.Width / 2 - _loseTextBounds.X * 0.5f, game.GraphicsDevice.Viewport.Height / 1.25f), Color.White);
     }
 }

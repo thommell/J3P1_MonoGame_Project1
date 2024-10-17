@@ -3,111 +3,101 @@ using System.Linq;
 using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.Singletons;
 
-namespace Monogame_Project1.Engine.GameObjects;
-
-public class SpawningSystem : GameObject
+namespace Monogame_Project1.Engine.GameObjects
 {
-    private readonly Scene _scene;
-    private KeyboardState _kb;
-    public List<GameObject> currentTargets = new();
-    private ShootingSystem _shootingSystem;
-    private readonly int _amountToSpawn;
-    private readonly int _fakesAmount;
-    private bool _hasSpawned;
-    public bool HasSpawned
+    public class SpawningSystem : GameObject
     {
-        get => _hasSpawned;
-        set => _hasSpawned = value;
-    }
+        private readonly Scene _scene;
+        private ShootingSystem _shootingSystem;
+        private bool _hasSpawned;
+        public bool HasSpawned { get { return _hasSpawned; }set { _hasSpawned = value; } }
+        public List<GameObject> currentTargets = new();
 
-    public SpawningSystem(Scene pScene, int pAmountToSpawn, int pFakesAmount)
-    {
-        _scene = pScene;
-        _amountToSpawn = pAmountToSpawn;
-        _fakesAmount = pFakesAmount;
-    }
-    public override void LateLoad()
-    {
-        _shootingSystem = _scene.GetObject<ShootingSystem>();
-        base.LateLoad();
-    }
-    public override void Update(GameTime pGameTime)
-    {
-        if (currentTargets.Count <= 0) return;
-        _shootingSystem.CheckCollision();
-    }
-    public void StartSpawner()
-    {
-        CreateNewTargets();
-    }
-    /// <summary>
-    /// Spawns new Targets and adds them to the current scene's objects and CurrentTargets' list.
-    /// </summary>
-    private void SpawnTargets()
-    {
-        Random _random = new Random();
-        for (int i = 0; i < _amountToSpawn; i++)
+        public SpawningSystem(Scene pScene)
         {
-            string texture = _random.Next(100) < 5 ? "Potoo" : "Target";
-            Target newTarget = new Target(SceneManagerSingleton.Instance.Game.Content.Load<Texture2D>(texture), _scene, 2)
-            {
-                Position = GetPosition()
-            };
-            // Temp Fix
-            newTarget.MovementSystem = CreateMovement(newTarget);
-            
-            _scene.Objects.Add(newTarget); 
-            currentTargets.Add(newTarget);
+            _scene = pScene;
         }
 
-        for (int i = 0; i < _fakesAmount; i++)
+        public override void LateLoad()
         {
-            string texture = _random.Next(2) == 0 ? "Bomb" : "TNT";
-            FakeTarget newTarget = new FakeTarget(SceneManagerSingleton.Instance.Game.Content.Load<Texture2D>(texture))
+            _shootingSystem = _scene.GetObject<ShootingSystem>();
+            base.LateLoad();
+        }
+
+        public override void Update(GameTime pGameTime)
+        {
+            if (currentTargets.Count <= 0) return;
+            _shootingSystem.CheckCollision();
+        }
+
+        // This method will be called by the WaveManager to start spawning new targets
+        public void StartSpawner(int amountToSpawn, int fakesAmount)
+        {
+            CreateNewTargets(amountToSpawn, fakesAmount);
+        }
+
+        private void CreateNewTargets(int amountToSpawn, int fakesAmount)
+        {
+            _scene.DeactivateObjects(currentTargets);
+            currentTargets.Clear();
+            SpawnTargets(amountToSpawn, fakesAmount);
+        }
+
+        private void SpawnTargets(int amountToSpawn, int fakesAmount)
+        {
+            Random random = new Random();
+
+            for (int i = 0; i < amountToSpawn; i++)
             {
-                Position = GetPosition(),
-                Color = Color.Green
-            };
-            
-            newTarget.MovementSystem = CreateMovement(newTarget);            
-            _scene.Objects.Add(newTarget);
-            currentTargets.Add(newTarget);
+                string texture = random.Next(100) < 5 ? "Potoo" : "Target";
+                Target newTarget = new Target(SceneManager.Instance.Game.Content.Load<Texture2D>(texture), _scene, 2)
+                {
+                    Position = GetPosition()
+                };
+                newTarget.MovementSystem = CreateMovement(newTarget);
+
+                _scene.Objects.Add(newTarget);
+                currentTargets.Add(newTarget);
+            }
+
+            for (int i = 0; i < fakesAmount; i++)
+            {
+                string texture = random.Next(2) == 0 ? "Bomb" : "TNT";
+                FakeTarget newTarget = new FakeTarget(SceneManager.Instance.Game.Content.Load<Texture2D>(texture))
+                {
+                    Position = GetPosition(),
+                    Color = Color.Green
+                };
+
+                newTarget.MovementSystem = CreateMovement(newTarget);
+                _scene.Objects.Add(newTarget);
+                currentTargets.Add(newTarget);
+            }
+
             _hasSpawned = true;
         }
-    }
-    /// <summary>
-    /// Destroys the current scene's Target's and creates new ones.
-    /// </summary>
-    private void CreateNewTargets()
-    {
-        _scene.DeactivateObjects(currentTargets);
-        currentTargets.Clear();
-        SpawnTargets();
-    }
-    public Vector2 GetPosition()
-    {
-        Random random = new();
-
-        return new(random.Next(64, SceneManagerSingleton.Instance.Game.GraphicsDevice.Viewport.Width - 64),
-            random.Next(64, SceneManagerSingleton.Instance.Game.GraphicsDevice.Viewport.Height - 64)
-        ); 
-    }
-
-    private TargetMovement CreateMovement(BaseTarget pOwner)
-    {
-        Random random = new();
-        int[] speedValues = { 100, 350 };
-        int[] elapsedValues = { 1, 5 };
-
-        return new TargetMovement(pOwner, GetElapsedTime(), GetMovementSpeed());
-
-        float GetElapsedTime() 
+        public Vector2 GetPosition()
         {
-            return random.Next(elapsedValues[0], elapsedValues[1]);
+            Random random = new();
+
+            return new Vector2(
+                random.Next(64, SceneManager.Instance.Game.GraphicsDevice.Viewport.Width - 64),
+                random.Next(64, SceneManager.Instance.Game.GraphicsDevice.Viewport.Height - 64)
+            );
         }
-        float GetMovementSpeed()
+        private TargetMovement CreateMovement(BaseTarget pOwner)
         {
-            return random.Next(speedValues[0], speedValues[1]);
+            Random random = new();
+            int[] speedValues = { 100, 350 };
+            int[] elapsedValues = { 1, 5 };
+
+            return new TargetMovement(pOwner, random.Next(elapsedValues[0], elapsedValues[1]), random.Next(speedValues[0], speedValues[1]));
+        }
+        public bool HasActiveTargets()
+        {
+            List<Target> targets = new();
+            targets.AddRange(SceneManager.Instance.CurrentScene.GetObjects<Target>());
+            return targets.All(x => !x.IsActive);
         }
     }
 }

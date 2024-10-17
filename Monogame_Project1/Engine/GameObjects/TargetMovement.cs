@@ -60,13 +60,13 @@ public class TargetMovement
     private void ClampTarget()
     {
         // If the target goes out of bounds, invert direction
-        if (_owner.Position.X < 0 + _owner.Origin.X || _owner.Position.X > SceneManagerSingleton.Instance.Game.GraphicsDevice.Viewport.Width - _owner.Origin.X)
+        if (_owner.Position.X < 0 + _owner.Origin.X || _owner.Position.X > SceneManager.Instance.Game.GraphicsDevice.Viewport.Width - _owner.Origin.X)
         {
             _direction.X = -_direction.X; // Invert X direction
             _elapsedTime = 0.0;
         }
         
-        if (_owner.Position.Y < 0 + _owner.Origin.Y || _owner.Position.Y > SceneManagerSingleton.Instance.Game.GraphicsDevice.Viewport.Height - _owner.Origin.Y)
+        if (_owner.Position.Y < 0 + _owner.Origin.Y || _owner.Position.Y > SceneManager.Instance.Game.GraphicsDevice.Viewport.Height - _owner.Origin.Y)
         {
             _direction.Y = -_direction.Y; // Invert Y direction
             _elapsedTime = 0.0;

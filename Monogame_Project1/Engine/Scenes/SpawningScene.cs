@@ -10,9 +10,9 @@ public class SpawningScene : LevelScene
     private ScoringSystem _scoreSystem;
     public override void LoadContent(ContentManager pContent)
     {
-        objects.Add(new SpawningSystem(this, 5, 5));
+        objects.Add(new SpawningSystem(this));
         objects.Add(new ShootingSystem(this));
-        objects.Add(SceneManagerSingleton.Instance.ScoringSystem);
+        objects.Add(SceneManager.Instance.ScoringSystem);
         objects.Add(new AmmoSystem(3));
         objects.Add(new Timer(10f));
         objects.Add(new AnimationsPlayer());
@@ -43,7 +43,7 @@ public class SpawningScene : LevelScene
             Color.White);
         pSpriteBatch.DrawString(
             game.Content.Load<SpriteFont>("Font"),
-            SceneManagerSingleton.Instance.ScoringSystem.CurrentScore.ToString(),
+            SceneManager.Instance.ScoringSystem.CurrentScore.ToString(),
             new Vector2(64, 64), Color.White);
     }
 }

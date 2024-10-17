@@ -51,7 +51,7 @@ public class Timer : GameObject
     #region Constructors
     public Timer(float pTime)
     {
-        _game = SceneManagerSingleton.Instance.Game;
+        _game = SceneManager.Instance.Game;
         _time = pTime;
         _startTime = _time;
     }

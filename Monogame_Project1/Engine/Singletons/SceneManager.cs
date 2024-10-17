@@ -7,17 +7,17 @@ using Monogame_Project1.Engine.Scenes;
 
 namespace Monogame_Project1.Engine.Singletons;
 
-public sealed class SceneManagerSingleton
+public sealed class SceneManager
 {
-    private static SceneManagerSingleton _instance;
-    public static SceneManagerSingleton Instance => _instance ??= new SceneManagerSingleton();
+    private static SceneManager _instance;
+    public static SceneManager Instance => _instance ??= new SceneManager();
     
     private Scene _currentScene;
     private Dictionary<string, Scene> _scenesDictionary = new(); // Dictionary where u can do string-based lookups
-    private Dictionary<Type, Scene> _sceneTypeDictionary = new(); // Dictionary where u can do type-based lookups
     private Game1 _game;
     
     public LevelScene pastLevelScene;
+    public LevelSelectionScene levelSelectionScene;
     public ScoringSystem scoringSystem;
     public Scene CurrentScene => _currentScene;
 
@@ -30,11 +30,15 @@ public sealed class SceneManagerSingleton
     public void Awake()
     {
         CreateScenes(ref _scenesDictionary);
-        _currentScene = GetScene<MainMenu>();
+        _currentScene = GetScene<WaveSpawnTestScene>();
+        levelSelectionScene = GetScene<LevelSelectionScene>();
         scoringSystem = new ScoringSystem(CurrentScene);
+        levelSelectionScene.LoadContent(Game.Content);
+        levelSelectionScene.LateLoad();
         LoadScene();
-        ResultHandlerSingleton.Instance.GetData();
+        ResultHandler.Instance.GetData();
         pastLevelScene = GetScene<Level1>();
+        WaveManager.Instance.Initialize(_currentScene);
     }
     public void LoadScene()
     {
@@ -43,6 +47,8 @@ public sealed class SceneManagerSingleton
         _currentScene.LateLoad();
     }
     public void Update(GameTime pGameTime) => _currentScene.Update(pGameTime);
+    
+
     public void Draw(SpriteBatch pSpriteBatch) => _currentScene.Draw(pSpriteBatch);
     public void SwapScene(Scene pScene)
     {
@@ -59,8 +65,11 @@ public sealed class SceneManagerSingleton
     private void SetScene(Scene pScene)
     {
         _currentScene = pScene;
-        pScene.UnloadScene();
-        LoadScene();
+        if (pScene is not LevelSelectionScene)
+        {
+            pScene.UnloadScene();
+            LoadScene();
+        }
         UpdateCrosshairVisibility();
     }
     public void RestartLevel(LevelScene pScene)
@@ -102,6 +111,7 @@ public sealed class SceneManagerSingleton
         pScenesDictionary.Add("WinScene", new WinScene());
         pScenesDictionary.Add("LoseScene", new LoseScene());
         pScenesDictionary.Add("LevelSelectScene", new LevelSelectionScene());
+        pScenesDictionary.Add("WaveTest", new WaveSpawnTestScene());
         AssignSceneNames();
         return;
 

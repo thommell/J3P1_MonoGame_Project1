@@ -37,7 +37,7 @@ public class TimeSystem : GameObject
         if (_elapsedTime >= 0.1f) return;
         ResetTimer();
         _timer.IsRunning = true;
-        _spawningSystem.StartSpawner();
+        // _spawningSystem.StartSpawner();
     }
 
     private void ResetTimer()

@@ -1,5 +1,4 @@
 ﻿using System;
-using Monogame_Project1.Engine.GameObjects;
 using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine.BaseClasses;
@@ -10,7 +9,7 @@ public abstract class Scene
     protected Game1 game;
     protected List<GameObject> objects = new();
     protected List<UIObject> uiObjects = new();
-    protected SpriteFont font;
+    public SpriteFont font;
     protected string sceneName;
     #endregion
     
@@ -34,17 +33,10 @@ public abstract class Scene
     #endregion
 
     #region Constructor
-
-    // public Scene(Game1 pGame, SceneManager pManager)
-    // {
-    //     // game = pGame;
-    //     // manager = pManager;
-    //     // font = game.Content.Load<SpriteFont>("UIText");
-    // }
     public Scene()
     {
-        font = SceneManagerSingleton.Instance.Game.Content.Load<SpriteFont>("UIText");
-        game = SceneManagerSingleton.Instance.Game;
+        font = SceneManager.Instance.Game.Content.Load<SpriteFont>("UIText");
+        game = SceneManager.Instance.Game;
     }
 
     #endregion
@@ -67,7 +59,7 @@ public abstract class Scene
     }
     public void UnloadScene()
     {
-        Console.WriteLine($"Unloading {SceneManagerSingleton.Instance.CurrentScene.SceneName}");
+        Console.WriteLine($"Unloading {SceneManager.Instance.CurrentScene.SceneName}");
         objects.Clear();
     }
     public virtual void LateLoad()

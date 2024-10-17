@@ -10,6 +10,6 @@ public class RestartButton : Button
 
     protected override void OnClick()
     {
-        SceneManagerSingleton.Instance.RestartLevel(SceneManagerSingleton.Instance.pastLevelScene);
+        SceneManager.Instance.RestartLevel(SceneManager.Instance.pastLevelScene);
     }
 }

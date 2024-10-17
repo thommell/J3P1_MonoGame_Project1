@@ -19,7 +19,7 @@ namespace Monogame_Project1.Engine.GameObjects
         }
         protected override void OnClick()
         {
-            SceneManagerSingleton.Instance.SwapScene(_scene);
+            SceneManager.Instance.SwapScene(_scene);
         }
     }
 }

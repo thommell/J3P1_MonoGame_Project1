@@ -37,14 +37,14 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         // _sceneManager = new SceneManager(_graphics, Content, _spriteBatch, this);
         // _sceneManager.Awake();
-        SceneManagerSingleton.Instance.Game = this;
-        SceneManagerSingleton.Instance.Awake();
+        SceneManager.Instance.Game = this;
+        SceneManager.Instance.Awake();
     }
     protected override void Update(GameTime gameTime)
     {
         // _sceneManager.Update(gameTime);
-        SceneManagerSingleton.Instance.Update(gameTime);
-        ResultHandlerSingleton.Instance.Update(gameTime);
+        SceneManager.Instance.Update(gameTime);
+        ResultHandler.Instance.Update(gameTime);
         base.Update(gameTime);
     }
     protected override void Draw(GameTime gameTime)
@@ -52,7 +52,7 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
         // _sceneManager.Draw(_spriteBatch);
-        SceneManagerSingleton.Instance.Draw(_spriteBatch);
+        SceneManager.Instance.Draw(_spriteBatch);
         _spriteBatch.End();
         base.Draw(gameTime);
     }

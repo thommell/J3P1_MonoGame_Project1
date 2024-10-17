@@ -9,9 +9,9 @@ public class Level2 : LevelScene
 {
     public override void LoadContent(ContentManager pContent)
     {
-        objects.Add(new SpawningSystem(this, 7, 7));
+        objects.Add(new SpawningSystem(this));
         objects.Add(new ShootingSystem(this));
-        objects.Add(SceneManagerSingleton.Instance.ScoringSystem);
+        objects.Add(SceneManager.Instance.ScoringSystem);
         objects.Add(new AmmoSystem(3));
         objects.Add(new Timer(10f));
         UIObject scoreUi = new ScoreUI(pContent.Load<Texture2D>("BrokenTarget"), game, this)
