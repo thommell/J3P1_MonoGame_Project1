@@ -38,7 +38,7 @@ namespace Monogame_Project1.Engine.GameObjects
         }
         protected override void OnClick()
         {
-            SceneManagerSingleton.Instance.SwapScene(_sceneToSwitchTo);   
+            SceneManager.Instance.SwapScene(_sceneToSwitchTo);   
         }
         public void Unlock()
         {

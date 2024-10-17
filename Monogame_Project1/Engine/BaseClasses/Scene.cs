@@ -43,8 +43,8 @@ public abstract class Scene
     // }
     public Scene()
     {
-        font = SceneManagerSingleton.Instance.Game.Content.Load<SpriteFont>("UIText");
-        game = SceneManagerSingleton.Instance.Game;
+        font = SceneManager.Instance.Game.Content.Load<SpriteFont>("UIText");
+        game = SceneManager.Instance.Game;
     }
 
     #endregion
@@ -67,7 +67,7 @@ public abstract class Scene
     }
     public void UnloadScene()
     {
-        Console.WriteLine($"Unloading {SceneManagerSingleton.Instance.CurrentScene.SceneName}");
+        Console.WriteLine($"Unloading {SceneManager.Instance.CurrentScene.SceneName}");
         objects.Clear();
     }
     public virtual void LateLoad()

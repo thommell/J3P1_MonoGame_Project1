@@ -7,14 +7,13 @@ using Monogame_Project1.Engine.Scenes;
 
 namespace Monogame_Project1.Engine.Singletons;
 
-public sealed class SceneManagerSingleton
+public sealed class SceneManager
 {
-    private static SceneManagerSingleton _instance;
-    public static SceneManagerSingleton Instance => _instance ??= new SceneManagerSingleton();
+    private static SceneManager _instance;
+    public static SceneManager Instance => _instance ??= new SceneManager();
     
     private Scene _currentScene;
     private Dictionary<string, Scene> _scenesDictionary = new(); // Dictionary where u can do string-based lookups
-    private Dictionary<Type, Scene> _sceneTypeDictionary = new(); // Dictionary where u can do type-based lookups
     private Game1 _game;
     
     public LevelScene pastLevelScene;
@@ -33,7 +32,7 @@ public sealed class SceneManagerSingleton
         _currentScene = GetScene<MainMenu>();
         scoringSystem = new ScoringSystem(CurrentScene);
         LoadScene();
-        ResultHandlerSingleton.Instance.GetData();
+        ResultHandler.Instance.GetData();
         pastLevelScene = GetScene<Level1>();
     }
     public void LoadScene()

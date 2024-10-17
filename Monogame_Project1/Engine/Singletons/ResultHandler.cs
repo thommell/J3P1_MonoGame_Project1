@@ -1,17 +1,18 @@
 using System;
 using System.Linq;
 using Monogame_Project1.Engine.BaseClasses;
+using Monogame_Project1.Engine.Enums;
 using Monogame_Project1.Engine.GameObjects;
 using Monogame_Project1.Engine.Scenes;
 
 namespace Monogame_Project1.Engine.Singletons;
 
-public class ResultHandlerSingleton
+public class ResultHandler
 {
-    private static ResultHandlerSingleton _instance;
-    public static ResultHandlerSingleton Instance => _instance ??= new ResultHandlerSingleton();
+    private static ResultHandler _instance;
+    public static ResultHandler Instance => _instance ??= new ResultHandler();
 
-    public Dictionary<LevelScene, Result> sceneResults = new();
+    public Dictionary<LevelScene, Results> sceneResults = new();
     public List<LevelScene> levelScenes = new();
     public LevelSelectionScene levelSelect;
 
@@ -24,19 +25,19 @@ public class ResultHandlerSingleton
     public void GetData()
     {
         GetSceneData();
-        levelSelect = SceneManagerSingleton.Instance.GetScene<LevelSelectionScene>();
-        SetResult(SceneManagerSingleton.Instance.GetScene<Level1>(), Result.Win);
+        levelSelect = SceneManager.Instance.GetScene<LevelSelectionScene>();
+        SetResult(SceneManager.Instance.GetScene<Level1>(), Results.Win);
     }
 
     private void GetSceneData()
     {
-        foreach (var pair in SceneManagerSingleton.Instance.GetScenes<LevelScene>())
+        foreach (var pair in SceneManager.Instance.GetScenes<LevelScene>())
         {
-            sceneResults.Add((LevelScene)pair.Value, Result.Undecided);
+            sceneResults.Add((LevelScene)pair.Value, Results.Undecided);
         }
     }
 
-    public void SetResult(LevelScene pLevel, Result pResult)
+    public void SetResult(LevelScene pLevel, Results pResult)
     {
         if (sceneResults.ContainsKey(pLevel))
         {
@@ -51,50 +52,45 @@ public class ResultHandlerSingleton
         sceneResults.Clear();
         GetSceneData();
     }
-
-    // private Dictionary<LevelScene, Result> GetNewResults()
-    // {
-    // return SceneManagerSingleton.Instance.GetScenes<LevelScene>(level => level, _ => Result.Undecided);
-    // }
     public void Update(GameTime pGameTime)
     {
-        if (SceneManagerSingleton.Instance.CurrentScene is not LevelScene)
+        if (SceneManager.Instance.CurrentScene is not LevelScene)
             return;
-        _currentSpawningSystem = SceneManagerSingleton.Instance.CurrentScene.GetObject<SpawningSystem>();
-        _currentSpawningTimer = SceneManagerSingleton.Instance.CurrentScene.GetObject<Timer>();
+        _currentSpawningSystem = SceneManager.Instance.CurrentScene.GetObject<SpawningSystem>();
+        _currentSpawningTimer = SceneManager.Instance.CurrentScene.GetObject<Timer>();
 
         if (!_currentSpawningSystem.HasSpawned)
             return;
         if (_currentSpawningTimer.Time <= 0.1f)
-            HandleResult((LevelScene)SceneManagerSingleton.Instance.CurrentScene, Result.Lose);
+            HandleResult((LevelScene)SceneManager.Instance.CurrentScene, Results.Lose);
         if (_currentSpawningSystem.currentTargets.Any(a => a is Target && a.IsActive) && _currentSpawningSystem.HasSpawned) return;
         {
             Console.WriteLine("User has finished the level!");
-            HandleResult((LevelScene)SceneManagerSingleton.Instance.CurrentScene, Result.Win);
+            HandleResult((LevelScene)SceneManager.Instance.CurrentScene, Results.Win);
         }
     }
-    public void HandleResult(LevelScene pScene ,Result pResult)
+    public void HandleResult(LevelScene pScene, Results pResult)
     {
         SetResult(pScene, pResult);
         switch (pResult)
         {
-            case Result.Win:
+            case Results.Win:
                 HandleWinResult();
                 break;
-            case Result.Lose:
+            case Results.Lose:
                 HandleLoseResult();
                 break;
-            case Result.Undecided:
+            case Results.Undecided:
                 return;
         }
     }
     private void HandleWinResult()
     {
         _currentSpawningSystem.HasSpawned = false;
-        SceneManagerSingleton.Instance.SwapScene(SceneManagerSingleton.Instance.GetScene<WinScene>());
+        SceneManager.Instance.SwapScene(SceneManager.Instance.GetScene<WinScene>());
     }
     private void HandleLoseResult()
     {
-        SceneManagerSingleton.Instance.SwapScene(SceneManagerSingleton.Instance.GetScene<LoseScene>());
+        SceneManager.Instance.SwapScene(SceneManager.Instance.GetScene<LoseScene>());
     }
 }

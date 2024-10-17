@@ -11,7 +11,7 @@ public class Level2 : LevelScene
     {
         objects.Add(new SpawningSystem(this, 7, 7));
         objects.Add(new ShootingSystem(this));
-        objects.Add(SceneManagerSingleton.Instance.ScoringSystem);
+        objects.Add(SceneManager.Instance.ScoringSystem);
         objects.Add(new AmmoSystem(3));
         objects.Add(new Timer(10f));
         UIObject scoreUi = new ScoreUI(pContent.Load<Texture2D>("BrokenTarget"), game, this)

@@ -23,19 +23,19 @@ public class PauseSystem : GameObject
 
     public override void LateLoad()
     {
-        _menuButton = new SwitchSceneButton(SceneManagerSingleton.Instance.Game.Content.Load<Texture2D>("UI_Tile_128x64"), "Menu",
-            SceneManagerSingleton.Instance.GetScene<MainMenu>(), false)
+        _menuButton = new SwitchSceneButton(SceneManager.Instance.Game.Content.Load<Texture2D>("UI_Tile_128x64"), "Menu",
+            SceneManager.Instance.GetScene<MainMenu>(), false)
         {
-            Position = new Vector2(SceneManagerSingleton.Instance.Game.GraphicsDevice.Viewport.Width * 0.5f, SceneManagerSingleton.Instance.Game.GraphicsDevice.Viewport.Height * 0.5f - 50)
+            Position = new Vector2(SceneManager.Instance.Game.GraphicsDevice.Viewport.Width * 0.5f, SceneManager.Instance.Game.GraphicsDevice.Viewport.Height * 0.5f - 50)
         };
         _restartButton = new RestartButton(
-            SceneManagerSingleton.Instance.Game.Content.Load<Texture2D>("UI_Tile_128x64"), "Restart", false)
+            SceneManager.Instance.Game.Content.Load<Texture2D>("UI_Tile_128x64"), "Restart", false)
         {
-            Position = new Vector2(SceneManagerSingleton.Instance.Game.GraphicsDevice.Viewport.Width * 0.5f,
-                SceneManagerSingleton.Instance.Game.GraphicsDevice.Viewport.Height * 0.5f + 100)
+            Position = new Vector2(SceneManager.Instance.Game.GraphicsDevice.Viewport.Width * 0.5f,
+                SceneManager.Instance.Game.GraphicsDevice.Viewport.Height * 0.5f + 100)
         };
-        SceneManagerSingleton.Instance.CurrentScene.Objects.Add(_menuButton);
-        SceneManagerSingleton.Instance.CurrentScene.Objects.Add(_restartButton);
+        SceneManager.Instance.CurrentScene.Objects.Add(_menuButton);
+        SceneManager.Instance.CurrentScene.Objects.Add(_restartButton);
         _pausedObjects.Add(_menuButton);
         _pausedObjects.Add(_restartButton);
         base.LateLoad();
@@ -53,7 +53,7 @@ public class PauseSystem : GameObject
         if (!IsPaused) return;
         for (int i = 0; i <= _pausedObjects.Count - 1; i++)
             _pausedObjects[i].Update(pGameTime);
-        SceneManagerSingleton.Instance.Game.IsMouseVisible = true;
+        SceneManager.Instance.Game.IsMouseVisible = true;
     }
     public override void Draw(SpriteBatch pSpriteBatch)
     {

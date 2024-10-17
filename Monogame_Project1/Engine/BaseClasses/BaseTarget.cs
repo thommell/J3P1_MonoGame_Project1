@@ -40,7 +40,7 @@ public abstract class BaseTarget : GameObject
 
     public BaseTarget(Texture2D pTexture) : base(pTexture)
     {
-        _game = SceneManagerSingleton.Instance.Game;
+        _game = SceneManager.Instance.Game;
     }
 
     #endregion

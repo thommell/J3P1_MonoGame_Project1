@@ -46,7 +46,7 @@ public class SpawningSystem : GameObject
     { 
         for (int i = 0; i < _amountToSpawn; i++)
         {
-            Target newTarget = new Target(SceneManagerSingleton.Instance.Game.Content.Load<Texture2D>("Target"), _scene, 2)
+            Target newTarget = new Target(SceneManager.Instance.Game.Content.Load<Texture2D>("Target"), _scene, 2)
             {
                 Position = GetPosition()
             };
@@ -59,7 +59,7 @@ public class SpawningSystem : GameObject
 
         for (int i = 0; i < _fakesAmount; i++)
         {
-            FakeTarget newTarget = new FakeTarget(SceneManagerSingleton.Instance.Game.Content.Load<Texture2D>("Bomb"))
+            FakeTarget newTarget = new FakeTarget(SceneManager.Instance.Game.Content.Load<Texture2D>("Bomb"))
             {
                 Position = GetPosition(),
                 Color = Color.Green
@@ -84,8 +84,8 @@ public class SpawningSystem : GameObject
     {
         Random random = new();
 
-        return new(random.Next(64, SceneManagerSingleton.Instance.Game.GraphicsDevice.Viewport.Width - 64),
-            random.Next(64, SceneManagerSingleton.Instance.Game.GraphicsDevice.Viewport.Height - 64)
+        return new(random.Next(64, SceneManager.Instance.Game.GraphicsDevice.Viewport.Width - 64),
+            random.Next(64, SceneManager.Instance.Game.GraphicsDevice.Viewport.Height - 64)
         ); 
     }
 

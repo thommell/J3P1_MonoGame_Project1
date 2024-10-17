@@ -13,7 +13,7 @@ public class SliderButton : Button
     private float _leftSide;
     private float _rightSide;
 
-    public SliderButton(Game1 pGame, SceneManager pSceneManager, Texture2D pTexture, float pLeftSide, float pRightSide) : base(pTexture, null) 
+    public SliderButton(Texture2D pTexture, float pLeftSide, float pRightSide) : base(pTexture, null) 
     {
         _leftSide = pLeftSide;
         _rightSide = pRightSide;
@@ -21,7 +21,6 @@ public class SliderButton : Button
     protected override void OnHold()
     {
         MouseState mouseState = Mouse.GetState();
-
         Position = new Vector2(Math.Clamp(mouseState.X, _leftSide, _rightSide), position.Y);
     }
 }
