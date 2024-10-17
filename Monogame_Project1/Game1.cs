@@ -17,9 +17,10 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
     // private SceneManager _sceneManager;
 
-    public static int ScreenWidth = 1500;
-    public static int ScreenHeight = 720;
+    public static int ScreenWidth = 1920;
+    public static int ScreenHeight = 1080;
 
+    private Rectangle bottomBorder;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);

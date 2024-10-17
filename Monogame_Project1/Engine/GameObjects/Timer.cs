@@ -69,8 +69,8 @@ public class Timer : GameObject
         _barTexture = pContent.Load<Texture2D>("TestSprite");
         _clock = pContent.Load<Texture2D>("Clock");
 
-        _recForeGround = new Rectangle((_game.GraphicsDevice.Viewport.Width - (int)_barWidth) / 2, 50, (int)_barWidth, (int)_barHeight);
-        _recBackGround = new Rectangle((_game.GraphicsDevice.Viewport.Width - (int)_barWidth) / 2, 50, (int)_barWidth, (int)_barHeight);
+        _recForeGround = new Rectangle((_game.GraphicsDevice.Viewport.Width - (int)_barWidth) / 2, 1000, (int)_barWidth, (int)_barHeight);
+        _recBackGround = new Rectangle((_game.GraphicsDevice.Viewport.Width - (int)_barWidth) / 2, 1000, (int)_barWidth, (int)_barHeight);
 
         _outline = new Rectangle(_recForeGround.Location.X - (int)_outlineWidth / 2, _recForeGround.Location.Y - (int)_outlineWidth / 2, (int)_barWidth + (int)_outlineWidth, (int)_barHeight + (int)_outlineWidth);
 
