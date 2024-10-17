@@ -9,14 +9,13 @@ public class Level1 : LevelScene
 {
     public override void LoadContent(ContentManager pContent)
     {
-        //AudioManager.Instance.PlayMusic("TestMusic", true);
+        AudioManager.Instance.PlayMusic("TestMusic", true);
 
         objects.Add(new SpawningSystem(this,  5, 5));
         objects.Add(new ShootingSystem(this));
         objects.Add(SceneManager.Instance.ScoringSystem);
         objects.Add(new AmmoSystem(3));
         objects.Add(new Timer(10f));
-        objects.Add(new AnimationsPlayer());
         UIObject scoreUi = new ScoreUI(pContent.Load<Texture2D>("BrokenTarget"), game, this)
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width - 370, 30)           

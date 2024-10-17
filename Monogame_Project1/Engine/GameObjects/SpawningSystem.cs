@@ -19,6 +19,7 @@ public class SpawningSystem : GameObject
         get => _hasSpawned;
         set => _hasSpawned = value;
     }
+
     public SpawningSystem(Scene pScene, int pAmountToSpawn, int pFakesAmount)
     {
         _scene = pScene;
@@ -43,10 +44,12 @@ public class SpawningSystem : GameObject
     /// Spawns new Targets and adds them to the current scene's objects and CurrentTargets' list.
     /// </summary>
     private void SpawnTargets()
-    { 
+    {
+        Random _random = new Random();
         for (int i = 0; i < _amountToSpawn; i++)
         {
-            Target newTarget = new Target(SceneManager.Instance.Game.Content.Load<Texture2D>("Target"), _scene, 2)
+            string texture = _random.Next(100) < 5 ? "Potoo" : "Target";
+            Target newTarget = new Target(SceneManagerSingleton.Instance.Game.Content.Load<Texture2D>(texture), _scene, 2)
             {
                 Position = GetPosition()
             };
@@ -59,7 +62,8 @@ public class SpawningSystem : GameObject
 
         for (int i = 0; i < _fakesAmount; i++)
         {
-            FakeTarget newTarget = new FakeTarget(SceneManager.Instance.Game.Content.Load<Texture2D>("Bomb"))
+            string texture = _random.Next(2) == 0 ? "Bomb" : "TNT";
+            FakeTarget newTarget = new FakeTarget(SceneManagerSingleton.Instance.Game.Content.Load<Texture2D>(texture))
             {
                 Position = GetPosition(),
                 Color = Color.Green

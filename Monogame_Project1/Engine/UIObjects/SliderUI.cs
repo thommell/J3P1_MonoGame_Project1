@@ -17,9 +17,9 @@ public abstract class SliderUI : GameObject
     private SceneManager _manager;
     private SliderButton _slider;
 
-    private Rectangle _recForeGround;
-    private Rectangle _recBackGround;
-    private Rectangle _outline;
+    protected Rectangle recForeGround;
+    protected Rectangle recBackGround;
+    protected Rectangle outline;
 
     private readonly float _barHeight = 20f;
     private readonly float _barWidth = 400f;
@@ -27,23 +27,21 @@ public abstract class SliderUI : GameObject
 
     protected float currentValue;
 
-    public SliderUI(Texture2D pTexture) : base(pTexture)
+    public SliderUI(Texture2D pTexture, bool pActive = true) : base(pTexture, pActive)
     { 
         _game = SceneManager.Instance.Game;
     }
 
     public override void LoadContent(ContentManager pContent)
     {
-        //_currentValue = AudioManager.Instance.SoundVolume;
+        recForeGround = new Rectangle((int)position.X, (int)position.Y, (int)_barWidth, (int)_barHeight);
+        recBackGround = new Rectangle((int)position.X, (int)position.Y, (int)_barWidth, (int)_barHeight);
 
-        _recForeGround = new Rectangle((int)position.X, (int)position.Y, (int)_barWidth, (int)_barHeight);
-        _recBackGround = new Rectangle((int)position.X, (int)position.Y, (int)_barWidth, (int)_barHeight);
+        outline = new Rectangle(recForeGround.Location.X - (int)_outlineWidth / 2, recForeGround.Location.Y - (int)_outlineWidth / 2, (int)_barWidth + (int)_outlineWidth, (int)_barHeight + (int)_outlineWidth);
 
-        _outline = new Rectangle(_recForeGround.Location.X - (int)_outlineWidth / 2, _recForeGround.Location.Y - (int)_outlineWidth / 2, (int)_barWidth + (int)_outlineWidth, (int)_barHeight + (int)_outlineWidth);
-
-        _slider = new SliderButton(pContent.Load<Texture2D>("UI_Tile_64x64"), position.X, position.X + _recForeGround.Width)
+        _slider = new SliderButton(pContent.Load<Texture2D>("UI_Tile_64x64"), position.X, position.X + recForeGround.Width)
         {
-            Position = new Vector2(position.X + (currentValue * _recForeGround.Width), position.Y + (_recForeGround.Height / 2))
+            Position = new Vector2(position.X + (currentValue * recForeGround.Width), position.Y + (recForeGround.Height / 2))
         };
 
         base.LoadContent(pContent);
@@ -53,13 +51,13 @@ public abstract class SliderUI : GameObject
         _slider.Update(pGameTime);
 
         //gets the right value between 0 and 1 
-        currentValue = (_slider.Position.X - _recForeGround.Left) / _recBackGround.Width;
+        currentValue = (_slider.Position.X - recForeGround.Left) / recBackGround.Width;
 
         OnValue(currentValue);
 
         //calculates the width of the progress bar
-        float width = _recBackGround.Width * currentValue; 
-        _recForeGround.Width = (int)MathF.Round(width);
+        float width = recBackGround.Width * currentValue; 
+        recForeGround.Width = (int)MathF.Round(width);
 
         base.Update(pGameTime);
     }
@@ -67,9 +65,9 @@ public abstract class SliderUI : GameObject
    
     public override void Draw(SpriteBatch pSpriteBatch)
     {
-        pSpriteBatch.Draw(texture, _outline, Color.Black);
-        pSpriteBatch.Draw(texture, _recBackGround, Color.Gray);
-        pSpriteBatch.Draw(texture, _recForeGround, Color.Green);
+        pSpriteBatch.Draw(texture, outline, Color.Black);
+        pSpriteBatch.Draw(texture, recBackGround, Color.Gray);
+        pSpriteBatch.Draw(texture, recForeGround, Color.Green);
 
         _slider.Draw(pSpriteBatch); 
     }

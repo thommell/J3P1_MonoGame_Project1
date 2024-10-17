@@ -1,7 +1,9 @@
 using System;
+using System.Xml.Linq;
 using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.GameObjects;
 using Monogame_Project1.Engine.Singletons;
+using Monogame_Project1.Engine.UIObjects;
 
 namespace Monogame_Project1.Engine.Scenes;
 public class PauseSystem : GameObject
@@ -11,6 +13,8 @@ public class PauseSystem : GameObject
     private readonly Texture2D _pixelTexture;
     private KeyboardState _previousKeyboardState;
     private SwitchSceneButton _menuButton;
+    private SoundSliderUI _soundSliderUI;
+    private MusicSliderUI _musicSliderUI;
     private RestartButton _restartButton;
     private List<GameObject> _pausedObjects = new();
     public PauseSystem(SpriteFont pFont, Texture2D pTexture)
@@ -20,7 +24,22 @@ public class PauseSystem : GameObject
         _previousKeyboardState = Keyboard.GetState();
         IsPaused = false;
     }
+    public override void LoadContent(ContentManager pContent)
+    {
+        _soundSliderUI = (new SoundSliderUI(SceneManager.Instance.Game.Content.Load<Texture2D>("TestSprite"), "SFX", false)
+        {
+            Position = new Vector2(SceneManager.Instance.Game.GraphicsDevice.Viewport.Width * 0.2f, SceneManager.Instance.Game.GraphicsDevice.Viewport.Height * 0.8f)
+        });
+        _musicSliderUI = (new MusicSliderUI(SceneManager.Instance.Game.Content.Load<Texture2D>("TestSprite"), "Music", false)
+        {
+            Position = new Vector2(SceneManager.Instance.Game.GraphicsDevice.Viewport.Width * 0.6f, SceneManager.Instance.Game.GraphicsDevice.Viewport.Height * 0.8f)
+        });
+        
+        _soundSliderUI.LoadContent(pContent);
+        _musicSliderUI.LoadContent(pContent);
 
+        base.LoadContent(pContent);
+    }
     public override void LateLoad()
     {
         _menuButton = new SwitchSceneButton(SceneManager.Instance.Game.Content.Load<Texture2D>("UI_Tile_128x64"), "Menu",
@@ -34,10 +53,15 @@ public class PauseSystem : GameObject
             Position = new Vector2(SceneManager.Instance.Game.GraphicsDevice.Viewport.Width * 0.5f,
                 SceneManager.Instance.Game.GraphicsDevice.Viewport.Height * 0.5f + 100)
         };
+
         SceneManager.Instance.CurrentScene.Objects.Add(_menuButton);
         SceneManager.Instance.CurrentScene.Objects.Add(_restartButton);
+        SceneManager.Instance.CurrentScene.Objects.Add(_soundSliderUI);
+        SceneManager.Instance.CurrentScene.Objects.Add(_musicSliderUI);
         _pausedObjects.Add(_menuButton);
         _pausedObjects.Add(_restartButton);
+        _pausedObjects.Add(_soundSliderUI);
+        _pausedObjects.Add(_musicSliderUI);
         base.LateLoad();
     }
 
