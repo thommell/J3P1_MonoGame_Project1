@@ -109,6 +109,7 @@ public sealed class SceneManager
         pScenesDictionary.Add("WinScene", new WinScene());
         pScenesDictionary.Add("LoseScene", new LoseScene());
         pScenesDictionary.Add("LevelSelectScene", new LevelSelectionScene());
+        pScenesDictionary.Add("Settings", new Settings());
         AssignSceneNames();
         return;
 

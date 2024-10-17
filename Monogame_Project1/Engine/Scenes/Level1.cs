@@ -9,7 +9,7 @@ public class Level1 : LevelScene
 {
     public override void LoadContent(ContentManager pContent)
     {
-        //AudioManager.Instance.PlayMusic("TestMusic", true);
+        AudioManager.Instance.PlayMusic("TestMusic", true);
 
         objects.Add(new SpawningSystem(this,  5, 5));
         objects.Add(new ShootingSystem(this));

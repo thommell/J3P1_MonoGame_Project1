@@ -28,10 +28,6 @@ public class WinScene : Scene
         };
         objects.Add(_nextSceneButton);
         objects.Add(_quitButton);
-        objects.Add(new MusicSliderUI(pContent.Load<Texture2D>("TestSprite"))
-        {
-            Position = new Vector2(100, 100)
-        });
         _winText = "Congratulations, you've beaten the level!";
         font = game.Content.Load<SpriteFont>("UIText");
         _winTextBounds = font.MeasureString(_winText);
