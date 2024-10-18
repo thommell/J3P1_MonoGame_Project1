@@ -36,12 +36,8 @@ public sealed class SceneManager
         levelSelectionScene.LoadContent(Game.Content);
         levelSelectionScene.LateLoad();
         LoadScene();
+        pastLevelScene = GetScene<Level1>();
         ResultHandler.Instance.GetData();
-    }
-
-    public Scene AssignPlayButton()
-    {
-       return GetScene<Level1>();
     }
     public void LoadScene()
     {
@@ -53,7 +49,6 @@ public sealed class SceneManager
     public void Draw(SpriteBatch pSpriteBatch) => _currentScene.Draw(pSpriteBatch);
     public void SwapScene(Scene pScene)
     {
-        pastLevelScene ??= (LevelScene)pScene;
         if (pScene is null)
             throw new NullReferenceException("The given scene is null? Check the dictionary!\nCan't swap scenes!");
         if (pScene.Equals(_currentScene))
@@ -65,7 +60,6 @@ public sealed class SceneManager
     }
     private void SetScene(Scene pScene)
     {
-        
         _currentScene = pScene;
         if (pScene is not LevelSelectionScene)
         {

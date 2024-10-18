@@ -152,6 +152,12 @@
 /processorParam:TextureFormat=Color
 /build:Lock.gif
 
+#begin Menu.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Menu.mp3
+
 #begin Pixel.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -205,6 +211,13 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:TestSprite.gif
+
+#begin TitleFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:TitleFont.spritefont
 
 #begin TNT.png
 /importer:TextureImporter

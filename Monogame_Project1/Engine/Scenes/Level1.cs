@@ -10,7 +10,7 @@ public class Level1 : LevelScene
     public override void LoadContent(ContentManager pContent)
     {
 
-        objects.Add(new SpawningSystem(this,  5, 5));
+        objects.Add(new SpawningSystem(this,  6, 3));
         objects.Add(new ShootingSystem(this));
         objects.Add(SceneManager.Instance.ScoringSystem);
         objects.Add(new AmmoSystem(3));
@@ -24,8 +24,6 @@ public class Level1 : LevelScene
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width - 380, game.GraphicsDevice.Viewport.Height - 150),
         };
-
-
         uiObjects.Add(ammoUi);
         uiObjects.Add(scoreUi);
         base.LoadContent(pContent);
