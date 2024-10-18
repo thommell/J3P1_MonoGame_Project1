@@ -212,6 +212,13 @@
 /processorParam:TextureFormat=Color
 /build:TestSprite.gif
 
+#begin TitleFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:TitleFont.spritefont
+
 #begin TNT.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -52,9 +52,14 @@ public class AudioManager
     }
     public void PlayMusic(string pMusicName, bool pLoop)
     {
-        if (MediaPlayer.State != MediaState.Playing) _activeSong = null;
+        if (MediaPlayer.State != MediaState.Playing)
+        {
+            Console.WriteLine("Tried playing song but there is no music playing.");
+            _activeSong = null;
+        }
 
-        if (_musics.ContainsKey(pMusicName) && _activeSong != pMusicName)
+        // Check if there is no music playing and if the user has given the correct song name.
+        if (_musics.ContainsKey(pMusicName) && _activeSong != pMusicName && MediaPlayer.State != MediaState.Playing)
         {
             _activeSong = pMusicName;
             MediaPlayer.IsRepeating = pLoop;
