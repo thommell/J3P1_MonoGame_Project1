@@ -9,8 +9,7 @@ public class Level4 : LevelScene
 {
     public override void LoadContent(ContentManager pContent)
     {
-        
-        objects.Add(new SpawningSystem(this, 12, 12));
+        objects.Add(new SpawningSystem(this, 25, 10));
         objects.Add(new ShootingSystem(this));
         objects.Add(SceneManager.Instance.ScoringSystem);
         objects.Add(new AmmoSystem(3));
@@ -19,14 +18,11 @@ public class Level4 : LevelScene
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width - 370, 30)           
         };
-
         UIObject ammoUi = new AmmoUI(pContent.Load<Texture2D>("Bullet"), pContent.Load<Texture2D>("UsedBullet"), this, game)
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width - 380, game.GraphicsDevice.Viewport.Height - 150),
         };
-
         uiObjects.Add(new CrosshairUI(pContent.Load<Texture2D>("FixedCrosshair"), game, Color.Black));
-
         uiObjects.Add(ammoUi);
         uiObjects.Add(scoreUi);
         base.LoadContent(pContent);
