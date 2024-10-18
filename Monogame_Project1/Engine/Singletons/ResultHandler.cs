@@ -28,7 +28,6 @@ public class ResultHandler
         GetSceneData();
         levelSelect = SceneManager.Instance.GetScene<LevelSelectionScene>();
         _buttons = levelSelect.GetObjects<SelectionScreenButton>();
-        SetResult(SceneManager.Instance.GetScene<Level1>(), Results.Win);
     }
 
     private void GetSceneData()
@@ -102,6 +101,7 @@ public class ResultHandler
     }
     public void HandleResult(LevelScene pScene, Results pResult)
     {
+        SceneManager.Instance.pastLevelScene = pScene;
         SetResult(pScene, pResult);
         switch (pResult)
         {

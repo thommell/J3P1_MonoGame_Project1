@@ -51,7 +51,6 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
         _spriteBatch.Draw(SceneManager.Instance.Game.Content.Load<Texture2D>("Background"), Vector2.Zero, Color.White);
-        // _sceneManager.Draw(_spriteBatch);
         SceneManager.Instance.Draw(_spriteBatch);
         _spriteBatch.End();
         base.Draw(gameTime);
