@@ -24,8 +24,6 @@ public class Level1 : LevelScene
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width - 380, game.GraphicsDevice.Viewport.Height - 150),
         };
-
-
         uiObjects.Add(ammoUi);
         uiObjects.Add(scoreUi);
         base.LoadContent(pContent);
