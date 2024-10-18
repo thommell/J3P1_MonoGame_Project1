@@ -17,6 +17,7 @@ public class AudioManager
 
     private float _soundEffectVolume = 1f;
     private float _musicVolume = 1f;
+    private string _activeSong;
 
     public float SoundVolume { get { return _soundEffectVolume; } set { _soundEffectVolume = value; } }
 
@@ -33,7 +34,7 @@ public class AudioManager
         //for music use Mp3-files
 
         _musics.Add("TestMusic", pContent.Load<Song>("TestMusic"));
-
+        _musics.Add("MenuMusic", pContent.Load<Song>("Menu"));
     }
     public void PlaySound(string pSoundName, float pPitch = 0f)
     {
@@ -51,15 +52,19 @@ public class AudioManager
     }
     public void PlayMusic(string pMusicName, bool pLoop)
     {
-        if (_musics.ContainsKey(pMusicName))
+        if (MediaPlayer.State != MediaState.Playing) _activeSong = null;
+
+        if (_musics.ContainsKey(pMusicName) && _activeSong != pMusicName)
         {
+            _activeSong = pMusicName;
             MediaPlayer.IsRepeating = pLoop;
             MediaPlayer.Play(_musics[pMusicName]);
         }
-        else Console.WriteLine("Music doesn't exist");
+        else Console.WriteLine("Music doesn't exist or is already playing this music");
     }
     public void StopMusic()
     {
+        _activeSong = null;
         MediaPlayer.Stop();
     }
     public void PauseMusic()

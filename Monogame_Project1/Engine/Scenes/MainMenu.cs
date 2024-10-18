@@ -10,6 +10,8 @@ public class MainMenu : Scene
     private QuitButton _quitButton;
     public override void LoadContent(ContentManager pContent)
     {
+        AudioManager.Instance.PlayMusic("Menu", true);
+
         objects.Add(_quitButton = new(game.Content.Load<Texture2D>("UI_Tile_128x64"), "Quit")
         {
           Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.75f)
