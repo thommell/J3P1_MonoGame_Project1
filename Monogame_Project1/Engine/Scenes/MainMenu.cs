@@ -21,7 +21,7 @@ public class MainMenu : Scene
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.45f)
         });
-        objects.Add(new SwitchSceneButton(game.Content.Load<Texture2D>("UI_Tile_128x64"), "Play", SceneManager.Instance.GetScene<Level1>())
+        objects.Add(new SwitchSceneButton(game.Content.Load<Texture2D>("UI_Tile_128x64"), "Play", SceneManager.Instance.AssignPlayButton())
         {
             Position = new Vector2(_quitButton.Position.X, game.GraphicsDevice.Viewport.Height * 0.3f)
         });

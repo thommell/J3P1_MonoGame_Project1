@@ -69,8 +69,8 @@ public class PauseSystem : GameObject
     {
         IsPaused = !IsPaused;
         _pausedObjects.ForEach(pausedObject => pausedObject.IsActive = !pausedObject.IsActive);
+        SceneManager.Instance.UpdateCrosshairVisibility();
     }
-
     public override void Update(GameTime pGameTime)
     {
         UpdateState();

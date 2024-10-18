@@ -10,7 +10,7 @@ public class Level3 : LevelScene
     public override void LoadContent(ContentManager pContent)
     {
          
-        objects.Add(new SpawningSystem(this, 10, 10));
+        objects.Add(new SpawningSystem(this, 2, 80));
         objects.Add(new ShootingSystem(this));
         objects.Add(SceneManager.Instance.ScoringSystem);
         objects.Add(new AmmoSystem(3));
