@@ -11,13 +11,15 @@ public class LevelScene : Scene
     private PauseSystem _pauseSystem;
     public PauseSystem PauseSystem => _pauseSystem;
     private Rectangle bottomBorder;
+    private CrosshairUI _crosshairUI;
     public override void LoadContent(ContentManager pContent)
     {
+        _crosshairUI = new CrosshairUI(pContent.Load<Texture2D>("FixedCrosshair"), game, Color.Red);
         objects.Add(new PauseSystem(pContent.Load<SpriteFont>("Font"), pContent.Load<Texture2D>("Pixel")));
         objects.Add(new AnimationsPlayer());
         objects.Add(new TimeSystem(3f, GetObject<SpawningSystem>(), GetObject<Timer>(), font));
         AudioManager.Instance.PlayMusic("TestMusic", true);
-        uiObjects.Add(new CrosshairUI(pContent.Load<Texture2D>("FixedCrosshair"), game, Color.Black));
+        uiObjects.Add(_crosshairUI);
         base.LoadContent(pContent);
     }
     public override void LateLoad()
@@ -35,14 +37,16 @@ public class LevelScene : Scene
 
     public override void Draw(SpriteBatch pSpriteBatch)
     {
-        var t = GetUIObject<CrosshairUI>();
+        var timer = GetObject<TimeSystem>();
         if (_pauseSystem.IsPaused)
         {
-            t.IsActive = false;
+            timer.IsActive = false;
+            _crosshairUI.IsActive = false;
         }
         else
         {
-            t.IsActive = true;
+            timer.IsActive = true;
+            _crosshairUI.IsActive = true;
         }
         pSpriteBatch.Draw(SceneManager.Instance.Game.Content.Load<Texture2D>("Background"), new Vector2(0, 0), Color.PapayaWhip);
         pSpriteBatch.Draw(SceneManager.Instance.Game.Content.Load<Texture2D>("Pixel"), bottomBorder, Color.Gray * 0f);

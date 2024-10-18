@@ -31,11 +31,10 @@ public class LevelSelectionScene : Scene
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.7f, game.GraphicsDevice.Viewport.Height * 0.4f)
         });
-        objects.Add(new SelectionScreenButton(pContent.Load<Texture2D>("UI_Tile_64x64"), "Level 5", SceneManager.Instance.GetScene<Level5>(), pContent.Load<Texture2D>("Lock"))
+        objects.Add(new SelectionScreenButton(pContent.Load<Texture2D>("UI_Tile_64x64"), "Level 5", SceneManager.Instance.GetScene<Level5>(), pContent.Load<Texture2D>("Lock"), true)
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.9f, game.GraphicsDevice.Viewport.Height * 0.4f)
         });
-        //Main Menu Button
         objects.Add(new SwitchSceneButton(pContent.Load<Texture2D>("UI_Tile_64x64"), "Menu", SceneManager.Instance.GetScene<MainMenu>())
         {
             Position = new Vector2(50, 50)
