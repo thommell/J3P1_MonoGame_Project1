@@ -1,5 +1,6 @@
 ﻿using Monogame_Project1.Engine.BaseClasses;
 using System;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine.GameObjects;
 
@@ -24,6 +25,7 @@ public class Target : BaseTarget
 
     public override void OnHit()
     {
+        JsonManager.Instance.AddLevelCount();
         ScoringSystem scoringSystem = _scene.GetObject<ScoringSystem>();
         AmmoSystem ammoSystem = _scene.GetObject<AmmoSystem>();
 

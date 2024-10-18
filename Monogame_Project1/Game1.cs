@@ -6,6 +6,8 @@ global using Microsoft.Xna.Framework.Content;
 global using Microsoft.Xna.Framework.Design;
 global using Microsoft.Xna.Framework.Media;
 global using System.Collections.Generic;
+using System;
+using System.Reflection;
 using Monogame_Project1.Engine;
 using Monogame_Project1.Engine.Singletons;
 
@@ -54,5 +56,11 @@ public class Game1 : Game
         SceneManager.Instance.Draw(_spriteBatch);
         _spriteBatch.End();
         base.Draw(gameTime);
+    }
+
+    protected override void OnExiting(object sender, EventArgs args)
+    {
+        SceneManager.Instance.Exit();
+        base.OnExiting(sender, args);
     }
 }

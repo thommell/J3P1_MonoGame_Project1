@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.GameObjects;
+using Monogame_Project1.Engine.JSON;
 using Monogame_Project1.Engine.Scenes;
 
 namespace Monogame_Project1.Engine.Singletons;
@@ -15,6 +16,7 @@ public sealed class SceneManager
     private Scene _currentScene;
     private Dictionary<string, Scene> _scenesDictionary = new(); // Dictionary where u can do string-based lookups
     private Game1 _game;
+    public GameInfo GameInfo;
     
     public LevelScene pastLevelScene;
     public LevelSelectionScene levelSelectionScene;
@@ -29,6 +31,7 @@ public sealed class SceneManager
     public ScoringSystem ScoringSystem => scoringSystem;
     public void Awake()
     {
+        //GameInfo = new GameInfo(15, 1, 10);
         CreateScenes(ref _scenesDictionary);
         _currentScene = GetScene<MainMenu>();
         levelSelectionScene = GetScene<LevelSelectionScene>();
@@ -38,6 +41,8 @@ public sealed class SceneManager
         LoadScene();
         pastLevelScene = GetScene<Level1>();
         ResultHandler.Instance.GetData();
+        JsonManager.Instance.SetupJson();
+        JsonManager.Instance.ReadJson("LevelInfo");
     }
     public void LoadScene()
     {
@@ -128,5 +133,10 @@ public sealed class SceneManager
     }
 
     public void ChangeCrosshairVisibility() => _game.IsMouseVisible = !_game.IsMouseVisible;
-
+    public void Exit()
+    {
+        JsonManager.Instance.WriteJson(GameInfo, "LevelInfo");
+        //This will close the game!! Use as final call.
+        Game.Exit();
+    }
 }
