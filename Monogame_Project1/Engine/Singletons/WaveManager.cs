@@ -60,7 +60,7 @@ public class WaveManager
         int targets = 3 + _currentWave * 2;
         int fakeTargets = 3 + _currentWave * 2;
         
-        _spawner.StartSpawner(targets, fakeTargets);
+        _spawner.StartSpawner();
     }
     private void EndWave()
     {

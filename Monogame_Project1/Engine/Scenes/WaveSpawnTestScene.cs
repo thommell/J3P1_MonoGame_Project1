@@ -9,7 +9,7 @@ public class WaveSpawnTestScene : LevelScene
 {
     public override void LoadContent(ContentManager pContent)
     {
-        objects.Add(new SpawningSystem(this));
+        objects.Add(new SpawningSystem(this, 10, 10));
         objects.Add(new ShootingSystem(this));
         objects.Add(new AnimationsPlayer());
         objects.Add(SceneManager.Instance.ScoringSystem);

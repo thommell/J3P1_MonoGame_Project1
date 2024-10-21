@@ -30,7 +30,7 @@ public sealed class SceneManager
     public void Awake()
     {
         CreateScenes(ref _scenesDictionary);
-        _currentScene = GetScene<WaveSpawnTestScene>();
+        _currentScene = GetScene<MainMenu>();
         levelSelectionScene = GetScene<LevelSelectionScene>();
         scoringSystem = new ScoringSystem(CurrentScene);
         levelSelectionScene.LoadContent(Game.Content);
