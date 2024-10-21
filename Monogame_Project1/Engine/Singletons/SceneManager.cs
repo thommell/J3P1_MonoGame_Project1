@@ -36,9 +36,8 @@ public sealed class SceneManager
         levelSelectionScene.LoadContent(Game.Content);
         levelSelectionScene.LateLoad();
         LoadScene();
-        ResultHandler.Instance.GetData();
         pastLevelScene = GetScene<Level1>();
-        WaveManager.Instance.Initialize(_currentScene);
+        ResultHandler.Instance.GetData();
     }
     public void LoadScene()
     {
@@ -52,7 +51,6 @@ public sealed class SceneManager
     public void Draw(SpriteBatch pSpriteBatch) => _currentScene.Draw(pSpriteBatch);
     public void SwapScene(Scene pScene)
     {
-        pastLevelScene ??= (LevelScene)pScene;
         if (pScene is null)
             throw new NullReferenceException("The given scene is null? Check the dictionary!\nCan't swap scenes!");
         if (pScene.Equals(_currentScene))
@@ -111,7 +109,7 @@ public sealed class SceneManager
         pScenesDictionary.Add("WinScene", new WinScene());
         pScenesDictionary.Add("LoseScene", new LoseScene());
         pScenesDictionary.Add("LevelSelectScene", new LevelSelectionScene());
-        pScenesDictionary.Add("WaveTest", new WaveSpawnTestScene());
+        pScenesDictionary.Add("Settings", new Settings());
         AssignSceneNames();
         return;
 
@@ -123,7 +121,7 @@ public sealed class SceneManager
             }
         }
     }
-    private void UpdateCrosshairVisibility()
+    public void UpdateCrosshairVisibility()
     {
         if (_currentScene is LevelScene)
             _game.IsMouseVisible = false;

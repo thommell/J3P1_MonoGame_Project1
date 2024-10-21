@@ -8,6 +8,7 @@ public class LoseScene : Scene
 {
     private QuitButton _quitButton;
     private RestartButton _restartButton;
+    private SwitchSceneButton _levelSelectButton;
     private Vector2 _loseTextBounds;
     private Vector2 _scoreTextBounds;
     private const string LoseText = "You've lost.";
@@ -15,15 +16,19 @@ public class LoseScene : Scene
     {
         _quitButton = new QuitButton(game.Content.Load<Texture2D>("UI_Tile_128x64"), "Quit")
         {
-            Position = new Vector2(game.GraphicsDevice.Viewport.Width / 2, game.GraphicsDevice.Viewport.Height / 2)
+            Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.7f)
         };
         _restartButton = new RestartButton(game.Content.Load<Texture2D>("UI_Tile_128x64"), "Restart")
         {
-            Position = new Vector2(game.GraphicsDevice.Viewport.Width / 2, game.GraphicsDevice.Viewport.Height / 3)
+            Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.5f)
         };
-        
+        _levelSelectButton = new SwitchSceneButton(game.Content.Load<Texture2D>("UI_Tile_128x64"), "Level Select", SceneManager.Instance.GetScene<LevelSelectionScene>())
+        {
+            Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.3f)
+        };        
         objects.Add(_quitButton);
         objects.Add(_restartButton);
+        objects.Add(_levelSelectButton);
         
         _loseTextBounds = font.MeasureString(LoseText);
         _scoreTextBounds = font.MeasureString($"Your score was {SceneManager.Instance.ScoringSystem.CurrentScore}");

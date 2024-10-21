@@ -14,20 +14,37 @@ namespace Monogame_Project1.Engine.GameObjects
 
         public SpawningSystem(Scene pScene)
         {
-            _scene = pScene;
+            string texture = _random.Next(100) < 5 ? "Potoo" : "Target";
+            Target newTarget = new Target(SceneManager.Instance.Game.Content.Load<Texture2D>(texture), _scene, 2)
+            {
+                Position = GetPosition()
+            };
+            // Temp Fix
+            newTarget.MovementSystem = CreateMovement(newTarget);
+            
+            _scene.Objects.Add(newTarget); 
+            currentTargets.Add(newTarget);
         }
 
         public override void LateLoad()
         {
-            _shootingSystem = _scene.GetObject<ShootingSystem>();
-            base.LateLoad();
+            string texture = _random.Next(2) == 0 ? "Bomb" : "TNT";
+            FakeTarget newTarget = new FakeTarget(SceneManager.Instance.Game.Content.Load<Texture2D>(texture))
+            {
+                Position = GetPosition(),
+                Color = Color.Green
+            };
+            
+            newTarget.MovementSystem = CreateMovement(newTarget);            
+            _scene.Objects.Add(newTarget);
+            currentTargets.Add(newTarget);
+            _hasSpawned = true;
         }
 
-        public override void Update(GameTime pGameTime)
-        {
-            if (currentTargets.Count <= 0) return;
-            _shootingSystem.CheckCollision();
-        }
+        return new(random.Next(64, SceneManager.Instance.Game.GraphicsDevice.Viewport.Width - 64),
+            random.Next(64, SceneManager.Instance.Game.GraphicsDevice.Viewport.Height - 200)
+        ); 
+    }
 
         // This method will be called by the WaveManager to start spawning new targets
         public void StartSpawner(int amountToSpawn, int fakesAmount)

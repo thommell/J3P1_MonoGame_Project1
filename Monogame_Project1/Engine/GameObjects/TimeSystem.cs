@@ -1,5 +1,6 @@
 using System;
 using Monogame_Project1.Engine.BaseClasses;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine.GameObjects;
 
@@ -50,10 +51,9 @@ public class TimeSystem : GameObject
         DrawTimer(pSpriteBatch);
         base.Draw(pSpriteBatch);
     }
-
     private void DrawTimer(SpriteBatch pSpriteBatch)
     {
         if (!_isWaiting)
-            pSpriteBatch.DrawString(_font, _displayedElapsedTime.ToString(), new Vector2(50f, 50f), Color.White);
+            pSpriteBatch.DrawString(_font, _displayedElapsedTime.ToString(), new Vector2(SceneManager.Instance.Game.GraphicsDevice.Viewport.Width / 2, SceneManager.Instance.Game.GraphicsDevice.Viewport.Height / 2), Color.White);
     }
 }
