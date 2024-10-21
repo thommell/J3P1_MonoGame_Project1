@@ -30,7 +30,7 @@ public sealed class SceneManager
     public void Awake()
     {
         CreateScenes(ref _scenesDictionary);
-        _currentScene = GetScene<MainMenu>();
+        _currentScene = GetScene<WaveSpawnTestScene>();
         levelSelectionScene = GetScene<LevelSelectionScene>();
         scoringSystem = new ScoringSystem(CurrentScene);
         levelSelectionScene.LoadContent(Game.Content);
@@ -46,6 +46,8 @@ public sealed class SceneManager
         _currentScene.LateLoad();
     }
     public void Update(GameTime pGameTime) => _currentScene.Update(pGameTime);
+    
+
     public void Draw(SpriteBatch pSpriteBatch) => _currentScene.Draw(pSpriteBatch);
     public void SwapScene(Scene pScene)
     {

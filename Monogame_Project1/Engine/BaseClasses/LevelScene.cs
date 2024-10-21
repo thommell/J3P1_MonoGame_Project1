@@ -30,6 +30,7 @@ public class LevelScene : Scene
     }
     public override void Update(GameTime pGameTime)
     {
+        WaveManager.Instance.Update();
         if (!_pauseSystem.IsPaused) 
             base.Update(pGameTime);
         _pauseSystem.Update(pGameTime);
