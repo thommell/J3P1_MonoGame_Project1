@@ -36,7 +36,7 @@ public class Button : GameObject
     public Button(Texture2D pTexture, string text, bool pIsActive = true) : base(pTexture, pIsActive)
     {
         game = SceneManager.Instance.Game;
-        font = game.Content.Load<SpriteFont>("Font");
+        font = game.Content.Load<SpriteFont>("ButtonFont");
         status = ButtonStatus.Normal;
         Text = text;
     }

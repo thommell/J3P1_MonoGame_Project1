@@ -15,11 +15,11 @@ public class MainMenu : Scene
         _titleBounds = game.Content.Load<SpriteFont>("TitleFont").MeasureString(TitleText);
         AudioManager.Instance.PlayMusic("Menu", true);
 
-        objects.Add(_quitButton = new(game.Content.Load<Texture2D>("UI_Tile_128x64"), "Quit")
+        objects.Add(_quitButton = new(game.Content.Load<Texture2D>("ButtonBackground"), "Quit")
         {
           Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.65f)
         });
-        objects.Add(new SwitchSceneButton(game.Content.Load<Texture2D>("UI_Tile_128x64"), "Level Select",
+        objects.Add(new SwitchSceneButton(game.Content.Load<Texture2D>("ButtonBackground"), "Level Select",
             SceneManager.Instance.GetScene<LevelSelectionScene>())
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.35f)
@@ -28,7 +28,7 @@ public class MainMenu : Scene
         // {
         //     Position = new Vector2(_quitButton.Position.X, game.GraphicsDevice.Viewport.Height * 0.3f)
         // });
-        objects.Add(new SwitchSceneButton(game.Content.Load<Texture2D>("UI_Tile_128x64"), "Settings", SceneManager.Instance.GetScene<Settings>())
+        objects.Add(new SwitchSceneButton(game.Content.Load<Texture2D>("ButtonBackground"), "Settings", SceneManager.Instance.GetScene<Settings>())
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.5f)
         });
