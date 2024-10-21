@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Monogame_Project1.Engine.BaseClasses;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine.GameObjects;
 public class ShootingSystem : GameObject

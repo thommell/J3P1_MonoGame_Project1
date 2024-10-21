@@ -9,7 +9,7 @@ public class Level2 : LevelScene
 {
     public override void LoadContent(ContentManager pContent)
     {
-        objects.Add(new SpawningSystem(this));
+        objects.Add(new SpawningSystem(this, 10, 15));
         objects.Add(new ShootingSystem(this));
         objects.Add(SceneManager.Instance.ScoringSystem);
         objects.Add(new AmmoSystem(3));
@@ -24,7 +24,6 @@ public class Level2 : LevelScene
             Position = new Vector2(game.GraphicsDevice.Viewport.Width - 380, game.GraphicsDevice.Viewport.Height - 150)
         };
 
-        uiObjects.Add(new CrosshairUI(pContent.Load<Texture2D>("FixedCrosshair"), game, Color.Black));
 
         uiObjects.Add(ammoUi);
         uiObjects.Add(scoreUi);

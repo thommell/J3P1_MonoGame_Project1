@@ -45,6 +45,8 @@ public abstract class Scene
 
     public virtual void LoadContent(ContentManager pContent)
     {
+        AudioManager.Instance.PlayMusic("MenuMusic", true);
+
         for (int i = 0; i < objects.Count; i++)
         {
             if (!objects[i].IsActive) continue;

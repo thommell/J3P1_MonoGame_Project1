@@ -7,7 +7,6 @@ global using Microsoft.Xna.Framework.Design;
 global using Microsoft.Xna.Framework.Media;
 global using System.Collections.Generic;
 using Monogame_Project1.Engine;
-using Monogame_Project1.Engine.GameObjects;
 using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1;
@@ -51,7 +50,7 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
-        // _sceneManager.Draw(_spriteBatch);
+        _spriteBatch.Draw(SceneManager.Instance.Game.Content.Load<Texture2D>("Background"), Vector2.Zero, Color.White);
         SceneManager.Instance.Draw(_spriteBatch);
         _spriteBatch.End();
         base.Draw(gameTime);
