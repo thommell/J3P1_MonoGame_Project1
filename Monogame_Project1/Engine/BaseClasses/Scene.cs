@@ -35,7 +35,7 @@ public abstract class Scene
     #region Constructor
     public Scene()
     {
-        font = SceneManager.Instance.Game.Content.Load<SpriteFont>("UIText");
+        font = SceneManager.Instance.Game.Content.Load<SpriteFont>("ButtonFont");
         game = SceneManager.Instance.Game;
     }
 

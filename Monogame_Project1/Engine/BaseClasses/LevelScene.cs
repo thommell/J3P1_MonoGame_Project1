@@ -20,6 +20,7 @@ public class LevelScene : Scene
         objects.Add(new TimeSystem(3f, GetObject<SpawningSystem>(), GetObject<Timer>(), font));
         AudioManager.Instance.PlayMusic("TestMusic", true);
         uiObjects.Add(_crosshairUI);
+        WaveManager.Instance.Initialize(SceneManager.Instance.CurrentScene);
         base.LoadContent(pContent);
     }
     public override void LateLoad()
@@ -38,7 +39,6 @@ public class LevelScene : Scene
 
     public override void Draw(SpriteBatch pSpriteBatch)
     {
-        WaveManager.Instance.Draw(pSpriteBatch);
         var timer = GetObject<TimeSystem>();
         if (_pauseSystem.IsPaused)
         {
@@ -52,6 +52,7 @@ public class LevelScene : Scene
         }
         pSpriteBatch.Draw(SceneManager.Instance.Game.Content.Load<Texture2D>("Background"), new Vector2(0, 0), Color.PapayaWhip);
         pSpriteBatch.Draw(SceneManager.Instance.Game.Content.Load<Texture2D>("Pixel"), bottomBorder, Color.Gray * 0f);
+        WaveManager.Instance.Draw(pSpriteBatch);
         base.Draw(pSpriteBatch);
     }
 }

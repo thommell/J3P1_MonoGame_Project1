@@ -12,6 +12,7 @@ public abstract class GameObject : IBoxCollider
     protected Texture2D texture;
     protected Color color;
     protected bool isActive;
+    protected bool isTargetObject;
     #endregion
 
     #region Properties
@@ -58,6 +59,7 @@ public abstract class GameObject : IBoxCollider
     }
 
     public bool IsActive { get => isActive; set => isActive = value; }
+    public bool IsTargetObject { get => isTargetObject; set => isTargetObject = value; }
     #endregion
 
     #region Constructor

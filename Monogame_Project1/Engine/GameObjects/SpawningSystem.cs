@@ -36,25 +36,26 @@ public class SpawningSystem : GameObject
         if (currentTargets.Count <= 0) return;
         _shootingSystem.CheckCollision();
     }
-    public void StartSpawner()
+    public void StartSpawner(int pObjectsToSpawn, int pFakesToSpawn)
     {
-        CreateNewTargets();
+        CreateNewTargets(pObjectsToSpawn, pFakesToSpawn);
     }
 
-    public bool HasActiveTargets() => currentTargets.Any(t => t.IsActive);
+    public bool HasActiveTargets() => currentTargets.Any(t => t.IsActive && t.IsTargetObject);
    
     /// <summary>
     /// Spawns new Targets and adds them to the current scene's objects and CurrentTargets' list.
     /// </summary>
-    private void SpawnTargets()
+    private void SpawnTargets(int pObjectsToSpawn, int pFakesToSpawn)
     {
         Random _random = new Random();
-        for (int i = 0; i < _amountToSpawn; i++)
+        for (int i = 0; i < pObjectsToSpawn; i++)
         {
             string texture = _random.Next(100) < 5 ? "Potoo" : "Target";
             Target newTarget = new Target(SceneManager.Instance.Game.Content.Load<Texture2D>(texture), _scene, 2)
             {
-                Position = GetPosition()
+                Position = GetPosition(),
+                IsTargetObject = true
             };
             // Temp Fix
             newTarget.MovementSystem = CreateMovement(newTarget);
@@ -63,13 +64,14 @@ public class SpawningSystem : GameObject
             currentTargets.Add(newTarget);
         }
 
-        for (int i = 0; i < _fakesAmount; i++)
+        for (int i = 0; i < pFakesToSpawn; i++)
         {
             string texture = _random.Next(2) == 0 ? "Bomb" : "TNT";
             FakeTarget newTarget = new FakeTarget(SceneManager.Instance.Game.Content.Load<Texture2D>(texture))
             {
                 Position = GetPosition(),
-                Color = Color.Green
+                Color = Color.White,
+                IsTargetObject = false
             };
 
             newTarget.MovementSystem = CreateMovement(newTarget);
@@ -81,11 +83,11 @@ public class SpawningSystem : GameObject
     /// <summary>
     /// Destroys the current scene's Target's and creates new ones.
     /// </summary>
-    private void CreateNewTargets()
+    private void CreateNewTargets(int pObjectsToSpawn, int pFakesToSpawn)
     {
         _scene.DeactivateObjects(currentTargets);
         currentTargets.Clear();
-        SpawnTargets();
+        SpawnTargets(pObjectsToSpawn, pFakesToSpawn);
     }
     public Vector2 GetPosition()
     {
