@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using Monogame_Project1.Engine.GameObjects;
 using Monogame_Project1.Engine.Scenes;
 using Monogame_Project1.Engine.Singletons;
@@ -9,6 +10,7 @@ namespace Monogame_Project1.Engine.BaseClasses;
 public class LevelScene : Scene
 {
     private PauseSystem _pauseSystem;
+    private AnimationsPlayer _animationsPlayer;
     public PauseSystem PauseSystem => _pauseSystem;
     private Rectangle bottomBorder;
     private CrosshairUI _crosshairUI;
@@ -16,7 +18,8 @@ public class LevelScene : Scene
     {
         _crosshairUI = new CrosshairUI(pContent.Load<Texture2D>("FixedCrosshair"), game, Color.Red);
         objects.Add(new PauseSystem(pContent.Load<SpriteFont>("Font"), pContent.Load<Texture2D>("Pixel")));
-        objects.Add(new AnimationsPlayer());
+        _animationsPlayer = new AnimationsPlayer();
+        objects.Add(_animationsPlayer);
         objects.Add(new TimeSystem(3f, GetObject<SpawningSystem>(), GetObject<Timer>(), font));
         AudioManager.Instance.PlayMusic("TestMusic", true);
         uiObjects.Add(_crosshairUI);
@@ -30,8 +33,11 @@ public class LevelScene : Scene
     }
     public override void Update(GameTime pGameTime)
     {
-        if (!_pauseSystem.IsPaused) 
+        if (!_pauseSystem.IsPaused)
             base.Update(pGameTime);
+        else if (!_pauseSystem.ShowMenu && _pauseSystem.IsPaused)
+            _animationsPlayer.Update(pGameTime);
+
         _pauseSystem.Update(pGameTime);
     }
 
@@ -42,6 +48,12 @@ public class LevelScene : Scene
         {
             timer.IsActive = false;
             _crosshairUI.IsActive = false;
+        }
+        else if (!_pauseSystem.ShowMenu && _pauseSystem.IsPaused)
+        {
+            timer.IsActive = false;
+            _crosshairUI.IsActive = true;
+            _animationsPlayer.Draw(pSpriteBatch);
         }
         else
         {

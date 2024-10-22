@@ -9,6 +9,7 @@ namespace Monogame_Project1.Engine.Scenes;
 public class PauseSystem : GameObject
 {
     public bool IsPaused { get; set; }
+    public bool ShowMenu { get; set; }  
     private readonly SpriteFont _font;
     private readonly Texture2D _pixelTexture;
     private KeyboardState _previousKeyboardState;
@@ -68,26 +69,33 @@ public class PauseSystem : GameObject
     public void TogglePausedState()
     {
         IsPaused = !IsPaused;
+        ShowMenu = true;
         _pausedObjects.ForEach(pausedObject => pausedObject.IsActive = !pausedObject.IsActive);
         SceneManager.Instance.UpdateCrosshairVisibility();
+    }
+    public void ToggleWithoutDraw()
+    {
+        IsPaused = !IsPaused;
+        ShowMenu = false;
     }
     public override void Update(GameTime pGameTime)
     {
         UpdateState();
-        if (!IsPaused) return;
+        if (!IsPaused || !ShowMenu) return;
         for (int i = 0; i <= _pausedObjects.Count - 1; i++)
             _pausedObjects[i].Update(pGameTime);
         SceneManager.Instance.Game.IsMouseVisible = true;
     }
     public override void Draw(SpriteBatch pSpriteBatch)
     {
-        if (!IsPaused)
+        if (!IsPaused || !ShowMenu)
             return;
         _pausedObjects.ForEach(pausedObject => pausedObject.Draw(pSpriteBatch));
         DrawState(pSpriteBatch);
     }
     public void UpdateState()
     {
+        if (!ShowMenu) return;
         KeyboardState currentKeyboardState = Keyboard.GetState();
         if (currentKeyboardState.IsKeyDown(Keys.Escape) && _previousKeyboardState.IsKeyUp(Keys.Escape)) TogglePausedState();
         _previousKeyboardState = currentKeyboardState;
