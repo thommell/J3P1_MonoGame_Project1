@@ -20,14 +20,18 @@ public class WaveManager
 
     private SpawningSystem _spawner;
     private Scene _currentScene;
+    private TimeSystem _timeSystem;
+    private Timer _timer;
     private int _currentWave;
     private int _maxWaves;
     private bool _canSpawn = true;
     private int _completedWaves;
 
-    private float _delayBetweenWaves = 5f;
+    private float _delayBetweenWaves = 3f;
     private float _elapsedDelayTime = 0f;
     private bool _isDelaying = false;
+
+    public bool IsDelaying { get => _isDelaying; set => _isDelaying = value; }
 
     public int MaxWaves { get => _maxWaves; set => _maxWaves = value; }
     private WaveManager()
@@ -36,12 +40,20 @@ public class WaveManager
         WaveEnder += EndWave;
     }
 
+
     public void Initialize(Scene pScene)
     {
         _completedWaves = 0;
         _currentWave = 0;
         _currentScene = pScene;
         _spawner = pScene.GetObject<SpawningSystem>();
+        _timeSystem = pScene.GetObject<TimeSystem>();
+        _timer = pScene.GetObject<Timer>();
+
+        WaveStarter += _timer.ToggleTimer;
+        WaveEnder += _timer.ResetTimer;
+        WaveEnder += _timer.ToggleTimer;
+
     }
 
     public void Update(GameTime pGameTime)
@@ -59,6 +71,7 @@ public class WaveManager
         if (_isDelaying)
         {
             _elapsedDelayTime -= (float)pGameTime.ElapsedGameTime.TotalSeconds;
+            _timer.IsRunning = false;
             if (_elapsedDelayTime <= 0)
             {
                 _isDelaying = false;
@@ -103,8 +116,8 @@ public class WaveManager
     private void EndWave()
     {
         _completedWaves++;
-        _spawner.currentTargets.Clear();
         _canSpawn = true;
+        _spawner.ClearTargets();
     }
 
     private void StartDelay()

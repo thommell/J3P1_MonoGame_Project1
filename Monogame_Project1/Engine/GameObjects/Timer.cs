@@ -17,7 +17,7 @@ public class Timer : GameObject
     private Game1 _game;
     private float _time;
     private bool _isRunning;
-    private float _startTime;
+    private readonly float _startTime;
 
     //UI
     private Texture2D _barTexture;
@@ -46,6 +46,10 @@ public class Timer : GameObject
         set => _time = value;
     }
     
+    public float StartTime
+    {
+        get => _startTime;
+    }
     #endregion
 
     #region Constructors
@@ -81,7 +85,7 @@ public class Timer : GameObject
     {
         if (_time >= 0 && _isRunning) OnTimerActive(pGameTime);
             
-        else OnTimesUp();
+        else ResetTimer();
     }
     public override void Draw(SpriteBatch pSpriteBatch)
     {
@@ -96,6 +100,11 @@ public class Timer : GameObject
         pSpriteBatch.Draw(_barTexture, _recForeGround, GetColor());
         pSpriteBatch.Draw(_clock, new Vector2(_recForeGround.Left - _clock.Width + 5, _recForeGround.Top + (_recForeGround.Height / 2) - (_clock.Height / 2)), Color.White);
     }
+
+    public void ResetTimer() => _time = _startTime;
+
+    public void ToggleTimer() => _isRunning = !_isRunning;
+
     #endregion
 
     #region Private Methods
@@ -106,10 +115,7 @@ public class Timer : GameObject
         //Changes width of the bar depending on the time
         _recForeGround.Width = (int)(_barWidth * (_time / _startTime)); 
     }
-    private void OnTimesUp()
-    {
-        _time = _startTime;
-    }
+
     private Color GetColor()
     {
         if (_time <= _startTime * 0.25) return Color.Red;

@@ -10,9 +10,11 @@ public class TimeSystem : GameObject
     private readonly float _originalTime;
     private SpawningSystem _spawningSystem;
     private Timer _timer;
-    private bool _isWaiting;
+    //private bool _isWaiting;
     private SpriteFont _font;
     private float _displayedElapsedTime;
+
+    public float OriginalTime { get => _originalTime; }
     public TimeSystem(float pTime, SpawningSystem pSpawningSystem, Timer timer, SpriteFont font)
     {
         _elapsedTime = pTime;
@@ -27,7 +29,7 @@ public class TimeSystem : GameObject
     }
     private void UpdateTimer(GameTime pGameTime)
     {
-        if (_isWaiting) return;
+        if (WaveManager.Instance.IsDelaying) return;
         var rawElapsedTime = _elapsedTime -= (float)pGameTime.ElapsedGameTime.TotalSeconds;
         _displayedElapsedTime = (float)Math.Round(rawElapsedTime);
         CheckTimer();
@@ -35,15 +37,15 @@ public class TimeSystem : GameObject
 
     private void CheckTimer()
     {
-        if (_elapsedTime >= 0.1f) return;
-        ResetTimer();
+        //if (_elapsedTime >= 0.1f) return;
+        //ResetTimer();
         _timer.IsRunning = true;
         // _spawningSystem.StartSpawner();
     }
 
     private void ResetTimer()
     {
-        _isWaiting = true;
+        //_isWaiting = true;
     }
 
     public override void Draw(SpriteBatch pSpriteBatch)
@@ -53,7 +55,7 @@ public class TimeSystem : GameObject
     }
     private void DrawTimer(SpriteBatch pSpriteBatch)
     {
-        if (!_isWaiting)
-            pSpriteBatch.DrawString(_font, _displayedElapsedTime.ToString(), new Vector2(SceneManager.Instance.Game.GraphicsDevice.Viewport.Width / 2, SceneManager.Instance.Game.GraphicsDevice.Viewport.Height / 2), Color.White);
+        //if (!_isWaiting)
+            //pSpriteBatch.DrawString(_font, _displayedElapsedTime.ToString(), new Vector2(SceneManager.Instance.Game.GraphicsDevice.Viewport.Width / 2, SceneManager.Instance.Game.GraphicsDevice.Viewport.Height / 2), Color.White);
     }
 }

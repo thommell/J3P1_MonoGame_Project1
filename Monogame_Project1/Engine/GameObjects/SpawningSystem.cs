@@ -86,9 +86,16 @@ public class SpawningSystem : GameObject
     private void CreateNewTargets(int pObjectsToSpawn, int pFakesToSpawn)
     {
         _scene.DeactivateObjects(currentTargets);
-        currentTargets.Clear();
+        ClearTargets();
         SpawnTargets(pObjectsToSpawn, pFakesToSpawn);
     }
+
+    public void ClearTargets()
+    {
+        currentTargets.ForEach(t => t.IsActive = false);
+        currentTargets.Clear();
+    }
+
     public Vector2 GetPosition()
     {
         Random random = new();
@@ -96,6 +103,7 @@ public class SpawningSystem : GameObject
         return new(random.Next(64, SceneManager.Instance.Game.GraphicsDevice.Viewport.Width - 64),
             random.Next(64, SceneManager.Instance.Game.GraphicsDevice.Viewport.Height - 166)
         );
+        
     }
 
     private TargetMovement CreateMovement(BaseTarget pOwner)
