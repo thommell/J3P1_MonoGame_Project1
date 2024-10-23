@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Xml.Linq;
 using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.Singletons;
 
@@ -11,6 +12,7 @@ public class SpawningSystem : GameObject
     private KeyboardState _kb;
     public List<GameObject> currentTargets = new();
     private ShootingSystem _shootingSystem;
+    private PowerUps _powerUps;
     private readonly int _amountToSpawn;
     private readonly int _fakesAmount;
     private bool _hasSpawned;
@@ -45,6 +47,7 @@ public class SpawningSystem : GameObject
     /// </summary>
     private void SpawnTargets()
     {
+ 
         Random _random = new Random();
         for (int i = 0; i < _amountToSpawn; i++)
         {
@@ -55,7 +58,13 @@ public class SpawningSystem : GameObject
             };
             // Temp Fix
             newTarget.MovementSystem = CreateMovement(newTarget);
-            
+
+           /* TimeTarget timeTarget = new TimeTarget(SceneManager.Instance.Game.Content.Load<Texture2D>("UI_Slot"))
+            {
+                Position = GetPosition()
+            };*/
+
+
             _scene.Objects.Add(newTarget); 
             currentTargets.Add(newTarget);
         }
@@ -109,5 +118,13 @@ public class SpawningSystem : GameObject
         {
             return random.Next(speedValues[0], speedValues[1]);
         }
+    }
+    public void SpawnPowerUp(BaseTarget pPowerUp)
+    {
+        pPowerUp.Position = GetPosition();
+        pPowerUp.MovementSystem = CreateMovement(pPowerUp);
+
+        _scene.Objects.Add(pPowerUp);
+        currentTargets.Add(pPowerUp);
     }
 }

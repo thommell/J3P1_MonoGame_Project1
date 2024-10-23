@@ -11,6 +11,7 @@ public class Target : BaseTarget
 
     private readonly Scene _scene;
     private Game1 _game;
+    private PowerUps _powerUps;
  
     #endregion
     
@@ -20,6 +21,7 @@ public class Target : BaseTarget
     {
         ScoreAmount = pScoreAmount;
         _scene = pScene;
+        _powerUps = SceneManager.Instance.CurrentScene.GetObject<PowerUps>();
     }
 
     #endregion
@@ -36,7 +38,14 @@ public class Target : BaseTarget
         scoringSystem.AddScore(ScoreAmount);
         ammoSystem.ResetAmmo();
 
+        SpawnPowerUp();
+
         base.OnHit();
+    }
+    private void SpawnPowerUp()
+    {
+        if (new Random().Next(0, 5) == 0)        
+            _powerUps.SpawnRandomPowerUp();
     }
 }
 

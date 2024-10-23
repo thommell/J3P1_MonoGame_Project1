@@ -120,5 +120,9 @@ public class Timer : GameObject
 
         return Color.Green;
     }
+    public void AddTime(float pTime)
+    {
+        _time = Math.Clamp(_time += pTime, 0, _startTime);
+    }
     #endregion
 }

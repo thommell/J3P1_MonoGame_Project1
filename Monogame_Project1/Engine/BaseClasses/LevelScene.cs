@@ -19,6 +19,7 @@ public class LevelScene : Scene
         objects.Add(new PauseSystem(pContent.Load<SpriteFont>("Font"), pContent.Load<Texture2D>("Pixel")));
         objects.Add(new AnimationsPlayer());
         objects.Add(new TimeSystem(3f, GetObject<SpawningSystem>(), GetObject<Timer>(), font));
+        objects.Add(new PowerUps());
         AudioManager.Instance.PlayMusic("TestMusic", true);
         uiObjects.Add(_crosshairUI);
         base.LoadContent(pContent);
