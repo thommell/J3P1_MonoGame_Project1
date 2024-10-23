@@ -22,14 +22,15 @@ public class WaveManager
     private Scene _currentScene;
     private TimeSystem _timeSystem;
     private Timer _timer;
+
     private int _currentWave;
     private int _maxWaves;
-    private bool _canSpawn = true;
     private int _completedWaves;
 
+    private bool _canSpawn = true;
+    private bool _isDelaying = false;
     private float _delayBetweenWaves = 3f;
     private float _elapsedDelayTime = 0f;
-    private bool _isDelaying = false;
 
     public bool IsDelaying { get => _isDelaying; set => _isDelaying = value; }
 
@@ -50,33 +51,15 @@ public class WaveManager
         _timeSystem = pScene.GetObject<TimeSystem>();
         _timer = pScene.GetObject<Timer>();
 
-        WaveStarter += _timer.ToggleTimer;
-        WaveEnder += _timer.ResetTimer;
-        WaveEnder += _timer.ToggleTimer;
+        AssignEvents();
 
     }
 
     public void Update(GameTime pGameTime)
     {
-        var kb = Keyboard.GetState();
-        bool hasFinishedWave = !_spawner.HasActiveTargets();
-        bool hasFinishedAllWaves = _maxWaves == _completedWaves;
-
-        if (hasFinishedAllWaves)
-        {
-            ResultHandler.Instance.HandleResult((LevelScene)SceneManager.Instance.CurrentScene, Enums.Results.Win);
-            //SceneManager.Instance.SwapScene(SceneManager.Instance.GetScene<WinScene>());
-        }
-
         if (_isDelaying)
         {
-            _elapsedDelayTime -= (float)pGameTime.ElapsedGameTime.TotalSeconds;
-            _timer.IsRunning = false;
-            if (_elapsedDelayTime <= 0)
-            {
-                _isDelaying = false;
-                WaveStarter?.Invoke();
-            }
+            UpdateDelay(pGameTime);
             return;
         }
 
@@ -85,34 +68,45 @@ public class WaveManager
             StartDelay();
             return;
         }
-        if (!_canSpawn && hasFinishedWave)
+
+        if (!_canSpawn && !_spawner.HasActiveTargets())
             WaveEnder?.Invoke();
+
+        if (_completedWaves == _maxWaves)
+            ResultHandler.Instance.HandleResult((LevelScene)SceneManager.Instance.CurrentScene, Enums.Results.Win);
     }
+
     public void Draw(SpriteBatch pSpriteBatch)
     {
-        string delayText = $"Next wave in: {Math.Ceiling(_elapsedDelayTime)} seconds.";
-        string nextWaveText = $"Wave {_currentWave + 1} starting soon!";
-        Vector2 boundingDelayText = _currentScene.font.MeasureString(delayText);
-        Vector2 boundingWaveText = _currentScene.font.MeasureString(nextWaveText);
         if (_isDelaying)
         {
-            pSpriteBatch.DrawString(_currentScene.font, delayText, new Vector2(Game1.ScreenWidth * 0.5f - boundingDelayText.X * 0.5f, Game1.ScreenHeight * 0.5f - boundingDelayText.Y * 0.5f), Color.White);
-            pSpriteBatch.DrawString(_currentScene.font, nextWaveText, new Vector2(Game1.ScreenWidth * 0.5f - boundingWaveText.X * 0.5f, Game1.ScreenHeight * 0.5f - boundingWaveText.Y * 0.5f + 50), Color.White);
+            string delayText = $"Next wave in: {Math.Ceiling(_elapsedDelayTime)} seconds.";
+            string nextWaveText = $"Wave {_currentWave + 1} starting soon!";
+            DrawCenteredText(pSpriteBatch, delayText, nextWaveText);
         }
         else
             pSpriteBatch.DrawString(_currentScene.font, "Wave " + _currentWave.ToString(), new Vector2(50, 50), Color.White);
     }
+
+    private void DrawCenteredText(SpriteBatch pSpriteBatch, string pDelayText, string pNextWaveText)
+    {
+        Vector2 delayTextBounds = _currentScene.font.MeasureString(pDelayText);
+        Vector2 waveTextBounds = _currentScene.font.MeasureString(pNextWaveText);
+
+        pSpriteBatch.DrawString(_currentScene.font, pDelayText, new Vector2(Game1.ScreenWidth * 0.5f - delayTextBounds.X * 0.5f, Game1.ScreenHeight * 0.5f - delayTextBounds.Y * 0.5f), Color.White);
+        pSpriteBatch.DrawString(_currentScene.font, pDelayText, new Vector2(Game1.ScreenWidth * 0.5f - waveTextBounds.X * 0.5f, Game1.ScreenHeight * 0.5f - waveTextBounds.Y * 0.5f), Color.White);
+    }
+
     private void StartWave()
     {
         _canSpawn = false;
         _currentWave++;
-        Console.WriteLine($"Wave {_currentWave}");
 
-        int targets = 2 + _currentWave * 2;
-        int fakeTargets = 2 + _currentWave * 2;
+        int targetCount = CalculateTargetCount();
 
-        _spawner.StartSpawner(targets, fakeTargets);
+        _spawner.StartSpawner(targetCount, targetCount);
     }
+
     private void EndWave()
     {
         _completedWaves++;
@@ -124,5 +118,26 @@ public class WaveManager
     {
         _isDelaying = true;
         _elapsedDelayTime = _delayBetweenWaves;
+        _timer.IsRunning = false;
+    }
+
+    private void UpdateDelay(GameTime pGameTime)
+    {
+        _elapsedDelayTime -= (float)pGameTime.ElapsedGameTime.TotalSeconds;
+
+        if ( _elapsedDelayTime <= 0)
+        {
+            _isDelaying = false;
+            WaveStarter?.Invoke();
+        }
+    }
+
+    private int CalculateTargetCount() => 2 + _currentWave * 2;
+
+    private void AssignEvents()
+    {
+        WaveStarter += _timer.ToggleTimer;
+        WaveEnder += _timer.ResetTimer;
+        WaveEnder += _timer.ToggleTimer;
     }
 }
