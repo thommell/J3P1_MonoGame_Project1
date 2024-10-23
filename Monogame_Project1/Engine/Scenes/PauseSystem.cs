@@ -1,5 +1,6 @@
 using System;
 using System.Xml.Linq;
+using Microsoft.Xna.Framework;
 using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.GameObjects;
 using Monogame_Project1.Engine.Singletons;
@@ -9,7 +10,6 @@ namespace Monogame_Project1.Engine.Scenes;
 public class PauseSystem : GameObject
 {
     public bool IsPaused { get; set; }
-    public bool ShowMenu { get; set; }  
     private readonly SpriteFont _font;
     private readonly Texture2D _pixelTexture;
     private KeyboardState _previousKeyboardState;
@@ -18,6 +18,7 @@ public class PauseSystem : GameObject
     private MusicSliderUI _musicSliderUI;
     private RestartButton _restartButton;
     private List<GameObject> _pausedObjects = new();
+    private bool _showMenu;
     public PauseSystem(SpriteFont pFont, Texture2D pTexture)
     {
         _font = pFont;
@@ -69,33 +70,39 @@ public class PauseSystem : GameObject
     public void TogglePausedState()
     {
         IsPaused = !IsPaused;
-        ShowMenu = true;
+        _showMenu = true;
         _pausedObjects.ForEach(pausedObject => pausedObject.IsActive = !pausedObject.IsActive);
         SceneManager.Instance.UpdateCrosshairVisibility();
     }
     public void ToggleWithoutDraw()
     {
         IsPaused = !IsPaused;
-        ShowMenu = false;
+        _showMenu = false;
     }
     public override void Update(GameTime pGameTime)
     {
         UpdateState();
-        if (!IsPaused || !ShowMenu) return;
+
+        if (!_showMenu && IsPaused)
+            SceneManager.Instance.CurrentScene.GetObject<AnimationsPlayer>().Update(pGameTime);
+        if (!IsPaused || !_showMenu) return;
         for (int i = 0; i <= _pausedObjects.Count - 1; i++)
             _pausedObjects[i].Update(pGameTime);
         SceneManager.Instance.Game.IsMouseVisible = true;
     }
     public override void Draw(SpriteBatch pSpriteBatch)
     {
-        if (!IsPaused || !ShowMenu)
+        if (!_showMenu && IsPaused)
+            SceneManager.Instance.CurrentScene.GetObject<AnimationsPlayer>().Draw(pSpriteBatch);
+        if (!IsPaused || !_showMenu)
             return;
+        SceneManager.Instance.CurrentScene.GetObject<AnimationsPlayer>().Draw(pSpriteBatch);
         _pausedObjects.ForEach(pausedObject => pausedObject.Draw(pSpriteBatch));
         DrawState(pSpriteBatch);
     }
     public void UpdateState()
     {
-        if (!ShowMenu) return;
+        if (!_showMenu) return;
         KeyboardState currentKeyboardState = Keyboard.GetState();
         if (currentKeyboardState.IsKeyDown(Keys.Escape) && _previousKeyboardState.IsKeyUp(Keys.Escape)) TogglePausedState();
         _previousKeyboardState = currentKeyboardState;

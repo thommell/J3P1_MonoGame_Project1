@@ -49,7 +49,7 @@ public class FakeTarget : BaseTarget
 
         animPlayer.AddAnimation(Position, SceneManager.Instance.Game.Content.Load<Texture2D>("BigExplosion"), columns, rows, animationSpeed);
 
-        int delayTime = (int)Math.Round(columns * rows * animationSpeed * 1000);
+        int delayTime = (int)Math.Round((columns * rows + 1) * animationSpeed * 1000);
 
         await Task.Delay(delayTime);
     }
