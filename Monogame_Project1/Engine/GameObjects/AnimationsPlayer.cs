@@ -11,9 +11,9 @@ public class AnimationsPlayer : GameObject
     #endregion
 
     #region Methods
-    public void AddAnimation(Point pMousePoint, Texture2D pSpriteSheet, int pColumns, int pRows, float pAnimationSpeed = 0.1f)
+    public void AddAnimation(Vector2 pPosition, Texture2D pSpriteSheet, int pColumns, int pRows, float pAnimationSpeed = 0.1f)
     {
-        _animationsPlayer.Add(new Animation(pSpriteSheet, new Vector2(pMousePoint.X, pMousePoint.Y), pColumns, pRows, pAnimationSpeed));
+        _animationsPlayer.Add(new Animation(pSpriteSheet, pPosition, pColumns, pRows, pAnimationSpeed));
     }
     public override void Update(GameTime pGameTime) 
     {

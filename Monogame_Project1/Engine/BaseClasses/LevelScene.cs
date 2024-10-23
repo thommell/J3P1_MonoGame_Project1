@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using Monogame_Project1.Engine.GameObjects;
 using Monogame_Project1.Engine.Scenes;
 using Monogame_Project1.Engine.Singletons;
@@ -18,6 +19,7 @@ public class LevelScene : Scene
         objects.Add(new PauseSystem(pContent.Load<SpriteFont>("Font"), pContent.Load<Texture2D>("Pixel")));
         objects.Add(new AnimationsPlayer());
         objects.Add(new TimeSystem(3f, GetObject<SpawningSystem>(), GetObject<Timer>(), font));
+        objects.Add(new PowerUps());
         AudioManager.Instance.PlayMusic("TestMusic", true);
         uiObjects.Add(_crosshairUI);
         WaveManager.Instance.Initialize(SceneManager.Instance.CurrentScene);
@@ -34,6 +36,7 @@ public class LevelScene : Scene
         WaveManager.Instance.Update(pGameTime);
         if (!_pauseSystem.IsPaused) 
             base.Update(pGameTime);
+
         _pauseSystem.Update(pGameTime);
     }
 

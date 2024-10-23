@@ -42,7 +42,7 @@ public class ShootingSystem : GameObject
         {
             case ButtonState.Pressed when !_hasShot && _ammoSystem.Ammo > 0:
                 _hasShot = true;
-                _animPlayer.AddAnimation(_mousePoint, _explosionTextures, 3, 3, 0.05f);
+                _animPlayer.AddAnimation(new Vector2(mouseState.X, mouseState.Y), _explosionTextures, 3, 3, 0.05f);
                 AudioManager.Instance.PlaySound("Gunshot");
                 Console.WriteLine("Shot");
                 break;
