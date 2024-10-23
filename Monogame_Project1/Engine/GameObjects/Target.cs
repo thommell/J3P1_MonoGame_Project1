@@ -25,7 +25,7 @@ public class Target : BaseTarget
 
     public override void OnHit()
     {
-        JsonManager.Instance.AddLevelCount();
+        JsonManager.Instance.CurrentGameInfo.IncrementLevelCount();
         ScoringSystem scoringSystem = _scene.GetObject<ScoringSystem>();
         AmmoSystem ammoSystem = _scene.GetObject<AmmoSystem>();
 

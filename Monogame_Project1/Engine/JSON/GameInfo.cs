@@ -21,4 +21,7 @@ public struct GameInfo
     public int HighScore => _highScore;
     public int Score { get => _score; set => _score = value; }
     public int LevelCount { get => _levelCount; set => _levelCount = value; }
+    
+    public int IncrementScore() => ++_score;
+    public int IncrementLevelCount() => ++_levelCount;
 }

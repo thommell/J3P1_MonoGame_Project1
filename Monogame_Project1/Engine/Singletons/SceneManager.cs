@@ -16,8 +16,6 @@ public sealed class SceneManager
     private Scene _currentScene;
     private Dictionary<string, Scene> _scenesDictionary = new(); // Dictionary where u can do string-based lookups
     private Game1 _game;
-    public GameInfo GameInfo;
-    
     public LevelScene pastLevelScene;
     public LevelSelectionScene levelSelectionScene;
     public ScoringSystem scoringSystem;
@@ -41,6 +39,7 @@ public sealed class SceneManager
         LoadScene();
         pastLevelScene = GetScene<Level1>();
         ResultHandler.Instance.GetData();
+        //Handle JSON
         JsonManager.Instance.SetupJson();
         JsonManager.Instance.ReadJson("LevelInfo");
     }
@@ -51,7 +50,12 @@ public sealed class SceneManager
         _currentScene.LateLoad();
     }
     public void Update(GameTime pGameTime) => _currentScene.Update(pGameTime);
-    public void Draw(SpriteBatch pSpriteBatch) => _currentScene.Draw(pSpriteBatch);
+    public void Draw(SpriteBatch pSpriteBatch)
+    {
+        _currentScene.Draw(pSpriteBatch);
+        pSpriteBatch.DrawString(_game.Content.Load<SpriteFont>("TitleFont"), JsonManager.Instance.CurrentGameInfo.Score.ToString(), new Vector2(50, 100), Color.White);
+    }
+
     public void SwapScene(Scene pScene)
     {
         if (pScene is null)
@@ -135,7 +139,7 @@ public sealed class SceneManager
     public void ChangeCrosshairVisibility() => _game.IsMouseVisible = !_game.IsMouseVisible;
     public void Exit()
     {
-        JsonManager.Instance.WriteJson(GameInfo, "LevelInfo");
+        JsonManager.Instance.WriteJson(JsonManager.Instance.CurrentGameInfo, JsonManager.Instance.GetJsonDirectory() + @"\LevelInfo.json");
         //This will close the game!! Use as final call.
         Game.Exit();
     }
