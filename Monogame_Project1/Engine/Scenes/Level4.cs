@@ -13,7 +13,7 @@ public class Level4 : LevelScene
         objects.Add(new ShootingSystem(this));
         objects.Add(SceneManager.Instance.ScoringSystem);
         objects.Add(new AmmoSystem(3));
-        // objects.Add(new Timer(10f));
+        objects.Add(new Timer(30f));
         UIObject scoreUi = new ScoreUI(pContent.Load<Texture2D>("BrokenTarget"), game, this)
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width - 370, 30)           
@@ -26,6 +26,7 @@ public class Level4 : LevelScene
         uiObjects.Add(new CrosshairUI(pContent.Load<Texture2D>("FixedCrosshair"), game, Color.Black));
         uiObjects.Add(ammoUi);
         uiObjects.Add(scoreUi);
+        WaveManager.Instance.MaxWaves = 4;
         base.LoadContent(pContent);
     }
 }

@@ -25,6 +25,10 @@ public class WaveManager
     private bool _canSpawn = true;
     private int _completedWaves;
 
+    private float _delayBetweenWaves = 5f;
+    private float _elapsedDelayTime = 0f;
+    private bool _isDelaying = false;
+
     public int MaxWaves { get => _maxWaves; set => _maxWaves = value; }
     private WaveManager()
     {
@@ -40,7 +44,7 @@ public class WaveManager
         _spawner = pScene.GetObject<SpawningSystem>();
     }
 
-    public void Update()
+    public void Update(GameTime pGameTime)
     {
         var kb = Keyboard.GetState();
         bool hasFinishedWave = !_spawner.HasActiveTargets();
@@ -51,9 +55,21 @@ public class WaveManager
             ResultHandler.Instance.HandleResult((LevelScene)SceneManager.Instance.CurrentScene, Enums.Results.Win);
             //SceneManager.Instance.SwapScene(SceneManager.Instance.GetScene<WinScene>());
         }
+
+        if (_isDelaying)
+        {
+            _elapsedDelayTime -= (float)pGameTime.ElapsedGameTime.TotalSeconds;
+            if (_elapsedDelayTime <= 0)
+            {
+                _isDelaying = false;
+                WaveStarter?.Invoke();
+            }
+            return;
+        }
+
         if (_canSpawn && _currentWave < _maxWaves)
         {
-            WaveStarter?.Invoke();
+            StartDelay();
             return;
         }
         if (!_canSpawn && hasFinishedWave)
@@ -61,7 +77,17 @@ public class WaveManager
     }
     public void Draw(SpriteBatch pSpriteBatch)
     {
-        pSpriteBatch.DrawString(_currentScene.font, "Wave " + _currentWave.ToString(), new Vector2(50, 50), Color.White);
+        string delayText = $"Next wave in: {Math.Ceiling(_elapsedDelayTime)} seconds.";
+        string nextWaveText = $"Wave {_currentWave + 1} starting soon!";
+        Vector2 boundingDelayText = _currentScene.font.MeasureString(delayText);
+        Vector2 boundingWaveText = _currentScene.font.MeasureString(nextWaveText);
+        if (_isDelaying)
+        {
+            pSpriteBatch.DrawString(_currentScene.font, delayText, new Vector2(Game1.ScreenWidth * 0.5f - boundingDelayText.X * 0.5f, Game1.ScreenHeight * 0.5f - boundingDelayText.Y * 0.5f), Color.White);
+            pSpriteBatch.DrawString(_currentScene.font, nextWaveText, new Vector2(Game1.ScreenWidth * 0.5f - boundingWaveText.X * 0.5f, Game1.ScreenHeight * 0.5f - boundingWaveText.Y * 0.5f + 50), Color.White);
+        }
+        else
+            pSpriteBatch.DrawString(_currentScene.font, "Wave " + _currentWave.ToString(), new Vector2(50, 50), Color.White);
     }
     private void StartWave()
     {
@@ -69,8 +95,8 @@ public class WaveManager
         _currentWave++;
         Console.WriteLine($"Wave {_currentWave}");
 
-        int targets = 3 + _currentWave * 2;
-        int fakeTargets = 3 + _currentWave * 2;
+        int targets = 2 + _currentWave * 2;
+        int fakeTargets = 2 + _currentWave * 2;
 
         _spawner.StartSpawner(targets, fakeTargets);
     }
@@ -79,5 +105,11 @@ public class WaveManager
         _completedWaves++;
         _spawner.currentTargets.Clear();
         _canSpawn = true;
+    }
+
+    private void StartDelay()
+    {
+        _isDelaying = true;
+        _elapsedDelayTime = _delayBetweenWaves;
     }
 }

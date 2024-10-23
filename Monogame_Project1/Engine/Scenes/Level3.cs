@@ -26,6 +26,7 @@ public class Level3 : LevelScene
         };
         uiObjects.Add(ammoUi);
         uiObjects.Add(scoreUi);
+        WaveManager.Instance.MaxWaves = 4;
         base.LoadContent(pContent);
     }
 }
