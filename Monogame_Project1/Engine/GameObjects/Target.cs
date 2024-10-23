@@ -26,6 +26,8 @@ public class Target : BaseTarget
 
     public override void OnHit()
     {
+        AudioManager.Instance.PlaySound("BreakSound");
+
         ScoringSystem scoringSystem = _scene.GetObject<ScoringSystem>();
         AmmoSystem ammoSystem = _scene.GetObject<AmmoSystem>();
         AnimationsPlayer animPlayer = _scene.GetObject<AnimationsPlayer>();

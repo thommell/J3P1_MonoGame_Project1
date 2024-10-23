@@ -1,4 +1,5 @@
 using Monogame_Project1.Engine.Singletons;
+using System;
 
 namespace Monogame_Project1.Engine.BaseClasses;
 
@@ -108,6 +109,8 @@ public class Button : GameObject
 
     protected virtual void OnClick()
     {
+        Console.WriteLine("Clicked");
+        AudioManager.Instance.PlaySound("OnClick");
         status = ButtonStatus.Pressed;
     }
     protected virtual void OnHold()

@@ -26,6 +26,7 @@ public class FakeTarget : BaseTarget
     #region Public Voids
     public override void OnHit()
     {
+        AudioManager.Instance.PlaySound("Explosion");
         _pauseSystem.ToggleWithoutDraw();
         
         OnHitAsync();

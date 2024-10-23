@@ -61,6 +61,12 @@
 /processorParam:TextureFormat=Color
 /build:Bomb.png
 
+#begin BreakingSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:BreakingSound.wav
+
 #begin BrokenTarget.gif
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -84,6 +90,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Bullet.png
+
+#begin Buttonhover.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Buttonhover.wav
 
 #begin Clock.gif
 /importer:TextureImporter
@@ -120,6 +132,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Explosion.gif
+
+#begin ExplosionSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:ExplosionSound.wav
 
 #begin FixedCrosshair.gif
 /importer:TextureImporter
@@ -169,6 +187,12 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Menu.mp3
+
+#begin OnClickSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:OnClickSound.wav
 
 #begin Pixel.png
 /importer:TextureImporter

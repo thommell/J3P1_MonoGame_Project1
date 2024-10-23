@@ -30,6 +30,10 @@ public class AudioManager
         //for Soundeffects, use Wav-files
 
         _soundEffects.Add("Gunshot", pContent.Load<SoundEffect>("GunshotWav"));
+        _soundEffects.Add("BreakSound", pContent.Load<SoundEffect>("BreakingSound"));
+        _soundEffects.Add("Explosion", pContent.Load<SoundEffect>("ExplosionSound"));
+        _soundEffects.Add("ButtonHover", pContent.Load<SoundEffect>("Buttonhover"));
+        _soundEffects.Add("OnClick", pContent.Load<SoundEffect>("OnClickSound"));
 
         //for music use Mp3-files
 
@@ -40,6 +44,7 @@ public class AudioManager
     {
         if (_soundEffects.ContainsKey(pSoundName))
         {
+            Console.WriteLine("Played Sound");
             //SoundeffectInstance is created here to change volume and pitch
             SoundEffectInstance soundInstance = _soundEffects[pSoundName].CreateInstance();
 
