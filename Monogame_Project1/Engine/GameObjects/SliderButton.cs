@@ -18,6 +18,8 @@ public class SliderButton : Button
         _leftSide = pLeftSide;
         _rightSide = pRightSide;
     }
+    protected override void OnClick() { }
+ 
     protected override void OnHold()
     {
         MouseState mouseState = Mouse.GetState();

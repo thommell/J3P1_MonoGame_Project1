@@ -206,6 +206,12 @@
 /processorParam:TextureFormat=Color
 /build:ExtraTimeClock.png
 
+#begin FixedClickSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:FixedClickSound.wav
+
 #begin FixedCrosshair.gif
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -248,6 +254,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Lock.gif
+
+#begin lose.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:lose.wav
 
 #begin Menu.mp3
 /importer:Mp3Importer
@@ -424,4 +436,10 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:UsedBullet.png
+
+#begin win.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:win.wav
 

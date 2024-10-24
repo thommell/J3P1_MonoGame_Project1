@@ -33,7 +33,9 @@ public class AudioManager
         _soundEffects.Add("BreakSound", pContent.Load<SoundEffect>("BreakingSound"));
         _soundEffects.Add("Explosion", pContent.Load<SoundEffect>("ExplosionSound"));
         _soundEffects.Add("ButtonHover", pContent.Load<SoundEffect>("Buttonhover"));
-        _soundEffects.Add("OnClick", pContent.Load<SoundEffect>("OnClickSound"));
+        _soundEffects.Add("OnClick", pContent.Load<SoundEffect>("FixedClickSound"));
+        _soundEffects.Add("GameWin", pContent.Load<SoundEffect>("win"));
+        _soundEffects.Add("GameLose", pContent.Load<SoundEffect>("lose"));
 
         //for music use Mp3-files
 

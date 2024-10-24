@@ -18,6 +18,8 @@ public class WinScene : Scene
     private ScoringSystem _scoreSystem;
     public override void LoadContent(ContentManager pContent)
     {
+        AudioManager.Instance.PlaySound("GameWin");
+
         _quitButton = new QuitButton(game.Content.Load<Texture2D>("ButtonBackground"), "Quit")
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.6f)
