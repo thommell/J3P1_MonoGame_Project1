@@ -94,7 +94,7 @@ public class WaveManager
         Vector2 waveTextBounds = _currentScene.font.MeasureString(pNextWaveText);
 
         pSpriteBatch.DrawString(_currentScene.font, pDelayText, new Vector2(Game1.ScreenWidth * 0.5f - delayTextBounds.X * 0.5f, Game1.ScreenHeight * 0.5f - delayTextBounds.Y * 0.5f), Color.White);
-        pSpriteBatch.DrawString(_currentScene.font, pDelayText, new Vector2(Game1.ScreenWidth * 0.5f - waveTextBounds.X * 0.5f, Game1.ScreenHeight * 0.5f - waveTextBounds.Y * 0.5f), Color.White);
+        pSpriteBatch.DrawString(_currentScene.font, pNextWaveText, new Vector2(Game1.ScreenWidth * 0.5f - waveTextBounds.X * 0.5f, Game1.ScreenHeight * 0.5f - waveTextBounds.Y * 0.5f + 50f), Color.White);
     }
 
     private void StartWave()
