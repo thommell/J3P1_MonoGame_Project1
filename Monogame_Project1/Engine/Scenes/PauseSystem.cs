@@ -18,7 +18,7 @@ public class PauseSystem : GameObject
     private MusicSliderUI _musicSliderUI;
     private RestartButton _restartButton;
     private List<GameObject> _pausedObjects = new();
-    private bool _showMenu;
+    private bool _showMenu = true;
     public PauseSystem(SpriteFont pFont, Texture2D pTexture)
     {
         _font = pFont;
@@ -44,13 +44,13 @@ public class PauseSystem : GameObject
     }
     public override void LateLoad()
     {
-        _menuButton = new SwitchSceneButton(SceneManager.Instance.Game.Content.Load<Texture2D>("UI_Tile_128x64"), "Menu",
+        _menuButton = new SwitchSceneButton(SceneManager.Instance.Game.Content.Load<Texture2D>("ButtonBackground"), "Menu",
             SceneManager.Instance.GetScene<MainMenu>(), false)
         {
             Position = new Vector2(SceneManager.Instance.Game.GraphicsDevice.Viewport.Width * 0.5f, SceneManager.Instance.Game.GraphicsDevice.Viewport.Height * 0.5f - 50)
         };
         _restartButton = new RestartButton(
-            SceneManager.Instance.Game.Content.Load<Texture2D>("UI_Tile_128x64"), "Restart", false)
+            SceneManager.Instance.Game.Content.Load<Texture2D>("ButtonBackground"), "Restart", false)
         {
             Position = new Vector2(SceneManager.Instance.Game.GraphicsDevice.Viewport.Width * 0.5f,
                 SceneManager.Instance.Game.GraphicsDevice.Viewport.Height * 0.5f + 100)

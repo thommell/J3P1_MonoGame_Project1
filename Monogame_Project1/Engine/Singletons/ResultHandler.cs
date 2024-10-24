@@ -19,6 +19,7 @@ public class ResultHandler
 
     #region Components
 
+    private AmmoSystem _ammoSystem;
     private SpawningSystem _currentSpawningSystem;
     private Timer _currentSpawningTimer;
 
@@ -88,10 +89,11 @@ public class ResultHandler
             return;
         _currentSpawningSystem = SceneManager.Instance.CurrentScene.GetObject<SpawningSystem>();
         _currentSpawningTimer = SceneManager.Instance.CurrentScene.GetObject<Timer>();
+        _ammoSystem = SceneManager.Instance.CurrentScene.GetObject<AmmoSystem>();
 
         if (!_currentSpawningSystem.HasSpawned)
             return;
-        if (_currentSpawningTimer.Time <= 0.1f)
+        if (_currentSpawningTimer.Time <= 0.1f || _ammoSystem.Ammo == 0)
             HandleResult((LevelScene)SceneManager.Instance.CurrentScene, Results.Lose);
         // if (_currentSpawningSystem.currentTargets.Any(a => a is Target && a.IsActive) && _currentSpawningSystem.HasSpawned) return;
         // {

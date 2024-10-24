@@ -39,7 +39,7 @@ public abstract class SliderUI : GameObject
 
         outline = new Rectangle(recForeGround.Location.X - (int)_outlineWidth / 2, recForeGround.Location.Y - (int)_outlineWidth / 2, (int)_barWidth + (int)_outlineWidth, (int)_barHeight + (int)_outlineWidth);
 
-        _slider = new SliderButton(pContent.Load<Texture2D>("UI_Tile_64x64"), position.X, position.X + recForeGround.Width)
+        _slider = new SliderButton(pContent.Load<Texture2D>("SliderButton"), position.X, position.X + recForeGround.Width)
         {
             Position = new Vector2(position.X + (currentValue * recForeGround.Width), position.Y + (recForeGround.Height / 2))
         };

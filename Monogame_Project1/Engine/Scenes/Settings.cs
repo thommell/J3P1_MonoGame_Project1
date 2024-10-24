@@ -22,7 +22,7 @@ public class Settings : Scene
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.4f, game.GraphicsDevice.Viewport.Height * 0.5f)
         });
-        objects.Add(new SwitchSceneButton(game.Content.Load<Texture2D>("UI_Tile_128x64"), "Back", SceneManager.Instance.GetScene<MainMenu>())
+        objects.Add(new SwitchSceneButton(game.Content.Load<Texture2D>("ButtonBackground"), "Back", SceneManager.Instance.GetScene<MainMenu>())
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.8f)
         });

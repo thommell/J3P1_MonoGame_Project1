@@ -14,15 +14,15 @@ public class LoseScene : Scene
     private const string LoseText = "You've lost.";
     public override void LoadContent(ContentManager pContent)
     {
-        _quitButton = new QuitButton(game.Content.Load<Texture2D>("UI_Tile_128x64"), "Quit")
+        _quitButton = new QuitButton(game.Content.Load<Texture2D>("ButtonBackground"), "Quit")
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.7f)
         };
-        _restartButton = new RestartButton(game.Content.Load<Texture2D>("UI_Tile_128x64"), "Restart")
+        _restartButton = new RestartButton(game.Content.Load<Texture2D>("ButtonBackground"), "Restart")
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.5f)
         };
-        _levelSelectButton = new SwitchSceneButton(game.Content.Load<Texture2D>("UI_Tile_128x64"), "Level Select", SceneManager.Instance.GetScene<LevelSelectionScene>())
+        _levelSelectButton = new SwitchSceneButton(game.Content.Load<Texture2D>("ButtonBackground"), "Level Select", SceneManager.Instance.GetScene<LevelSelectionScene>())
         {
             Position = new Vector2(game.GraphicsDevice.Viewport.Width * 0.5f, game.GraphicsDevice.Viewport.Height * 0.3f)
         };        
