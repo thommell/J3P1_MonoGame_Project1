@@ -1,6 +1,7 @@
 ﻿using Monogame_Project1.Engine.BaseClasses;
 using Monogame_Project1.Engine.Singletons;
 using System;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine.GameObjects;
 
@@ -29,7 +30,7 @@ public class Target : BaseTarget
     public override void OnHit()
     {
         AudioManager.Instance.PlaySound("BreakSound");
-
+        JsonManager.Instance.CurrentGameInfo.IncrementLevelCount();
         ScoringSystem scoringSystem = _scene.GetObject<ScoringSystem>();
         AmmoSystem ammoSystem = _scene.GetObject<AmmoSystem>();
         AnimationsPlayer animPlayer = _scene.GetObject<AnimationsPlayer>();

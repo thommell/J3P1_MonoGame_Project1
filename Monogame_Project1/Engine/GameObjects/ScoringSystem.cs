@@ -1,5 +1,6 @@
 using System;
 using Monogame_Project1.Engine.BaseClasses;
+using Monogame_Project1.Engine.Singletons;
 
 namespace Monogame_Project1.Engine.GameObjects;
 
@@ -31,6 +32,7 @@ public class ScoringSystem : GameObject
     public void AddScore(int pAddedScore)
     {
         _score += pAddedScore;
+        JsonManager.Instance.CurrentGameInfo.IncrementScore();
     }
     public void RemoveScore(int pRemovedScore)
     {
